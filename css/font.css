@@ -1,0 +1,6 @@
+@font-face {
+    /*字体名称，名字可以随便起，但是注意要一致，建议英文*/
+    font-family: 'DFDK';
+    font-display: swap;
+    src: url('./Alimama_DongFangDaKai_Regular.ttf') format("truetype");
+  }
