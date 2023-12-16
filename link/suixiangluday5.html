@@ -1,0 +1,340 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>代码随想录(day5) | 记录收获，重拾旧遗</title><meta name="author" content="独孤白"><meta name="copyright" content="独孤白"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="刷题参考：代码随想录 (programmercarl.com) 题目来源：力扣（LeetCode）  Day 5：栈与队列基本原理队列是先进先出，栈是先进后出  栈和队列是STL（C++标准库）里面的两个数据结构。 C++标准库是有多个版本的，要知道我们使用的STL是哪个版本，才能知道对应的栈和队列的实现原理。 那么来介绍一下，三个最为普遍的STL版本：  HP STL 其他版本的C++ STL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="代码随想录(day5)">
+<meta property="og:url" content="http://liumeng.top/link/suixiangluday5.html">
+<meta property="og:site_name" content="记录收获，重拾旧遗">
+<meta property="og:description" content="刷题参考：代码随想录 (programmercarl.com) 题目来源：力扣（LeetCode）  Day 5：栈与队列基本原理队列是先进先出，栈是先进后出  栈和队列是STL（C++标准库）里面的两个数据结构。 C++标准库是有多个版本的，要知道我们使用的STL是哪个版本，才能知道对应的栈和队列的实现原理。 那么来介绍一下，三个最为普遍的STL版本：  HP STL 其他版本的C++ STL">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png">
+<meta property="article:published_time" content="2023-06-07T00:00:00.000Z">
+<meta property="article:modified_time" content="2023-12-16T14:37:07.443Z">
+<meta property="article:author" content="独孤白">
+<meta property="article:tag" content="c++算法">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png"><link rel="shortcut icon" href="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/favicon.png"><link rel="canonical" href="http://liumeng.top/link/suixiangluday5.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '代码随想录(day5)',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-12-16 14:37:07'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = url => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      link.onload = () => resolve()
+      link.onerror = () => reject()
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/font.css"><link rel="stylesheet" href="/css/nav.css"><link rel="stylesheet" href="/css/myStyle.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/avatar.jpg" onerror="onerror=null;src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">56</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">18</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">15</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间线</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png')"><nav id="nav"><span id="blog-info"><a href="/" title="记录收获，重拾旧遗"><span class="site-name">记录收获，重拾旧遗</span></a></span><div id="menus"></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间线</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div><center id="name-container"><a id="page-name" href="javascript:scrollToTop()">PAGE_NAME</a></center><div id="nav-right"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">代码随想录(day5)</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2023-06-07T00:00:00.000Z" title="发表于 2023-06-07 00:00:00">2023-06-07</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/c/">c++</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3.3k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>13分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="代码随想录(day5)"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span><span class="post-meta-separator">|</span><span class="post-meta-commentcount"><i class="far fa-comments fa-fw post-meta-icon"></i><span class="post-meta-label">评论数:</span><a href="/link/suixiangluday5.html#post-comment" itemprop="discussionUrl"><span class="valine-comment-count" data-xid="/link/suixiangluday5.html" itemprop="commentCount"><i class="fa-solid fa-spinner fa-spin"></i></span></a></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><blockquote>
+<p>刷题参考：<a target="_blank" rel="noopener" href="https://www.programmercarl.com/">代码随想录 (programmercarl.com)</a></p>
+<p>题目来源：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/binary-search">力扣（LeetCode）</a></p>
+</blockquote>
+<h1 id="Day-5：栈与队列"><a href="#Day-5：栈与队列" class="headerlink" title="Day 5：栈与队列"></a>Day 5：栈与队列</h1><h2 id="基本原理"><a href="#基本原理" class="headerlink" title="基本原理"></a>基本原理</h2><p>队列是先进先出，栈是先进后出</p>
+<p><img src="https://code-thinking-1253855093.file.myqcloud.com/pics/20210104235346563.png" alt="栈与队列理论1"></p>
+<p>栈和队列是STL（C++标准库）里面的两个数据结构。</p>
+<p>C++标准库是有多个版本的，要知道我们使用的STL是哪个版本，才能知道对应的栈和队列的实现原理。</p>
+<p>那么来介绍一下，三个最为普遍的STL版本：</p>
+<ol>
+<li>HP STL 其他版本的C++ STL，一般是以HP STL为蓝本实现出来的，HP STL是C++ STL的第一个实现版本，而且开放源代码。</li>
+<li>P.J.Plauger STL 由P.J.Plauger参照HP STL实现出来的，被Visual C++编译器所采用，不是开源的。</li>
+<li>SGI STL 由Silicon Graphics Computer Systems公司参照HP STL实现，被Linux的C++编译器GCC所采用，SGI STL是开源软件，源码可读性甚高。</li>
+</ol>
+<p><strong>栈是以底层容器完成其所有的工作，对外提供统一的接口，底层容器是可插拔的（也就是说我们可以控制使用哪种容器来实现栈的功能）。</strong></p>
+<p>STL中栈往往不被归类为容器，而被归类为container adapter（容器适配器），栈的底层实现可以是vector，deque，list，主要是数组和链表的底层实现。<strong>常用的SGI STL，如果没有指定底层实现的话，默认是以deque为缺省情况下栈的底层结构。</strong></p>
+<p><img src="https://code-thinking-1253855093.file.myqcloud.com/pics/20210104235459376.png" alt="栈与队列理论3"></p>
+<p>队列也是相同的情况。</p>
+<h2 id="232-用栈实现队列"><a href="#232-用栈实现队列" class="headerlink" title="232. 用栈实现队列"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/implement-queue-using-stacks/">232. 用栈实现队列</a></h2><blockquote>
+<p>请你仅使用两个栈实现先入先出队列。队列应当支持一般队列支持的所有操作（push、pop、peek、empty）：</p>
+<p>实现 MyQueue 类：</p>
+<p>void push(int x) 将元素 x 推到队列的末尾<br>int pop() 从队列的开头移除并返回元素<br>int peek() 返回队列开头的元素<br>boolean empty() 如果队列为空，返回 true ；否则，返回 false<br>说明：</p>
+<p>你 只能 使用标准的栈操作 —— 也就是只有 push to top, peek/pop from top, size, 和 is empty 操作是合法的。<br>你所使用的语言也许不支持栈。你可以使用 list 或者 deque（双端队列）来模拟一个栈，只要是标准的栈操作即可。</p>
+<p>示例 1：</p>
+<p>输入：<br>[“MyQueue”, “push”, “push”, “peek”, “pop”, “empty”]<br>[[], [1], [2], [], [], []]<br>输出：<br>[null, null, null, 1, 1, false]</p>
+<p>解释：<br>MyQueue myQueue = new MyQueue();<br>myQueue.push(1); // queue is: [1]<br>myQueue.push(2); // queue is: [1, 2] (leftmost is front of the queue)<br>myQueue.peek(); // return 1<br>myQueue.pop(); // return 1, queue is [2]<br>myQueue.empty(); // return false</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 使用两个栈来模拟队列，一个进栈，一个出栈</span></span><br><span class="line"><span class="comment">// 当需要添加时，直接向进栈里添加即可</span></span><br><span class="line"><span class="comment">// 当需要查看或删除队列头部元素时，先判断出栈里有没有元素</span></span><br><span class="line"><span class="comment">// 如果有则直接top，或者pop，没有的话就将进栈的所有元素挪到出栈中</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyQueue</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    std::stack&lt;<span class="type">int</span>&gt; instack;</span><br><span class="line">    std::stack&lt;<span class="type">int</span>&gt; outstack;</span><br><span class="line">    <span class="type">int</span> size;</span><br><span class="line">    <span class="built_in">MyQueue</span>() &#123;</span><br><span class="line">        size = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">push</span><span class="params">(<span class="type">int</span> x)</span> </span>&#123;</span><br><span class="line">        instack.<span class="built_in">push</span>(x);</span><br><span class="line">        size ++;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">pop</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> out = <span class="built_in">peek</span>();</span><br><span class="line">        outstack.<span class="built_in">pop</span>();</span><br><span class="line">        size--;</span><br><span class="line">        <span class="keyword">return</span> out;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">peek</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(outstack.<span class="built_in">empty</span>())&#123;</span><br><span class="line">            <span class="keyword">while</span>(instack.<span class="built_in">size</span>())&#123;</span><br><span class="line">                outstack.<span class="built_in">push</span>(instack.<span class="built_in">top</span>());</span><br><span class="line">                instack.<span class="built_in">pop</span>();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> outstack.<span class="built_in">top</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">empty</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (size) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="225-用队列实现栈"><a href="#225-用队列实现栈" class="headerlink" title="225. 用队列实现栈"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/implement-stack-using-queues/">225. 用队列实现栈</a></h2><blockquote>
+<p>请你仅使用两个队列实现一个后入先出（LIFO）的栈，并支持普通栈的全部四种操作（push、top、pop 和 empty）。</p>
+<p>实现 MyStack 类：</p>
+<p>void push(int x) 将元素 x 压入栈顶。<br>int pop() 移除并返回栈顶元素。<br>int top() 返回栈顶元素。<br>boolean empty() 如果栈是空的，返回 true ；否则，返回 false 。</p>
+<p>注意：</p>
+<p>你只能使用队列的基本操作 —— 也就是 push to back、peek/pop from front、size 和 is empty 这些操作。<br>你所使用的语言也许不支持队列。 你可以使用 list （列表）或者 deque（双端队列）来模拟一个队列 , 只要是标准的队列操作即可。</p>
+<p>示例：</p>
+<p>输入：<br>[“MyStack”, “push”, “push”, “top”, “pop”, “empty”]<br>[[], [1], [2], [], [], []]<br>输出：<br>[null, null, null, 2, 2, false]</p>
+<p>解释：<br>MyStack myStack = new MyStack();<br>myStack.push(1);<br>myStack.push(2);<br>myStack.top(); // 返回 2<br>myStack.pop(); // 返回 2<br>myStack.empty(); // 返回 False</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 两个队列模拟栈，可以考虑使用一个队列进行备份</span></span><br><span class="line"><span class="comment">// 当压入栈时直接进入队列，当弹出栈时，将队列中的所有元素移动到备份队列</span></span><br><span class="line"><span class="comment">// 只保留最后一个元素，需要弹出或取值时使用即可</span></span><br><span class="line"><span class="comment">// 然后从备份队列还原，可以单个队列循环实现</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyStack</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    queue&lt;<span class="type">int</span>&gt; a;</span><br><span class="line">    <span class="built_in">MyStack</span>() &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">push</span><span class="params">(<span class="type">int</span> x)</span> </span>&#123;</span><br><span class="line">        a.<span class="built_in">push</span>(x);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">pop</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> res;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;a.<span class="built_in">size</span>()<span class="number">-1</span>;i++)</span><br><span class="line">        &#123;</span><br><span class="line">            a.<span class="built_in">push</span>(a.<span class="built_in">front</span>());</span><br><span class="line">            a.<span class="built_in">pop</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        res = a.<span class="built_in">front</span>();</span><br><span class="line">        a.<span class="built_in">pop</span>();</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">top</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> res;</span><br><span class="line">        res = <span class="built_in">pop</span>();</span><br><span class="line">        a.<span class="built_in">push</span>(res);</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">empty</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(a.<span class="built_in">empty</span>()) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="20-有效的括号"><a href="#20-有效的括号" class="headerlink" title="20. 有效的括号"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/valid-parentheses/">20. 有效的括号</a></h2><blockquote>
+<p>给定一个只包括 ‘(‘，’)’，’{‘，’}’，’[‘，’]’ 的字符串 s ，判断字符串是否有效。</p>
+<p>有效字符串需满足：</p>
+<p>左括号必须用相同类型的右括号闭合。<br>左括号必须以正确的顺序闭合。<br>每个右括号都有一个对应的相同类型的左括号。</p>
+<p>示例 1：</p>
+<p>输入：s = “()”<br>输出：true<br>示例 2：</p>
+<p>输入：s = “()[]{}”<br>输出：true<br>示例 3：</p>
+<p>输入：s = “(]”<br>输出：false</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 简单的栈的应用，输入的括号直接与栈顶的元素对比</span></span><br><span class="line"><span class="comment">// 不匹配就压入，匹配就直接消去，如果最后栈为空，则返回true</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">isValid</span><span class="params">(string s)</span> </span>&#123;</span><br><span class="line">        stack&lt;<span class="type">char</span>&gt; str_stack;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> &amp;i:s)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(str_stack.<span class="built_in">empty</span>()) str_stack.<span class="built_in">push</span>(i);</span><br><span class="line">            <span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="keyword">if</span>(i == (str_stack.<span class="built_in">top</span>())+<span class="number">1</span> || i == (str_stack.<span class="built_in">top</span>())+<span class="number">2</span>) str_stack.<span class="built_in">pop</span>();</span><br><span class="line">                <span class="keyword">else</span> str_stack.<span class="built_in">push</span>(i);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> str_stack.<span class="built_in">empty</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="1047-删除字符串中的所有相邻重复项"><a href="#1047-删除字符串中的所有相邻重复项" class="headerlink" title="1047. 删除字符串中的所有相邻重复项"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/remove-all-adjacent-duplicates-in-string/">1047. 删除字符串中的所有相邻重复项</a></h2><blockquote>
+<p>给出由小写字母组成的字符串 S，重复项删除操作会选择两个相邻且相同的字母，并删除它们。</p>
+<p>在 S 上反复执行重复项删除操作，直到无法继续删除。</p>
+<p>在完成所有重复项删除操作后返回最终的字符串。答案保证唯一。</p>
+<p>示例：</p>
+<p>输入：”abbaca”<br>输出：”ca”<br>解释：<br>例如，在 “abbaca” 中，我们可以删除 “bb” 由于两字母相邻且相同，这是此时唯一可以执行删除操作的重复项。之后我们得到字符串 “aaca”，其中又只有 “aa” 可以执行重复项删除操作，所以最后的字符串为 “ca”。</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 思路和上面的一样，和栈顶匹配就消去</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">string <span class="title">removeDuplicates</span><span class="params">(string s)</span> </span>&#123;</span><br><span class="line">        string res;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span>&amp;i:s)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (res.<span class="built_in">empty</span>()) res.<span class="built_in">push_back</span>(i);</span><br><span class="line">            <span class="keyword">else</span> </span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span>(i == res.<span class="built_in">back</span>()) res.<span class="built_in">pop_back</span>();</span><br><span class="line">                <span class="keyword">else</span> res.<span class="built_in">push_back</span>(i);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="150-逆波兰表达式求值"><a href="#150-逆波兰表达式求值" class="headerlink" title="150. 逆波兰表达式求值"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/evaluate-reverse-polish-notation/">150. 逆波兰表达式求值</a></h2><blockquote>
+<p>给你一个字符串数组 tokens ，表示一个根据 逆波兰表示法 表示的算术表达式。</p>
+<p>请你计算该表达式。返回一个表示表达式值的整数。</p>
+<p>注意：</p>
+<p>有效的算符为 ‘+’、’-‘、’*’ 和 ‘/‘ 。<br>每个操作数（运算对象）都可以是一个整数或者另一个表达式。<br>两个整数之间的除法总是 向零截断 。<br>表达式中不含除零运算。<br>输入是一个根据逆波兰表示法表示的算术表达式。<br>答案及所有中间计算结果可以用 32 位 整数表示。</p>
+<p>示例 1：</p>
+<p>输入：tokens = [“2”,”1”,”+”,”3”,”<em>“]<br>输出：9<br>解释：该算式转化为常见的中缀算术表达式为：((2 + 1) </em> 3) = 9<br>示例 2：</p>
+<p>输入：tokens = [“4”,”13”,”5”,”/“,”+”]<br>输出：6<br>解释：该算式转化为常见的中缀算术表达式为：(4 + (13 / 5)) = 6<br>示例 3：</p>
+<p>输入：tokens = [“10”,”6”,”9”,”3”,”+”,”-11”,”<em>“,”/“,”</em>“,”17”,”+”,”5”,”+”]<br>输出：22<br>解释：该算式转化为常见的中缀算术表达式为：<br>  ((10 <em> (6 / ((9 + 3) </em> -11))) + 17) + 5<br>= ((10 <em> (6 / (12 </em> -11))) + 17) + 5<br>= ((10 <em> (6 / -132)) + 17) + 5<br>= ((10 </em> 0) + 17) + 5<br>= (0 + 17) + 5<br>= 17 + 5<br>= 22</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 看上去很难，但是只要清楚当碰到运算符时，栈顶两个元素进行运算</span></span><br><span class="line"><span class="comment">// 就成了简单的等运算符号来的时候在栈顶进行运算的问题了</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">evalRPN</span><span class="params">(vector&lt;string&gt;&amp; tokens)</span> </span>&#123;</span><br><span class="line">        stack&lt;<span class="type">int</span>&gt; jisuan;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span>&amp;i:tokens)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(i.<span class="built_in">back</span>()&gt;=<span class="string">&#x27;0&#x27;</span>&amp;&amp;i.<span class="built_in">back</span>()&lt;=<span class="string">&#x27;9&#x27;</span>) jisuan.<span class="built_in">push</span>(<span class="built_in">atoi</span>(i.<span class="built_in">c_str</span>()));</span><br><span class="line">            <span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="type">int</span> a = jisuan.<span class="built_in">top</span>();</span><br><span class="line">                jisuan.<span class="built_in">pop</span>();</span><br><span class="line">                <span class="type">int</span> b = jisuan.<span class="built_in">top</span>();</span><br><span class="line">                jisuan.<span class="built_in">pop</span>();</span><br><span class="line">                <span class="keyword">if</span>(i==<span class="string">&quot;+&quot;</span>) jisuan.<span class="built_in">push</span>(a+b);</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span>(i==<span class="string">&quot;-&quot;</span>) jisuan.<span class="built_in">push</span>(b-a);</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span>(i==<span class="string">&quot;*&quot;</span>) jisuan.<span class="built_in">push</span>(b*a);</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span>(i==<span class="string">&quot;/&quot;</span>) jisuan.<span class="built_in">push</span>(b/a);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> jisuan.<span class="built_in">top</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="239-滑动窗口最大值"><a href="#239-滑动窗口最大值" class="headerlink" title="239. 滑动窗口最大值"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/sliding-window-maximum/">239. 滑动窗口最大值</a></h2><blockquote>
+<p>给你一个整数数组 nums，有一个大小为 k 的滑动窗口从数组的最左侧移动到数组的最右侧。你只可以看到在滑动窗口内的 k 个数字。滑动窗口每次只向右移动一位。</p>
+<p>返回 滑动窗口中的最大值 。</p>
+<p>示例 1：</p>
+<p>输入：nums = [1,3,-1,-3,5,3,6,7], k = 3<br>输出：[3,3,5,5,6,7]<br>解释：<br>滑动窗口的位置                最大值</p>
+<hr>
+<p>[1  3  -1] -3  5  3  6  7       3<br> 1 [3  -1  -3] 5  3  6  7       3<br> 1  3 [-1  -3  5] 3  6  7       5<br> 1  3  -1 [-3  5  3] 6  7       5<br> 1  3  -1  -3 [5  3  6] 7       6<br> 1  3  -1  -3  5 [3  6  7]      7<br>示例 2：</p>
+<p>输入：nums = [1], k = 1<br>输出：[1]</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 滑动窗口，第一想法双指针去做左指针，右指针，然后滑动取区域内最大值</span></span><br><span class="line"><span class="comment">// 但显然当k很大时会超时，可以进行优化，c++方法最快实现</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">maxSlidingWindow</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; nums, <span class="type">int</span> k)</span> </span>&#123;</span><br><span class="line">        <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">array</span><span class="params">(nums.size() - k + <span class="number">1</span>)</span></span>;</span><br><span class="line">        <span class="type">int</span> ans;</span><br><span class="line">        <span class="type">int</span> left = <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> index = <span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> right = k - <span class="number">1</span>; right &lt; nums.<span class="built_in">size</span>(); right++,left++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(left &lt;= index)&#123;</span><br><span class="line">                <span class="keyword">if</span>(nums[right] &gt;= nums[index])&#123;</span><br><span class="line">                    index = right;</span><br><span class="line">                    ans = nums[right];</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(nums[right] &gt;= ans - <span class="number">1</span>)&#123;</span><br><span class="line">                index = right;</span><br><span class="line">                ans = nums[right];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(nums[left] &gt;= ans - <span class="number">1</span>)&#123;</span><br><span class="line">                index = left;</span><br><span class="line">                ans = nums[left];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span>&#123;</span><br><span class="line">                ans = nums[left];</span><br><span class="line">                <span class="keyword">for</span>(<span class="type">int</span> j = left + <span class="number">1</span>; j &lt;= right; j++)&#123;</span><br><span class="line">                    <span class="keyword">if</span>(nums[j] &gt;= ans)&#123;</span><br><span class="line">                        index = j;</span><br><span class="line">                        ans = nums[j];</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            array[left] = ans;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> array;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// 另外可以采用单调队列来实现，单调队列解决的问题是什么</span></span><br><span class="line"><span class="comment">// 放入的元素全部呈单调递增或者单调递减的样式</span></span><br><span class="line"><span class="comment">// 滑动窗口取最大，单调队列能保证最大值永远在一边</span></span><br><span class="line"><span class="comment">// 但是单调队列与队列不同，其底层实现是一个双边队列，两边都可以进出</span></span><br><span class="line"><span class="comment">// 最简单的实现，首先应该有一个队列，进行初始化</span></span><br><span class="line"><span class="comment">// 初始化时，先将第一个值传入队列</span></span><br><span class="line"><span class="comment">// 然后进行比较，如果存在一个值大于队列中入口位置的元素</span></span><br><span class="line"><span class="comment">// 那么弹出入口元素，在进行比较，直至为空或者小于入口元素</span></span><br><span class="line"><span class="comment">// 滑动窗口考虑一入一出两个情况，接下来是出口，</span></span><br><span class="line"><span class="comment">// 如果滑动窗口弹出的元素和出口元素一致，那么弹出出口元素</span></span><br><span class="line"><span class="comment">// 这样就能保证出口处的元素为当前的最大值</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">class</span> <span class="title class_">Myqueue</span>&#123;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        deque&lt;<span class="type">int</span>&gt; que;</span><br><span class="line">        <span class="built_in">Myqueue</span>()&#123;&#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="type">void</span> <span class="title">push</span><span class="params">(<span class="type">int</span> x)</span></span>&#123;</span><br><span class="line">            <span class="keyword">while</span>(!que.<span class="built_in">empty</span>() &amp;&amp; que.<span class="built_in">front</span>()&lt;x) que.<span class="built_in">pop_front</span>();</span><br><span class="line">            que.<span class="built_in">push_front</span>(x);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="type">void</span> <span class="title">pop</span><span class="params">(<span class="type">int</span> x)</span></span>&#123;</span><br><span class="line">            <span class="keyword">if</span>(!que.<span class="built_in">empty</span>() &amp;&amp; que.<span class="built_in">back</span>()==x) que.<span class="built_in">pop_back</span>();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="type">int</span> <span class="title">top</span><span class="params">()</span></span>&#123;</span><br><span class="line">            <span class="keyword">return</span> que.<span class="built_in">back</span>();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">maxSlidingWindow</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; nums, <span class="type">int</span> k)</span> </span>&#123;</span><br><span class="line">        vector&lt;<span class="type">int</span>&gt; res;</span><br><span class="line">        Myqueue myque;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;nums.<span class="built_in">size</span>();i++)&#123;</span><br><span class="line">            myque.<span class="built_in">push</span>(nums[i]);</span><br><span class="line">            <span class="keyword">if</span>(i&gt;=k) myque.<span class="built_in">pop</span>(nums[i-k]);</span><br><span class="line">            <span class="keyword">if</span>(i&gt;=k<span class="number">-1</span>) res.<span class="built_in">push_back</span>(myque.<span class="built_in">top</span>());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// 上述代码中的back与front互换后减少空间使用，并且加快了速度</span></span><br></pre></td></tr></table></figure>
+<h2 id="347-前-K-个高频元素"><a href="#347-前-K-个高频元素" class="headerlink" title="347. 前 K 个高频元素"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/top-k-frequent-elements/">347. 前 K 个高频元素</a></h2><blockquote>
+<p>给你一个整数数组 nums 和一个整数 k ，请你返回其中出现频率前 k 高的元素。你可以按 任意顺序 返回答案。</p>
+<p>示例 1:</p>
+<p>输入: nums = [1,1,1,2,2,3], k = 2<br>输出: [1,2]<br>示例 2:</p>
+<p>输入: nums = [1], k = 1<br>输出: [1]</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 直接的想法，先用字典记录元素个数</span></span><br><span class="line"><span class="comment">// 将字典的键值对绑定，对值进行排序，得到前k个的键就是结果</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">static</span> <span class="type">bool</span> <span class="title">cmp</span><span class="params">(<span class="type">const</span> pair&lt;<span class="type">int</span>,<span class="type">int</span>&gt;&amp; a,<span class="type">const</span> pair&lt;<span class="type">int</span>,<span class="type">int</span>&gt;&amp; b)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> a.second&gt;b.second;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">topKFrequent</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; nums, <span class="type">int</span> k)</span> </span>&#123;</span><br><span class="line">        map&lt;<span class="type">int</span>, <span class="type">int</span>&gt; mp;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span>&amp; i:nums)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(mp[i]) mp[i] ++;</span><br><span class="line">            <span class="keyword">else</span> mp[i] = <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        vector&lt;pair&lt;<span class="type">int</span>,<span class="type">int</span>&gt;&gt; <span class="built_in">v</span>(mp.<span class="built_in">begin</span>(),mp.<span class="built_in">end</span>());</span><br><span class="line">        <span class="built_in">sort</span>(v.<span class="built_in">begin</span>(),v.<span class="built_in">end</span>(),cmp);</span><br><span class="line">        vector&lt;<span class="type">int</span>&gt; res;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;k;i++)</span><br><span class="line">        &#123;</span><br><span class="line">            res.<span class="built_in">emplace_back</span>(v[i].first);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// 使用顶堆实现：求前 k 大，用小顶堆，求前 k 小，用大顶堆。</span></span><br><span class="line"><span class="comment">// 常见关于堆的面试：1. 实现一个堆数据结构（插入，删除） 2. 求 top k 3. 求中位数 4. k 路归并</span></span><br><span class="line"><span class="comment">// 二叉树的时候再做</span></span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>代码随想录总共七道题：前两道题分别是栈实现队列和队列实现栈，主要是为了更加熟悉栈和队列的结构，了解基本的操作，接下来的括号匹配，删除字符串相邻重复项和逆波兰表达式求值是考察栈的用法，滑动窗口最大值用自己实现的<strong>单调队列</strong>结构去求解，前k个高频元素主要引出了<strong>优先队列</strong>和大小顶堆。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://liumeng.top">独孤白</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://liumeng.top/link/suixiangluday5.html">http://liumeng.top/link/suixiangluday5.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://liumeng.top" target="_blank">记录收获，重拾旧遗</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/c-%E7%AE%97%E6%B3%95/">c++算法</a></div><div class="post_share"><div class="social-share" data-image="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png" data-sites="wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/link/suixiangluday6.html" title="代码随想录(day6)"><img class="cover" src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png" onerror="onerror=null;src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">代码随想录(day6)</div></div></a></div><div class="next-post pull-right"><a href="/link/suixiangluday4.html" title="代码随想录(day4)"><img class="cover" src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png" onerror="onerror=null;src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">代码随想录(day4)</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/link/suixiangluc++.html" title="代码随想录(刷题总目录)"><img class="cover" src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-06-03</div><div class="title">代码随想录(刷题总目录)</div></div></a></div><div><a href="/link/topset.html" title="堆与优先队列"><img class="cover" src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-09-02</div><div class="title">堆与优先队列</div></div></a></div><div><a href="/link/suixiangluday20.html" title="代码随想录(day20)"><img class="cover" src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-09-01</div><div class="title">代码随想录(day20)</div></div></a></div><div><a href="/link/paixun2.html" title="排序算法n方"><img class="cover" src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-09-01</div><div class="title">排序算法n方</div></div></a></div><div><a href="/link/paixunlogn.html" title="排序算法nlogn"><img class="cover" src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-09-01</div><div class="title">排序算法nlogn</div></div></a></div><div><a href="/link/paixun.html" title="排序算法n"><img class="cover" src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-09-01</div><div class="title">排序算法n</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/avatar.jpg" onerror="this.onerror=null;this.src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">独孤白</div><div class="author-info__description">天行健 君子以自强不息</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">56</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">18</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">15</div></a></div><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/liumeng-hub" target="_blank" title="https://github.com/liumeng-hub"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:915738464@qq.com" target="_blank" title="915738464@qq.com"><i class="fas fa-envelope"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Day-5%EF%BC%9A%E6%A0%88%E4%B8%8E%E9%98%9F%E5%88%97"><span class="toc-number">1.</span> <span class="toc-text">Day 5：栈与队列</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86"><span class="toc-number">1.1.</span> <span class="toc-text">基本原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#232-%E7%94%A8%E6%A0%88%E5%AE%9E%E7%8E%B0%E9%98%9F%E5%88%97"><span class="toc-number">1.2.</span> <span class="toc-text">232. 用栈实现队列</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#225-%E7%94%A8%E9%98%9F%E5%88%97%E5%AE%9E%E7%8E%B0%E6%A0%88"><span class="toc-number">1.3.</span> <span class="toc-text">225. 用队列实现栈</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#20-%E6%9C%89%E6%95%88%E7%9A%84%E6%8B%AC%E5%8F%B7"><span class="toc-number">1.4.</span> <span class="toc-text">20. 有效的括号</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1047-%E5%88%A0%E9%99%A4%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%AD%E7%9A%84%E6%89%80%E6%9C%89%E7%9B%B8%E9%82%BB%E9%87%8D%E5%A4%8D%E9%A1%B9"><span class="toc-number">1.5.</span> <span class="toc-text">1047. 删除字符串中的所有相邻重复项</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#150-%E9%80%86%E6%B3%A2%E5%85%B0%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%B1%82%E5%80%BC"><span class="toc-number">1.6.</span> <span class="toc-text">150. 逆波兰表达式求值</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#239-%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%E6%9C%80%E5%A4%A7%E5%80%BC"><span class="toc-number">1.7.</span> <span class="toc-text">239. 滑动窗口最大值</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#347-%E5%89%8D-K-%E4%B8%AA%E9%AB%98%E9%A2%91%E5%85%83%E7%B4%A0"><span class="toc-number">1.8.</span> <span class="toc-text">347. 前 K 个高频元素</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">1.9.</span> <span class="toc-text">总结</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/link/pdfaddpicture.html" title="PDF添加图片与文字"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202312162235168.png" onerror="this.onerror=null;this.src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="PDF添加图片与文字"/></a><div class="content"><a class="title" href="/link/pdfaddpicture.html" title="PDF添加图片与文字">PDF添加图片与文字</a><time datetime="2023-12-26T00:00:00.000Z" title="发表于 2023-12-26 00:00:00">2023-12-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/link/topset.html" title="堆与优先队列"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png" onerror="this.onerror=null;this.src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="堆与优先队列"/></a><div class="content"><a class="title" href="/link/topset.html" title="堆与优先队列">堆与优先队列</a><time datetime="2023-09-02T00:00:00.000Z" title="发表于 2023-09-02 00:00:00">2023-09-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/link/suixiangluday20.html" title="代码随想录(day20)"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png" onerror="this.onerror=null;this.src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="代码随想录(day20)"/></a><div class="content"><a class="title" href="/link/suixiangluday20.html" title="代码随想录(day20)">代码随想录(day20)</a><time datetime="2023-09-01T00:00:00.000Z" title="发表于 2023-09-01 00:00:00">2023-09-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/link/paixun2.html" title="排序算法n方"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png" onerror="this.onerror=null;this.src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="排序算法n方"/></a><div class="content"><a class="title" href="/link/paixun2.html" title="排序算法n方">排序算法n方</a><time datetime="2023-09-01T00:00:00.000Z" title="发表于 2023-09-01 00:00:00">2023-09-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/link/paixunlogn.html" title="排序算法nlogn"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png" onerror="this.onerror=null;this.src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="排序算法nlogn"/></a><div class="content"><a class="title" href="/link/paixunlogn.html" title="排序算法nlogn">排序算法nlogn</a><time datetime="2023-09-01T00:00:00.000Z" title="发表于 2023-09-01 00:00:00">2023-09-01</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2023 By liumeng</div><div class="framework-info"><span>小破站正在安全运行 </span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"><use id="modeicon" xlink:href="#icon-moon"></use></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container').forEach(node => {
+            if (node.hasAttribute('display')) {
+              btf.wrap(node, 'div', { class: 'mathjax-overflow' })
+            } else {
+              btf.wrap(node, 'span', { class: 'mathjax-overflow' })
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script>(() => {
+  const $mermaidWrap = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaidWrap.length) {
+    window.runMermaid = () => {
+      window.loadMermaid = true
+      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+      Array.from($mermaidWrap).forEach((item, index) => {
+        const mermaidSrc = item.firstElementChild
+        const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+        const mermaidID = 'mermaid-' + index
+        const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+        mermaid.mermaidAPI.render(mermaidID, mermaidDefinition, (svgCode) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svgCode)
+        })
+      })
+    }
+
+    const loadMermaid = () => {
+      window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+    }
+
+    window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+  }
+})()</script><script>function loadValine () {
+  function initValine () {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: 'nemsAMaYAJs1jMlB2Gqa1lCI-MdYXbMMI',
+      appKey: '96YIeaSpipct4pRmJ7Kt8r5O',
+      avatar: 'monsterid',
+      serverURLs: 'https://server.liumeng.top',
+      emojiMaps: "",
+      path: window.location.pathname,
+      master: 'bc41b72793c99baf4f681cf457f64ec1',
+      tagMeta: ["博主","小伙伴","访客"],
+      friends: [],
+      visitor: false
+    }, null))
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('/js/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><script src="/js/jquery.js" async></script><script src="/js/foot.js" async></script><script src="http://cdn.bootcss.com/pace/1.0.2/pace.min.js" async></script><script src="/js/sun_moon.js" async></script><script src="/js/nav.js" async></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

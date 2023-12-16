@@ -1,0 +1,355 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>RSNA乳腺癌分类总结 | 记录收获，重拾旧遗</title><meta name="author" content="独孤白"><meta name="copyright" content="独孤白"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="RSNA乳腺癌分类总结引言 ​        第一次参加kaggle的比赛，比赛中学到了很多，kaggle的讨论区里有很多大佬交流想法，我几乎看了所有的帖子，对新手来说，很有意义。从2022&#x2F;12&#x2F;17开始发现了这个比赛，到2023&#x2F;2&#x2F;27结束，近三个月的时间，这是我参加的时间最长的比赛，从最开始的提交，到最后私榜银牌，因此，回忆从开始到结束的过程，记录一下比赛，也希望能有额外的收获。 ​">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RSNA乳腺癌分类总结">
+<meta property="og:url" content="http://liumeng.top/link/kaggle0228.html">
+<meta property="og:site_name" content="记录收获，重拾旧遗">
+<meta property="og:description" content="RSNA乳腺癌分类总结引言 ​        第一次参加kaggle的比赛，比赛中学到了很多，kaggle的讨论区里有很多大佬交流想法，我几乎看了所有的帖子，对新手来说，很有意义。从2022&#x2F;12&#x2F;17开始发现了这个比赛，到2023&#x2F;2&#x2F;27结束，近三个月的时间，这是我参加的时间最长的比赛，从最开始的提交，到最后私榜银牌，因此，回忆从开始到结束的过程，记录一下比赛，也希望能有额外的收获。 ​">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202302281802660.png">
+<meta property="article:published_time" content="2023-02-28T00:00:00.000Z">
+<meta property="article:modified_time" content="2023-12-16T14:37:07.439Z">
+<meta property="article:author" content="独孤白">
+<meta property="article:tag" content="kaggle比赛">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202302281802660.png"><link rel="shortcut icon" href="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/favicon.png"><link rel="canonical" href="http://liumeng.top/link/kaggle0228.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'RSNA乳腺癌分类总结',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-12-16 14:37:07'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = url => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      link.onload = () => resolve()
+      link.onerror = () => reject()
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/font.css"><link rel="stylesheet" href="/css/nav.css"><link rel="stylesheet" href="/css/myStyle.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/avatar.jpg" onerror="onerror=null;src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">56</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">18</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">15</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间线</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202302281802660.png')"><nav id="nav"><span id="blog-info"><a href="/" title="记录收获，重拾旧遗"><span class="site-name">记录收获，重拾旧遗</span></a></span><div id="menus"></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间线</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div><center id="name-container"><a id="page-name" href="javascript:scrollToTop()">PAGE_NAME</a></center><div id="nav-right"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">RSNA乳腺癌分类总结</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2023-02-28T00:00:00.000Z" title="发表于 2023-02-28 00:00:00">2023-02-28</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%AF%94%E8%B5%9B/">比赛</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2.5k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>7分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="RSNA乳腺癌分类总结"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span><span class="post-meta-separator">|</span><span class="post-meta-commentcount"><i class="far fa-comments fa-fw post-meta-icon"></i><span class="post-meta-label">评论数:</span><a href="/link/kaggle0228.html#post-comment" itemprop="discussionUrl"><span class="valine-comment-count" data-xid="/link/kaggle0228.html" itemprop="commentCount"><i class="fa-solid fa-spinner fa-spin"></i></span></a></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="RSNA乳腺癌分类总结"><a href="#RSNA乳腺癌分类总结" class="headerlink" title="RSNA乳腺癌分类总结"></a><a target="_blank" rel="noopener" href="https://www.kaggle.com/competitions/rsna-breast-cancer-detection/overview">RSNA乳腺癌分类总结</a></h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202302281412059.png" alt="image-20230228141232247"></p>
+<p>​        第一次参加kaggle的比赛，比赛中学到了很多，kaggle的讨论区里有很多大佬交流想法，我几乎看了所有的帖子，对新手来说，很有意义。从2022/12/17开始发现了这个比赛，到2023/2/27结束，近三个月的时间，这是我参加的时间最长的比赛，从最开始的提交，到最后私榜银牌，因此，回忆从开始到结束的过程，记录一下比赛，也希望能有额外的收获。</p>
+<p>​        在竞赛结束时，我的公榜成绩为190/1720，差一些才能拿到铜牌。</p>
+<p><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202302281414143.png" alt="image-20230228141452799"></p>
+<p>​        但是当私榜放出时，居然到了51/1720，可能是运气，出乎了我的意料。</p>
+<p><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202302281414429.png" alt="image-20230228141408842"></p>
+<p>​        下图是我记录了从开始到结束的105次提交的公榜(LB)和私榜(PL)分数，可以发现相关性也是比较高的。通过折线图也能发现分数的变化大概能分为几个阶段，接下来，将按阶段进行总结。</p>
+<p><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202302281411581.png" alt="sub"></p>
+<h2 id="开始阶段"><a href="#开始阶段" class="headerlink" title="开始阶段"></a>开始阶段</h2><p>​        决定参加比赛后，首先查看了比赛的规则以及要求，其中重要的有指标，截止时间，以及代码要求，然后查看了数据集以及数据集的说明文档。</p>
+<p>​        因为我参加时，比赛已经开始了半个月，讨论区已经有很多大佬进行过讨论，因此我去查看了所有的讨论内容，整理的其中的一些与赛题相关的内容。有之前RSNA比赛获胜者的笔记汇总，还有关于赛题的讨论，<strong>如何转换DICOM文件为PNG，额外可用的数据集，一些可用的backbone，可改进的一些方向</strong>，还有很多大佬做了<strong>EDA分析</strong>了数据集的构成，以及一些数据中不可用的空白图等。</p>
+<ul>
+<li>之前RSNA获奖者的笔记简单总结</li>
+</ul>
+<ol>
+<li>公榜和私榜可能不成正相关</li>
+<li>使用的网络大多为轻量化网络Efficientnet V2，Convnext nano/tiny，resnest50，seresnext50，inception_resnet_v2等</li>
+<li>预处理不需要太复杂</li>
+<li>当同时有文本数据和图片数据时，可以使用GRU网络连接两者</li>
+</ol>
+<ul>
+<li>关于赛题的讨论</li>
+</ul>
+<ol>
+<li>DICOM文件转PNG的方法</li>
+<li>额外可用的数据集：INbreast，CMMD，CBIS-DDSM，VinDr-Mammo，KAUM</li>
+<li>如何提取ROI区域，去除无用的黑色区域</li>
+<li>一些放出的方案方法：多折交叉验证，efficientnet b3，input size 512/1024</li>
+<li>可以改进的方向：更快的DICOM转PNG，损失函数的改进，对异常数据进行处理</li>
+</ol>
+<ul>
+<li>关于数据集的讨论</li>
+</ul>
+<ol>
+<li>一个病人单侧乳房的单个视图可能存在多张图片</li>
+<li>一些图无法使用，822患者有空白图，27770患者全为灰图</li>
+</ol>
+<p>​        最后制定了一个短期计划：三天完成一次简单的提交，再过五天完成基本网络的训练，然后分析各个网络的优劣，对网络进行改进。</p>
+<h2 id="网络训练"><a href="#网络训练" class="headerlink" title="网络训练"></a>网络训练</h2><p>​        确定了短期计划后，首先查看了Theo Viel大佬公开的代码，将代码copy一下后提交成功，然后分析代码结构，代码从开始的DICOM到PNG的转换，到后面的数据增强，模型训练，预测，以及提交，是一个很完整的流程，对我帮助很大，分析完代码结构后，将代码拆分为推理和训练两个部分，提交推理部分，没有报错，提交成功。训练时，使用大佬们转换好的PNG图片进行训练。这里我了解到了<strong>timm</strong>这个backbone的模型库，很好用，也便于替换。</p>
+<p>​        通过查看别人的讨论以及源码，发现说到最多的损失函数是<strong>BCE loss和Focal loss</strong>，以及使用上下采样对数据进行<strong>样本平衡</strong>（sklearn做数据集划分很好用），于是将这些作为模块添加到代码中，方便调用。</p>
+<p>​        事实证明，我还是太年轻了，三天完成一次简单的提交是个简单的任务，但是五天完成基本网络的训练，太难了，五天时间内，我只完成了单个网络的训练，但是网络测试集就是不收敛，这也是我第一次训练正负样本比例悬殊的数据集，并没有什么经验。当使用上下采样对数据进行均衡时，并没有得到好的效果，得分都在0.1以下。</p>
+<p>​        后面经过了解，使用了<strong>warm up，最大梯度裁剪</strong>后使用预训练权重进行训练，模型开始收敛，开始使用的是二分类的模型，后面改成单分类模型+阈值处理后效果更好。在这个过程中也出现了忘记对模型输出进行softmax(二分类)，sigmoid(单分类)等问题。</p>
+<p>​        训练代码没问题后，随之而来的是深度学习绕不开的设备差训练慢的问题，然后查找模型训练加速的方法，数据导入时，使用<strong>DataloaderX库或者data_prefectcher()函数</strong>进行导入，使用<strong>混合精度训练</strong>Nvidia_amp或者torch_amp，bitchsize太小时，使用<strong>梯度累加</strong>。</p>
+<p>​        经过测试，发现DataloaderX库在numwork=0时加速效果更好，当numwork不为0时，DataloaderX库不能带来速度提升，但data_prefectcher()能够带来一点的速度提升。nVidia的amp配置较为复杂，采用torch自带的amp效果更好。当使用梯度累加和amp时，注意loss的反向传播和梯度的累加。</p>
+<p>即使如此，512大小的图片在我3060显卡上依旧要跑10个小时。</p>
+<h2 id="训练改进"><a href="#训练改进" class="headerlink" title="训练改进"></a>训练改进</h2><p>​        当训练代码能够正常运行时，查看大佬们的代码，查看可用的训练改进，总结有以下几种改进：</p>
+<ul>
+<li>更高的分辨率</li>
+<li>多折交叉验证</li>
+<li>opcv/yolo ROI提取</li>
+<li>辅助分类训练</li>
+<li>辅助loss训练</li>
+</ul>
+<p>​        前期使用的时seresenxt50进行训练，<strong>数据增强</strong>仅使用了简单的<strong>水平反转</strong>，5度内的<strong>小幅度旋转</strong>以及归一化处理，对于<strong>网络的drop rate设为0.3，drop path rate设为0.2</strong>，经过测试证明<strong>使用YOLO进行roi提取</strong>比使用opencv效果更好。使用辅助分类训练后，效果并没有变好，可能特征的引入方式有问题。</p>
+<ul>
+<li>在使用YOLO ROI提取后能够达到0.28的LB分数。</li>
+<li>改变损失函数的权重，最终达到了0.36的LB分数，基本上都比CV分数高10个多点。</li>
+<li>这段时间发现了使用平均在当地求最佳阈值时，顺序错误，修改后，模型表现有所改善。</li>
+<li>制作了额外的公开数据集，对数据集进行处理，然后将模型在数据集上进行<strong>预训练</strong>后，LB分数达到0.39</li>
+<li>在测试时使用<strong>镜像翻转测试</strong>两次取平均，LB分数到达0.4</li>
+</ul>
+<p>​        大佬们开源了更快的DICOM转PNG的方法，有了更多的时间用于网络的推理。顺便去了解了以下训练时可以使用的方法策略。</p>
+<p>对于更快的网络训练和推理</p>
+<ul>
+<li>kornia库能够在gpu中进行数据增强加快模型训练推理速度 </li>
+<li>pytorch lightning框架更好的进行训练速度优化    </li>
+<li>tensorrt推理加速</li>
+</ul>
+<p>对于数据的优化</p>
+<ul>
+<li>使用deepsmote对数据进行处理</li>
+</ul>
+<p>对于超参数的优化</p>
+<ul>
+<li>使用ray库进行超参数搜索</li>
+</ul>
+<p>对于网络集成</p>
+<ul>
+<li>bagging和boosting训练方法</li>
+<li>加权平均，blending等网络集成方法</li>
+</ul>
+<p>对于网络性能的提升</p>
+<ul>
+<li>SWA随机权重平均</li>
+<li>tta测试时增强</li>
+</ul>
+<p>​        过年了，环境崩了，回学校用双2080ti跑。</p>
+<h2 id="最终实验"><a href="#最终实验" class="headerlink" title="最终实验"></a>最终实验</h2><p>​        回到学校，发现两个新网络刷屏讨论区，一个是nextvit，号称最快的transformer，另一个是convnextv2，号称最强的CNN。我继续使用seresnext50，使用五折训练，LB分数0.43，扩大分辨率为(512,1024)，因为讨论区有大佬认为1:2的宽高比，是最佳的宽高比。使用五折训练，效果变差，后来发现是resize宽高搞错了，改正后，LB分数0.46。</p>
+<p>​        <strong>注意：双卡跑保存模型权重时需保存的网络权重调用需要修改。</strong></p>
+<p>​        后面使用convnext tiny，以及nextvit small，在(1024,512)尺寸上进行四折训练，得到的LB结果分别为0.44和0.46。convnext tiny继续加大分辨率到(1344,768)后只能使用3折进行训练，否则推理超时，得到的LB分数为0.5。nextvit small加大分辨率后损失下降有问题，训练transformer和CNN网络的超参数设置可能不同，时间接近deadline，不再尝试nextvit。即使在双2080ti上，跑三折依旧需要10小时以上。</p>
+<p>​        对convnext使用直方图均衡化后，效果没有提升。这时才想起seresenxt50，在(1344,768)依旧能使用五折进行推理，重新训练后，LB达到0.52，微调阈值后，LB达到0.53，也就是最后的提交值。</p>
+<p>​        这之后调整pos weight以及上采样率进行尝试，LB分数下降，但PL分数上看，是有效果的。</p>
+<h2 id="未尝试的加强"><a href="#未尝试的加强" class="headerlink" title="未尝试的加强"></a>未尝试的加强</h2><ul>
+<li>使用更大分辨率的输入，并使用tensorrt进行推理</li>
+<li>多视图训练</li>
+<li>数据集的优化，因为癌症的标注为乳房级的，而不是图片级的</li>
+<li>超参数搜索，这个真的需要有资源和时间</li>
+<li>SWA，据说可以无痛提点</li>
+<li>背景拒绝，使用小模型先检测，将确信度低的交给大模型检测，增快检测速度。</li>
+<li>多模型融合</li>
+</ul>
+<h2 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h2><p>​        对于我来说，是一个很棒的经历，接下来大佬们会放出优胜方案，之后继续更新。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://liumeng.top">独孤白</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://liumeng.top/link/kaggle0228.html">http://liumeng.top/link/kaggle0228.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://liumeng.top" target="_blank">记录收获，重拾旧遗</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/kaggle%E6%AF%94%E8%B5%9B/">kaggle比赛</a></div><div class="post_share"><div class="social-share" data-image="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202302281802660.png" data-sites="wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/link/8f66e916.html" title="1.8tft彩屏测试代码（stm32f407ve）"><img class="cover" src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202302281933583.png" onerror="onerror=null;src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">1.8tft彩屏测试代码（stm32f407ve）</div></div></a></div><div class="next-post pull-right"><a href="/link/578dccdc.html" title="Python命令行小游戏—贪吃蛇"><img class="cover" src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202302102004662.png" onerror="onerror=null;src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Python命令行小游戏—贪吃蛇</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/link/kaggle0502.html" title="手势识别分类总结"><img class="cover" src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202302281802660.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-06-29</div><div class="title">手势识别分类总结</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/avatar.jpg" onerror="this.onerror=null;this.src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">独孤白</div><div class="author-info__description">天行健 君子以自强不息</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">56</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">18</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">15</div></a></div><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/liumeng-hub" target="_blank" title="https://github.com/liumeng-hub"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:915738464@qq.com" target="_blank" title="915738464@qq.com"><i class="fas fa-envelope"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#RSNA%E4%B9%B3%E8%85%BA%E7%99%8C%E5%88%86%E7%B1%BB%E6%80%BB%E7%BB%93"><span class="toc-number">1.</span> <span class="toc-text">RSNA乳腺癌分类总结</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%95%E8%A8%80"><span class="toc-number">1.1.</span> <span class="toc-text">引言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%80%E5%A7%8B%E9%98%B6%E6%AE%B5"><span class="toc-number">1.2.</span> <span class="toc-text">开始阶段</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E8%AE%AD%E7%BB%83"><span class="toc-number">1.3.</span> <span class="toc-text">网络训练</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%AD%E7%BB%83%E6%94%B9%E8%BF%9B"><span class="toc-number">1.4.</span> <span class="toc-text">训练改进</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E7%BB%88%E5%AE%9E%E9%AA%8C"><span class="toc-number">1.5.</span> <span class="toc-text">最终实验</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AA%E5%B0%9D%E8%AF%95%E7%9A%84%E5%8A%A0%E5%BC%BA"><span class="toc-number">1.6.</span> <span class="toc-text">未尝试的加强</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E5%B0%BE"><span class="toc-number">1.7.</span> <span class="toc-text">结尾</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/link/pdfaddpicture.html" title="PDF添加图片与文字"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202312162235168.png" onerror="this.onerror=null;this.src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="PDF添加图片与文字"/></a><div class="content"><a class="title" href="/link/pdfaddpicture.html" title="PDF添加图片与文字">PDF添加图片与文字</a><time datetime="2023-12-26T00:00:00.000Z" title="发表于 2023-12-26 00:00:00">2023-12-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/link/topset.html" title="堆与优先队列"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png" onerror="this.onerror=null;this.src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="堆与优先队列"/></a><div class="content"><a class="title" href="/link/topset.html" title="堆与优先队列">堆与优先队列</a><time datetime="2023-09-02T00:00:00.000Z" title="发表于 2023-09-02 00:00:00">2023-09-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/link/suixiangluday20.html" title="代码随想录(day20)"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png" onerror="this.onerror=null;this.src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="代码随想录(day20)"/></a><div class="content"><a class="title" href="/link/suixiangluday20.html" title="代码随想录(day20)">代码随想录(day20)</a><time datetime="2023-09-01T00:00:00.000Z" title="发表于 2023-09-01 00:00:00">2023-09-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/link/paixun2.html" title="排序算法n方"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png" onerror="this.onerror=null;this.src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="排序算法n方"/></a><div class="content"><a class="title" href="/link/paixun2.html" title="排序算法n方">排序算法n方</a><time datetime="2023-09-01T00:00:00.000Z" title="发表于 2023-09-01 00:00:00">2023-09-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/link/paixunlogn.html" title="排序算法nlogn"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png" onerror="this.onerror=null;this.src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="排序算法nlogn"/></a><div class="content"><a class="title" href="/link/paixunlogn.html" title="排序算法nlogn">排序算法nlogn</a><time datetime="2023-09-01T00:00:00.000Z" title="发表于 2023-09-01 00:00:00">2023-09-01</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2023 By liumeng</div><div class="framework-info"><span>小破站正在安全运行 </span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"><use id="modeicon" xlink:href="#icon-moon"></use></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container').forEach(node => {
+            if (node.hasAttribute('display')) {
+              btf.wrap(node, 'div', { class: 'mathjax-overflow' })
+            } else {
+              btf.wrap(node, 'span', { class: 'mathjax-overflow' })
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script>(() => {
+  const $mermaidWrap = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaidWrap.length) {
+    window.runMermaid = () => {
+      window.loadMermaid = true
+      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+      Array.from($mermaidWrap).forEach((item, index) => {
+        const mermaidSrc = item.firstElementChild
+        const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+        const mermaidID = 'mermaid-' + index
+        const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+        mermaid.mermaidAPI.render(mermaidID, mermaidDefinition, (svgCode) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svgCode)
+        })
+      })
+    }
+
+    const loadMermaid = () => {
+      window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+    }
+
+    window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+  }
+})()</script><script>function loadValine () {
+  function initValine () {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: 'nemsAMaYAJs1jMlB2Gqa1lCI-MdYXbMMI',
+      appKey: '96YIeaSpipct4pRmJ7Kt8r5O',
+      avatar: 'monsterid',
+      serverURLs: 'https://server.liumeng.top',
+      emojiMaps: "",
+      path: window.location.pathname,
+      master: 'bc41b72793c99baf4f681cf457f64ec1',
+      tagMeta: ["博主","小伙伴","访客"],
+      friends: [],
+      visitor: false
+    }, null))
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('/js/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><script src="/js/jquery.js" async></script><script src="/js/foot.js" async></script><script src="http://cdn.bootcss.com/pace/1.0.2/pace.min.js" async></script><script src="/js/sun_moon.js" async></script><script src="/js/nav.js" async></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

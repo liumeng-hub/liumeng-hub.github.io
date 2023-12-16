@@ -1,0 +1,379 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>代码随想录(day13) | 记录收获，重拾旧遗</title><meta name="author" content="独孤白"><meta name="copyright" content="独孤白"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="刷题参考：代码随想录 (programmercarl.com) 题目来源：力扣（LeetCode）  Day 13：动态规划（一）理论基础一个问题能由之前的状态推导到当前状态，这样的问题可以抽象成一个递归公式，即可使用动态规划求解。 动态规划五部曲：  确定dp数组以及下标的含义：搞清需要递归的目标是什么 确定递推公式：根据前面状态推导当前状态的公式 dp数组初始化：一般递推公式都需要手动设定初">
+<meta property="og:type" content="article">
+<meta property="og:title" content="代码随想录(day13)">
+<meta property="og:url" content="http://liumeng.top/link/suixiangluday13.html">
+<meta property="og:site_name" content="记录收获，重拾旧遗">
+<meta property="og:description" content="刷题参考：代码随想录 (programmercarl.com) 题目来源：力扣（LeetCode）  Day 13：动态规划（一）理论基础一个问题能由之前的状态推导到当前状态，这样的问题可以抽象成一个递归公式，即可使用动态规划求解。 动态规划五部曲：  确定dp数组以及下标的含义：搞清需要递归的目标是什么 确定递推公式：根据前面状态推导当前状态的公式 dp数组初始化：一般递推公式都需要手动设定初">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png">
+<meta property="article:published_time" content="2023-06-15T00:00:00.000Z">
+<meta property="article:modified_time" content="2023-12-16T14:37:07.443Z">
+<meta property="article:author" content="独孤白">
+<meta property="article:tag" content="c++算法">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png"><link rel="shortcut icon" href="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/favicon.png"><link rel="canonical" href="http://liumeng.top/link/suixiangluday13.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '代码随想录(day13)',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-12-16 14:37:07'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = url => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      link.onload = () => resolve()
+      link.onerror = () => reject()
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/font.css"><link rel="stylesheet" href="/css/nav.css"><link rel="stylesheet" href="/css/myStyle.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/avatar.jpg" onerror="onerror=null;src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">56</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">18</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">15</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间线</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png')"><nav id="nav"><span id="blog-info"><a href="/" title="记录收获，重拾旧遗"><span class="site-name">记录收获，重拾旧遗</span></a></span><div id="menus"></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间线</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div><center id="name-container"><a id="page-name" href="javascript:scrollToTop()">PAGE_NAME</a></center><div id="nav-right"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">代码随想录(day13)</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2023-06-15T00:00:00.000Z" title="发表于 2023-06-15 00:00:00">2023-06-15</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/c/">c++</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>11分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="代码随想录(day13)"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span><span class="post-meta-separator">|</span><span class="post-meta-commentcount"><i class="far fa-comments fa-fw post-meta-icon"></i><span class="post-meta-label">评论数:</span><a href="/link/suixiangluday13.html#post-comment" itemprop="discussionUrl"><span class="valine-comment-count" data-xid="/link/suixiangluday13.html" itemprop="commentCount"><i class="fa-solid fa-spinner fa-spin"></i></span></a></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><blockquote>
+<p>刷题参考：<a target="_blank" rel="noopener" href="https://www.programmercarl.com/">代码随想录 (programmercarl.com)</a></p>
+<p>题目来源：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/binary-search">力扣（LeetCode）</a></p>
+</blockquote>
+<h1 id="Day-13：动态规划（一）"><a href="#Day-13：动态规划（一）" class="headerlink" title="Day 13：动态规划（一）"></a>Day 13：动态规划（一）</h1><h2 id="理论基础"><a href="#理论基础" class="headerlink" title="理论基础"></a>理论基础</h2><p>一个问题能由之前的状态推导到当前状态，这样的问题可以抽象成一个递归公式，即可使用动态规划求解。</p>
+<p>动态规划五部曲：</p>
+<ul>
+<li>确定dp数组以及下标的含义：搞清需要递归的目标是什么</li>
+<li>确定递推公式：根据前面状态推导当前状态的公式</li>
+<li>dp数组初始化：一般递推公式都需要手动设定初始状态的值</li>
+<li>确定遍历顺序：根据公式，明确需要循环的变量</li>
+<li>举例推导dp数组：举个简单的列子，验证推导公式的正确性</li>
+</ul>
+<p>动态规划与贪心算法的区别：通俗来讲，就是一个需要根据之前的状态推导当前状态，另一个只需要考虑子问题的最优解。</p>
+<h2 id="509-斐波那契数"><a href="#509-斐波那契数" class="headerlink" title="509. 斐波那契数"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/fibonacci-number/">509. 斐波那契数</a></h2><blockquote>
+<p>斐波那契数 （通常用 F(n) 表示）形成的序列称为 斐波那契数列 。该数列由 0 和 1 开始，后面的每一项数字都是前面两项数字的和。也就是：</p>
+<p>F(0) = 0，F(1) = 1<br>F(n) = F(n - 1) + F(n - 2)，其中 n &gt; 1<br>给定 n ，请计算 F(n) 。</p>
+<p>示例 1：</p>
+<p>输入：n = 2<br>输出：1<br>解释：F(2) = F(1) + F(0) = 1 + 0 = 1<br>示例 2：</p>
+<p>输入：n = 3<br>输出：2<br>解释：F(3) = F(2) + F(1) = 1 + 1 = 2<br>示例 3：</p>
+<p>输入：n = 4<br>输出：3<br>解释：F(4) = F(3) + F(2) = 2 + 1 = 3</p>
+<p>提示：</p>
+<p>0 &lt;= n &lt;= 30</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 题目给的很明确，直接递推</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">fib</span><span class="params">(<span class="type">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(n&lt;<span class="number">2</span>) <span class="keyword">return</span> n;</span><br><span class="line">        <span class="type">int</span> dp[<span class="number">2</span>] = &#123;<span class="number">0</span>,<span class="number">1</span>&#125;;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">2</span>;i&lt;=n;i++)&#123;</span><br><span class="line">            <span class="type">int</span> temp=dp[<span class="number">1</span>];</span><br><span class="line">            dp[<span class="number">1</span>] += dp[<span class="number">0</span>];</span><br><span class="line">            dp[<span class="number">0</span>] = temp;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[<span class="number">1</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="70-爬楼梯"><a href="#70-爬楼梯" class="headerlink" title="70. 爬楼梯"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/climbing-stairs/">70. 爬楼梯</a></h2><blockquote>
+<p>假设你正在爬楼梯。需要 n 阶你才能到达楼顶。</p>
+<p>每次你可以爬 1 或 2 个台阶。你有多少种不同的方法可以爬到楼顶呢？</p>
+<p>示例 1：</p>
+<p>输入：n = 2<br>输出：2<br>解释：有两种方法可以爬到楼顶。</p>
+<ol>
+<li>1 阶 + 1 阶</li>
+<li>2 阶<br>示例 2：</li>
+</ol>
+<p>输入：n = 3<br>输出：3<br>解释：有三种方法可以爬到楼顶。</p>
+<ol>
+<li>1 阶 + 1 阶 + 1 阶</li>
+<li>1 阶 + 2 阶</li>
+<li>2 阶 + 1 阶</li>
+</ol>
+<p>提示：</p>
+<p>1 &lt;= n &lt;= 45</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 刚做完斐波那契数列，这个题就是一个变形</span></span><br><span class="line"><span class="comment">// 因为每次爬楼梯可以爬一阶或者两阶，那么爬到当前阶的方法就是前一阶和前两阶方法的求和</span></span><br><span class="line"><span class="comment">// 稍作修改即可得</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">climbStairs</span><span class="params">(<span class="type">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(n&lt;<span class="number">3</span>) <span class="keyword">return</span> n;</span><br><span class="line">        <span class="type">int</span> dp[<span class="number">2</span>] = &#123;<span class="number">1</span>,<span class="number">2</span>&#125;;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">3</span>;i&lt;=n;i++)&#123;</span><br><span class="line">            <span class="type">int</span> temp=dp[<span class="number">1</span>];</span><br><span class="line">            dp[<span class="number">1</span>] += dp[<span class="number">0</span>];</span><br><span class="line">            dp[<span class="number">0</span>] = temp;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[<span class="number">1</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// 当然可以作为一个完全背包的排列问题去解决，解法放在下节</span></span><br></pre></td></tr></table></figure>
+<h2 id="746-使用最小花费爬楼梯"><a href="#746-使用最小花费爬楼梯" class="headerlink" title="746. 使用最小花费爬楼梯"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/min-cost-climbing-stairs/">746. 使用最小花费爬楼梯</a></h2><blockquote>
+<p>给你一个整数数组 cost ，其中 cost[i] 是从楼梯第 i 个台阶向上爬需要支付的费用。一旦你支付此费用，即可选择向上爬一个或者两个台阶。</p>
+<p>你可以选择从下标为 0 或下标为 1 的台阶开始爬楼梯。</p>
+<p>请你计算并返回达到楼梯顶部的最低花费。</p>
+<p>示例 1：</p>
+<p>输入：cost = [10,15,20]<br>输出：15<br>解释：你将从下标为 1 的台阶开始。</p>
+<ul>
+<li>支付 15 ，向上爬两个台阶，到达楼梯顶部。<br>总花费为 15 。<br>示例 2：</li>
+</ul>
+<p>输入：cost = [1,100,1,1,1,100,1,1,100,1]<br>输出：6<br>解释：你将从下标为 0 的台阶开始。</p>
+<ul>
+<li>支付 1 ，向上爬两个台阶，到达下标为 2 的台阶。</li>
+<li>支付 1 ，向上爬两个台阶，到达下标为 4 的台阶。</li>
+<li>支付 1 ，向上爬两个台阶，到达下标为 6 的台阶。</li>
+<li>支付 1 ，向上爬一个台阶，到达下标为 7 的台阶。</li>
+<li>支付 1 ，向上爬两个台阶，到达下标为 9 的台阶。</li>
+<li>支付 1 ，向上爬一个台阶，到达楼梯顶部。<br>总花费为 6 。</li>
+</ul>
+<p>提示：</p>
+<p>2 &lt;= cost.length &lt;= 1000<br>0 &lt;= cost[i] &lt;= 999</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 题目中要求的是最小的花费，每次花费可以往前前进一阶或者两阶</span></span><br><span class="line"><span class="comment">// 这里的楼顶就是cost.size()的位置</span></span><br><span class="line"><span class="comment">// 每一步取前面的最小值</span></span><br><span class="line"><span class="comment">// 初始化是到达每个位置的最小花费</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">minCostClimbingStairs</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; cost)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> dp[<span class="number">2</span>]=&#123;cost[<span class="number">0</span>],cost[<span class="number">1</span>]&#125;;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">2</span>;i&lt;cost.<span class="built_in">size</span>();i++)&#123;</span><br><span class="line">            <span class="type">int</span> temp = dp[<span class="number">1</span>];</span><br><span class="line">            dp[<span class="number">1</span>] = <span class="built_in">min</span>(dp[<span class="number">0</span>],dp[<span class="number">1</span>]) + cost[i];</span><br><span class="line">            dp[<span class="number">0</span>] = temp;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">min</span>(dp[<span class="number">0</span>],dp[<span class="number">1</span>]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="62-不同路径"><a href="#62-不同路径" class="headerlink" title="62. 不同路径"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/unique-paths/">62. 不同路径</a></h2><blockquote>
+<p>一个机器人位于一个 m x n 网格的左上角 （起始点在下图中标记为 “Start” ）。</p>
+<p>机器人每次只能向下或者向右移动一步。机器人试图达到网格的右下角（在下图中标记为 “Finish” ）。</p>
+<p>问总共有多少条不同的路径？</p>
+<p> <img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202308051746238.png" alt="img"></p>
+<p>示例 1：</p>
+<p>输入：m = 3, n = 7<br>输出：28<br>示例 2：</p>
+<p>输入：m = 3, n = 2<br>输出：3<br>解释：<br>从左上角开始，总共有 3 条路径可以到达右下角。</p>
+<ol>
+<li>向右 -&gt; 向下 -&gt; 向下</li>
+<li>向下 -&gt; 向下 -&gt; 向右</li>
+<li>向下 -&gt; 向右 -&gt; 向下<br>示例 3：</li>
+</ol>
+<p>输入：m = 7, n = 3<br>输出：28<br>示例 4：</p>
+<p>输入：m = 3, n = 3<br>输出：6</p>
+<p>提示：</p>
+<p>1 &lt;= m, n &lt;= 100<br>题目数据保证答案小于等于 2 * 109</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 根据题目，机器人只能向下或者向右走，那么</span></span><br><span class="line"><span class="comment">// 到达某一点的路径数，就是达到右方和上方路径数的和</span></span><br><span class="line"><span class="comment">// 递推关系确定，接下来是初始条件</span></span><br><span class="line"><span class="comment">// 最左边和最上边能到达的路径数皆为1</span></span><br><span class="line"><span class="comment">// 递归的数据是二维数组，清晰直观操作</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">uniquePaths</span><span class="params">(<span class="type">int</span> m, <span class="type">int</span> n)</span> </span>&#123;</span><br><span class="line">        vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; <span class="built_in">dp</span>(m,<span class="built_in">vector</span>&lt;<span class="type">int</span>&gt;(n,<span class="number">1</span>));</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;m;i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">1</span>;j&lt;n;j++)&#123;</span><br><span class="line">                dp[i][j] = dp[i<span class="number">-1</span>][j]+dp[i][j<span class="number">-1</span>];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[m<span class="number">-1</span>][n<span class="number">-1</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="63-不同路径-II"><a href="#63-不同路径-II" class="headerlink" title="63. 不同路径 II"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/unique-paths-ii/">63. 不同路径 II</a></h2><blockquote>
+<p>一个机器人位于一个 m x n 网格的左上角 （起始点在下图中标记为 “Start” ）。</p>
+<p>机器人每次只能向下或者向右移动一步。机器人试图达到网格的右下角（在下图中标记为 “Finish”）。</p>
+<p>现在考虑网格中有障碍物。那么从左上角到右下角将会有多少条不同的路径？</p>
+<p>网格中的障碍物和空位置分别用 1 和 0 来表示。</p>
+<p><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202308052111350.png" alt="img"> </p>
+<p>示例 1：</p>
+<p>输入：obstacleGrid = [[0,0,0],[0,1,0],[0,0,0]]<br>输出：2<br>解释：3x3 网格的正中间有一个障碍物。<br>从左上角到右下角一共有 2 条不同的路径：</p>
+<ol>
+<li>向右 -&gt; 向右 -&gt; 向下 -&gt; 向下</li>
+<li>向下 -&gt; 向下 -&gt; 向右 -&gt; 向右<br>示例 2：</li>
+</ol>
+<p>输入：obstacleGrid = [[0,1],[0,0]]<br>输出：1</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 这道题和上道题唯一的不同是多了石子的设定</span></span><br><span class="line"><span class="comment">// 要明确石子带来的影响，当该位置存在石子时，不管其余有多少路径，能到达的都是0</span></span><br><span class="line"><span class="comment">// 另外假如石子存在与初始化的边上时，需要额外考虑对后续步骤的影响</span></span><br><span class="line"><span class="comment">// 最后得到的代码如下</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">uniquePathsWithObstacles</span><span class="params">(vector&lt;vector&lt;<span class="type">int</span>&gt;&gt;&amp; obstacleGrid)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;obstacleGrid.<span class="built_in">size</span>();i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">0</span>;j&lt;obstacleGrid[<span class="number">0</span>].<span class="built_in">size</span>();j++)&#123;</span><br><span class="line">                <span class="keyword">if</span>(obstacleGrid[i][j]==<span class="number">1</span>) obstacleGrid[i][j] = <span class="number">0</span>;</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span>(i==<span class="number">0</span>&amp;&amp;j==<span class="number">0</span>) obstacleGrid[i][j] = <span class="number">1</span>;</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span>(i==<span class="number">0</span>) obstacleGrid[i][j] += obstacleGrid[i][j<span class="number">-1</span>];</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span>(j==<span class="number">0</span>) obstacleGrid[i][j] += obstacleGrid[i<span class="number">-1</span>][j];</span><br><span class="line">                <span class="keyword">else</span> obstacleGrid[i][j] = obstacleGrid[i<span class="number">-1</span>][j]+obstacleGrid[i][j<span class="number">-1</span>];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> obstacleGrid[obstacleGrid.<span class="built_in">size</span>()<span class="number">-1</span>][obstacleGrid[<span class="number">0</span>].<span class="built_in">size</span>()<span class="number">-1</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="343-整数拆分"><a href="#343-整数拆分" class="headerlink" title="343. 整数拆分"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/integer-break/">343. 整数拆分</a></h2><blockquote>
+<p>给定一个正整数 n ，将其拆分为 k 个 正整数 的和（ k &gt;= 2 ），并使这些整数的乘积最大化。</p>
+<p>返回 你可以获得的最大乘积 。</p>
+<p>示例 1:</p>
+<p>输入: n = 2<br>输出: 1<br>解释: 2 = 1 + 1, 1 × 1 = 1。<br>示例 2:</p>
+<p>输入: n = 10<br>输出: 36<br>解释: 10 = 3 + 3 + 4, 3 × 3 × 4 = 36。</p>
+<p>提示:</p>
+<p>2 &lt;= n &lt;= 58</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 整数可以被拆分为两部分，例如5=3+2</span></span><br><span class="line"><span class="comment">// 那么最大的乘积也可以分为3能分割实现的最大乘积，以及2能实现的最大乘积相乘</span></span><br><span class="line"><span class="comment">// 需要额外考虑数字本身是否为最大的值，例如3的最大分割乘积为2,比本身的3要小</span></span><br><span class="line"><span class="comment">// 这样，我们只需要考虑一部分的分割，因为如果有一部分能分割，必然能够融合到另一部分中</span></span><br><span class="line"><span class="comment">// 最后的递推公式就成了在i和[dp[n-i],n-i]的乘积中选择最大值</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">integerBreak</span><span class="params">(<span class="type">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">dp</span><span class="params">(n+<span class="number">1</span>,<span class="number">0</span>)</span></span>;</span><br><span class="line">        dp[<span class="number">1</span>] = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">2</span>;i&lt;=n;i++)&#123;</span><br><span class="line">            <span class="type">int</span> temp=<span class="number">0</span>;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">1</span>;j&lt;i;j++)&#123;</span><br><span class="line">                <span class="type">int</span> mul = dp[i-j]&gt;i-j?dp[i-j]:i-j;</span><br><span class="line">                <span class="keyword">if</span>(temp&lt;j*mul) temp=j*mul;</span><br><span class="line">            &#125;</span><br><span class="line">            dp[i] = temp;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[n];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="96-不同的二叉搜索树"><a href="#96-不同的二叉搜索树" class="headerlink" title="96. 不同的二叉搜索树"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/unique-binary-search-trees/">96. 不同的二叉搜索树</a></h2><blockquote>
+<p>给你一个整数 n ，求恰由 n 个节点组成且节点值从 1 到 n 互不相同的 二叉搜索树 有多少种？返回满足题意的二叉搜索树的种数。</p>
+<p> <img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202308052122038.jpeg" alt="img"></p>
+<p>示例 1：</p>
+<p>输入：n = 3<br>输出：5<br>示例 2：</p>
+<p>输入：n = 1<br>输出：1</p>
+<p>提示：</p>
+<p>1 &lt;= n &lt;= 19</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 这道题正常画图，观察，可以发现右边外边是关键</span></span><br><span class="line"><span class="comment">// 当右边外边只有一个节点时，插入新值有两种方式，得到1,2两个新的边节点个数</span></span><br><span class="line"><span class="comment">// 两个时，有三种方式，得到1,2,3三个新的边节点个数</span></span><br><span class="line"><span class="comment">// 有n个节点时，有n+1种方式，得到1,2，...，n+1 n+1个新的边节点个数</span></span><br><span class="line"><span class="comment">// 直观想，直接新建一个队列，出栈一个进栈两个，...</span></span><br><span class="line"><span class="comment">// 最后统计队列中的元素个数，即得总个数</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">numTrees</span><span class="params">(<span class="type">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(n&lt;<span class="number">3</span>) <span class="keyword">return</span> n;</span><br><span class="line">        deque&lt;<span class="type">int</span>&gt; temp;</span><br><span class="line">        temp.<span class="built_in">push_back</span>(<span class="number">1</span>);</span><br><span class="line">        temp.<span class="built_in">push_back</span>(<span class="number">2</span>);</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">3</span>;i&lt;=n;i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> size=temp.<span class="built_in">size</span>()<span class="number">-1</span>;size&gt;=<span class="number">0</span>;size--)&#123;</span><br><span class="line">                <span class="type">int</span> cur = temp.<span class="built_in">front</span>();</span><br><span class="line">                temp.<span class="built_in">pop_front</span>();</span><br><span class="line">                <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">1</span>;j&lt;=cur+<span class="number">1</span>;j++)&#123;</span><br><span class="line">                    temp.<span class="built_in">push_back</span>(j);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> temp.<span class="built_in">size</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// 思路简单，但是超时，下面是改进后的代码</span></span><br><span class="line"><span class="comment">// 开始写的代码，忘记了思路，/(~.~)\</span></span><br><span class="line"><span class="comment">class Solution &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">numTrees</span><span class="params">(<span class="type">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(n&lt;<span class="number">3</span>) <span class="keyword">return</span> n;</span><br><span class="line">        <span class="type">int</span> sum=<span class="number">0</span>;</span><br><span class="line">        <span class="function">deque&lt;<span class="type">int</span>&gt; <span class="title">temp</span><span class="params">(<span class="number">2</span>,<span class="number">1</span>)</span></span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">3</span>;i&lt;n;i++)&#123;</span><br><span class="line">            <span class="type">int</span> size=temp.<span class="built_in">size</span>()<span class="number">-1</span>;</span><br><span class="line">            temp.<span class="built_in">pop_front</span>();</span><br><span class="line">            temp.<span class="built_in">push_back</span>(<span class="number">1</span>);</span><br><span class="line">            <span class="keyword">for</span>(;size&gt;<span class="number">0</span>;size--)&#123;</span><br><span class="line">                temp.<span class="built_in">push_back</span>(temp.<span class="built_in">back</span>()+temp.<span class="built_in">front</span>());</span><br><span class="line">                temp.<span class="built_in">pop_front</span>();</span><br><span class="line">            &#125;</span><br><span class="line">            temp.<span class="built_in">push_back</span>(temp.<span class="built_in">back</span>());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(;n&gt;=<span class="number">2</span>;n--)&#123;</span><br><span class="line">            sum += n*temp.<span class="built_in">front</span>();</span><br><span class="line">            temp.<span class="built_in">pop_front</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> sum;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202308052148418.png" alt="96.不同的二叉搜索树2"></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 根据上面的表格，可以建立递推公式</span></span><br><span class="line"><span class="comment">// dp[4] = dp[0]*dp[3]+dp[1]*dp[2]+dp[2]*dp[1]+dp[3]*dp[0]</span></span><br><span class="line"><span class="comment">// 得到动态规划代码</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">numTrees</span><span class="params">(<span class="type">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">dp</span><span class="params">(n+<span class="number">1</span>,<span class="number">1</span>)</span></span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">2</span>;i&lt;=n;i++)&#123;</span><br><span class="line">            <span class="type">int</span> temp=<span class="number">0</span>;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">0</span>;j&lt;i;j++)&#123;</span><br><span class="line">                temp += dp[j]*dp[i-j<span class="number">-1</span>];</span><br><span class="line">            &#125;</span><br><span class="line">            dp[i] = temp;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[n];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202308052201675.png" alt="image-20230805220158603"></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 根据数学关系，可以将上述的递推公式转换为卡特兰公式，推导如上</span></span><br><span class="line"><span class="comment">// 实现代码如下</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">numTrees</span><span class="params">(<span class="type">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">G</span><span class="params">(n + <span class="number">1</span>, <span class="number">0</span>)</span></span>;</span><br><span class="line">        G[<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">        G[<span class="number">1</span>] = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">2</span>; i &lt;= n; ++i) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">1</span>; j &lt;= i; ++j) &#123;</span><br><span class="line">                G[i] += G[j - <span class="number">1</span>] * G[i - j];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> G[n];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>​        作为动态规划的初始篇章，主要解决了一些简单的问题，可以看出动态规划的代码非常的简洁，主要的工作在推导递推公式，以及明确初始化上。最后的二叉搜索树比较难想，好想的方法又超时，其实根本原因还是因为递推公式没有明确下来，其余的题目都较为基础，注意一些细节的实现问题，基本上就能解出。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://liumeng.top">独孤白</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://liumeng.top/link/suixiangluday13.html">http://liumeng.top/link/suixiangluday13.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://liumeng.top" target="_blank">记录收获，重拾旧遗</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/c-%E7%AE%97%E6%B3%95/">c++算法</a></div><div class="post_share"><div class="social-share" data-image="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png" data-sites="wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/link/suixiangluday14.html" title="代码随想录(day14)"><img class="cover" src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png" onerror="onerror=null;src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">代码随想录(day14)</div></div></a></div><div class="next-post pull-right"><a href="/link/suixiangluday12.html" title="代码随想录(day12)"><img class="cover" src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png" onerror="onerror=null;src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">代码随想录(day12)</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/link/suixiangluc++.html" title="代码随想录(刷题总目录)"><img class="cover" src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-06-03</div><div class="title">代码随想录(刷题总目录)</div></div></a></div><div><a href="/link/topset.html" title="堆与优先队列"><img class="cover" src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-09-02</div><div class="title">堆与优先队列</div></div></a></div><div><a href="/link/suixiangluday20.html" title="代码随想录(day20)"><img class="cover" src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-09-01</div><div class="title">代码随想录(day20)</div></div></a></div><div><a href="/link/paixun2.html" title="排序算法n方"><img class="cover" src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-09-01</div><div class="title">排序算法n方</div></div></a></div><div><a href="/link/paixunlogn.html" title="排序算法nlogn"><img class="cover" src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-09-01</div><div class="title">排序算法nlogn</div></div></a></div><div><a href="/link/paixun.html" title="排序算法n"><img class="cover" src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-09-01</div><div class="title">排序算法n</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/avatar.jpg" onerror="this.onerror=null;this.src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">独孤白</div><div class="author-info__description">天行健 君子以自强不息</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">56</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">18</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">15</div></a></div><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/liumeng-hub" target="_blank" title="https://github.com/liumeng-hub"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:915738464@qq.com" target="_blank" title="915738464@qq.com"><i class="fas fa-envelope"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Day-13%EF%BC%9A%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%EF%BC%88%E4%B8%80%EF%BC%89"><span class="toc-number">1.</span> <span class="toc-text">Day 13：动态规划（一）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80"><span class="toc-number">1.1.</span> <span class="toc-text">理论基础</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#509-%E6%96%90%E6%B3%A2%E9%82%A3%E5%A5%91%E6%95%B0"><span class="toc-number">1.2.</span> <span class="toc-text">509. 斐波那契数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#70-%E7%88%AC%E6%A5%BC%E6%A2%AF"><span class="toc-number">1.3.</span> <span class="toc-text">70. 爬楼梯</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#746-%E4%BD%BF%E7%94%A8%E6%9C%80%E5%B0%8F%E8%8A%B1%E8%B4%B9%E7%88%AC%E6%A5%BC%E6%A2%AF"><span class="toc-number">1.4.</span> <span class="toc-text">746. 使用最小花费爬楼梯</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#62-%E4%B8%8D%E5%90%8C%E8%B7%AF%E5%BE%84"><span class="toc-number">1.5.</span> <span class="toc-text">62. 不同路径</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#63-%E4%B8%8D%E5%90%8C%E8%B7%AF%E5%BE%84-II"><span class="toc-number">1.6.</span> <span class="toc-text">63. 不同路径 II</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#343-%E6%95%B4%E6%95%B0%E6%8B%86%E5%88%86"><span class="toc-number">1.7.</span> <span class="toc-text">343. 整数拆分</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#96-%E4%B8%8D%E5%90%8C%E7%9A%84%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91"><span class="toc-number">1.8.</span> <span class="toc-text">96. 不同的二叉搜索树</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">1.9.</span> <span class="toc-text">总结</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/link/pdfaddpicture.html" title="PDF添加图片与文字"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202312162235168.png" onerror="this.onerror=null;this.src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="PDF添加图片与文字"/></a><div class="content"><a class="title" href="/link/pdfaddpicture.html" title="PDF添加图片与文字">PDF添加图片与文字</a><time datetime="2023-12-26T00:00:00.000Z" title="发表于 2023-12-26 00:00:00">2023-12-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/link/topset.html" title="堆与优先队列"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png" onerror="this.onerror=null;this.src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="堆与优先队列"/></a><div class="content"><a class="title" href="/link/topset.html" title="堆与优先队列">堆与优先队列</a><time datetime="2023-09-02T00:00:00.000Z" title="发表于 2023-09-02 00:00:00">2023-09-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/link/suixiangluday20.html" title="代码随想录(day20)"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png" onerror="this.onerror=null;this.src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="代码随想录(day20)"/></a><div class="content"><a class="title" href="/link/suixiangluday20.html" title="代码随想录(day20)">代码随想录(day20)</a><time datetime="2023-09-01T00:00:00.000Z" title="发表于 2023-09-01 00:00:00">2023-09-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/link/paixun2.html" title="排序算法n方"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png" onerror="this.onerror=null;this.src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="排序算法n方"/></a><div class="content"><a class="title" href="/link/paixun2.html" title="排序算法n方">排序算法n方</a><time datetime="2023-09-01T00:00:00.000Z" title="发表于 2023-09-01 00:00:00">2023-09-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/link/paixunlogn.html" title="排序算法nlogn"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png" onerror="this.onerror=null;this.src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="排序算法nlogn"/></a><div class="content"><a class="title" href="/link/paixunlogn.html" title="排序算法nlogn">排序算法nlogn</a><time datetime="2023-09-01T00:00:00.000Z" title="发表于 2023-09-01 00:00:00">2023-09-01</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2023 By liumeng</div><div class="framework-info"><span>小破站正在安全运行 </span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"><use id="modeicon" xlink:href="#icon-moon"></use></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container').forEach(node => {
+            if (node.hasAttribute('display')) {
+              btf.wrap(node, 'div', { class: 'mathjax-overflow' })
+            } else {
+              btf.wrap(node, 'span', { class: 'mathjax-overflow' })
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script>(() => {
+  const $mermaidWrap = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaidWrap.length) {
+    window.runMermaid = () => {
+      window.loadMermaid = true
+      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+      Array.from($mermaidWrap).forEach((item, index) => {
+        const mermaidSrc = item.firstElementChild
+        const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+        const mermaidID = 'mermaid-' + index
+        const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+        mermaid.mermaidAPI.render(mermaidID, mermaidDefinition, (svgCode) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svgCode)
+        })
+      })
+    }
+
+    const loadMermaid = () => {
+      window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+    }
+
+    window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+  }
+})()</script><script>function loadValine () {
+  function initValine () {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: 'nemsAMaYAJs1jMlB2Gqa1lCI-MdYXbMMI',
+      appKey: '96YIeaSpipct4pRmJ7Kt8r5O',
+      avatar: 'monsterid',
+      serverURLs: 'https://server.liumeng.top',
+      emojiMaps: "",
+      path: window.location.pathname,
+      master: 'bc41b72793c99baf4f681cf457f64ec1',
+      tagMeta: ["博主","小伙伴","访客"],
+      friends: [],
+      visitor: false
+    }, null))
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('/js/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><script src="/js/jquery.js" async></script><script src="/js/foot.js" async></script><script src="http://cdn.bootcss.com/pace/1.0.2/pace.min.js" async></script><script src="/js/sun_moon.js" async></script><script src="/js/nav.js" async></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

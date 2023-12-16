@@ -1,0 +1,320 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>ubuntu 科学上网 | 记录收获，重拾旧遗</title><meta name="author" content="独孤白"><meta name="copyright" content="独孤白"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Ubuntu科学上网-clash文章除最后一部分其余来自https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;430035973，链接已挂，此处用于备份 一、下载clash并解压（已完成此操作的可直接看第二步） 官方网站 clash 下载clash-linux-amd64-v1.11.8.gz（也可以下载最新的版本，前缀是clash-linux-amd64即可） 外网访问慢，使用到的下载资源可">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ubuntu 科学上网">
+<meta property="og:url" content="http://liumeng.top/link/5ce0b93b.html">
+<meta property="og:site_name" content="记录收获，重拾旧遗">
+<meta property="og:description" content="Ubuntu科学上网-clash文章除最后一部分其余来自https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;430035973，链接已挂，此处用于备份 一、下载clash并解压（已完成此操作的可直接看第二步） 官方网站 clash 下载clash-linux-amd64-v1.11.8.gz（也可以下载最新的版本，前缀是clash-linux-amd64即可） 外网访问慢，使用到的下载资源可">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202302101944429.png">
+<meta property="article:published_time" content="2023-02-06T15:18:56.000Z">
+<meta property="article:modified_time" content="2023-12-16T14:37:07.443Z">
+<meta property="article:author" content="独孤白">
+<meta property="article:tag" content="ubuntu">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202302101944429.png"><link rel="shortcut icon" href="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/favicon.png"><link rel="canonical" href="http://liumeng.top/link/5ce0b93b.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'ubuntu 科学上网',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-12-16 14:37:07'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = url => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      link.onload = () => resolve()
+      link.onerror = () => reject()
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/font.css"><link rel="stylesheet" href="/css/nav.css"><link rel="stylesheet" href="/css/myStyle.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/avatar.jpg" onerror="onerror=null;src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">56</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">18</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">15</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间线</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202302101944429.png')"><nav id="nav"><span id="blog-info"><a href="/" title="记录收获，重拾旧遗"><span class="site-name">记录收获，重拾旧遗</span></a></span><div id="menus"></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间线</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div><center id="name-container"><a id="page-name" href="javascript:scrollToTop()">PAGE_NAME</a></center><div id="nav-right"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">ubuntu 科学上网</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2023-02-06T15:18:56.000Z" title="发表于 2023-02-06 15:18:56">2023-02-06</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85/">系统安装</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.1k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>4分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="ubuntu 科学上网"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span><span class="post-meta-separator">|</span><span class="post-meta-commentcount"><i class="far fa-comments fa-fw post-meta-icon"></i><span class="post-meta-label">评论数:</span><a href="/link/5ce0b93b.html#post-comment" itemprop="discussionUrl"><span class="valine-comment-count" data-xid="/link/5ce0b93b.html" itemprop="commentCount"><i class="fa-solid fa-spinner fa-spin"></i></span></a></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="Ubuntu科学上网-clash"><a href="#Ubuntu科学上网-clash" class="headerlink" title="Ubuntu科学上网-clash"></a>Ubuntu科学上网-clash</h1><p>文章除最后一部分其余来自<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/430035973，链接已挂，此处用于备份">https://zhuanlan.zhihu.com/p/430035973，链接已挂，此处用于备份</a></p>
+<h2 id="一、下载clash并解压（已完成此操作的可直接看第二步）"><a href="#一、下载clash并解压（已完成此操作的可直接看第二步）" class="headerlink" title="一、下载clash并解压（已完成此操作的可直接看第二步）"></a><strong>一、下载clash并解压（已完成此操作的可直接看第二步）</strong></h2><ul>
+<li><strong>官方网站 <a href="https://link.zhihu.com/?target=https%3A//github.com/Dreamacro/clash/releases">clash</a> 下载clash-linux-amd64-v1.11.8.gz</strong>（也可以下载最新的版本，前缀是clash-linux-amd64即可）</li>
+<li>外网访问慢，使用到的下载资源可在<a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1rTNW4dBMRVkIKnE46CXohw?pwd=kadc">baidu网盘</a>下载</li>
+</ul>
+<p><img src="https://pic1.zhimg.com/80/v2-0664deb37fc0699cf7e2a3560fb3bfe8_720w.webp" alt="img"></p>
+<ul>
+<li><strong>进入下载的文件夹</strong>（我的在此文件夹，username为用户文件夹） ，在页面空白处右键，<strong>在终端打开</strong></li>
+</ul>
+<p><img src="https://pic4.zhimg.com/80/v2-a7470d06d42faeef10aaf66f186f1c7b_720w.webp" alt="img"></p>
+<ul>
+<li><strong>解压</strong></li>
+</ul>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 解压</span><br><span class="line">gunzip clash-linux-amd64-v1.11.8.gz</span><br><span class="line"># 将clash-linux-amd64-v1.11.8改名为clash</span><br><span class="line">mv clash-linux-amd64-v1.11.8 clash</span><br><span class="line"># 在此目录下创建文件夹（这里用大写Clash只是为了和clash区别开来）</span><br><span class="line">mkdir Clash</span><br><span class="line"># 移动clash 到文件夹Clash</span><br><span class="line">mv clash ./Clash</span><br></pre></td></tr></table></figure>
+<h2 id="二、进入新建的这个Clash文件夹，下载config-yaml和Country-mmdb-注意，【订阅链接】是写自己在代理那里获取的）"><a href="#二、进入新建的这个Clash文件夹，下载config-yaml和Country-mmdb-注意，【订阅链接】是写自己在代理那里获取的）" class="headerlink" title="二、进入新建的这个Clash文件夹，下载config.yaml和Country.mmdb (注意，【订阅链接】是写自己在代理那里获取的）"></a><strong>二、进入新建的这个Clash文件夹，下载config.yaml和Country.mmdb (注意，【订阅链接】是写自己在代理那里获取的）</strong></h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 进入新建的这个Clash文件夹</span><br><span class="line">cd Clash</span><br><span class="line">#下载clash 配置文件config.yaml （注意：在代理商那里复制订阅链接，替代 [订阅链接]</span><br><span class="line">wget -O config.yaml [订阅链接]</span><br><span class="line">#出现如下表示成功</span><br></pre></td></tr></table></figure>
+<p><img src="https://pic4.zhimg.com/80/v2-77c46d6553f8a8fcf71eb731b0fdc04b_720w.webp" alt="img"></p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#下载Country.mmdb </span><br><span class="line">wget -O Country.mmdb https://www.sub-speeder.com/client-download/Country.mmdb</span><br></pre></td></tr></table></figure>
+<p><img src="https://pic1.zhimg.com/80/v2-38687ff367335cd8605b7fb55f96f238_720w.webp" alt="img"></p>
+<h2 id="三、启动clash（使用当前目录下的配置件）"><a href="#三、启动clash（使用当前目录下的配置件）" class="headerlink" title="三、启动clash（使用当前目录下的配置件）"></a><strong>三、启动clash（使用当前目录下的配置件）</strong></h2><p>（1）执行 <code>./clash -d .</code> 即可启动 Clash，如提示权限不足，先执行 <code>chmod +x clash</code> ，再执行<code>./clash -d .</code> <strong>出现如下，并保持此终端打开</strong></p>
+<p><img src="https://pic4.zhimg.com/80/v2-b9ae0c610f7779e1d0a3a4ce1a1e641b_720w.webp" alt="img"></p>
+<p>（2）打开配置文件config.yaml ，给它设置一个密码： # RESTful API 的口令 secret: ‘123456’</p>
+<p><img src="https://pic4.zhimg.com/80/v2-537c9d36b6d6395382043f2b88a6fc13_720w.webp" alt="img"></p>
+<p><img src="https://pic2.zhimg.com/80/v2-cd584b99e194ff6ddd99749d86649445_720w.webp" alt="img"></p>
+<p>（3）打开系统设置，选择网络，点击网络代理右边的 ⚙ 按钮，选择手动，填写 HTTP 和 HTTPS 代理为 127.0.0.1:7890，填写 Socks 主机为 127.0.0.1:7891，即可启用系统代理。</p>
+<p><img src="https://pic1.zhimg.com/80/v2-cffc8428c54c7abd1f772613322b1a64_720w.webp" alt="img"></p>
+<p>（4）访问 <a href="https://link.zhihu.com/?target=http%3A//clash.razord.top/">Clash Dashboard</a> 可以切换节点、测延迟等操作。（这里的代理模式选<strong>规则</strong>）</p>
+<p><img src="https://pic1.zhimg.com/80/v2-ffdbfd232e5263063345e854877a2c94_720w.webp" alt="img"></p>
+<ul>
+<li>这个页面要求提供，Host,Port,Secret 三个输入：</li>
+</ul>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Host: 127.0.0.1  </span><br><span class="line">Port: 9090  </span><br><span class="line">Secret: 123456</span><br></pre></td></tr></table></figure>
+<p><img src="https://pic2.zhimg.com/80/v2-7039cecea861b9ff5da7708b431b1299_720w.webp" alt="img"></p>
+<ul>
+<li>如下界面可以切换节点并测速 （点蓝色表示选中此节点）</li>
+</ul>
+<p><img src="https://pic4.zhimg.com/80/v2-94576ae58b0887c0dad6dd4455f5d123_720w.webp" alt="img"></p>
+<p>注意：要访问谷歌，就要时刻打开那个终端</p>
+<h2 id="四、快捷命令启动"><a href="#四、快捷命令启动" class="headerlink" title="四、快捷命令启动"></a>四、快捷命令启动</h2><ul>
+<li>运行命令</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#创建service文件</span><br><span class="line">sudo touch /etc/systemd/system/clash.service</span><br><span class="line">#编辑service文件 </span><br><span class="line">sudo vi /etc/systemd/system/clash.service </span><br></pre></td></tr></table></figure>
+<p>编辑文本,保存退出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[Unit] </span><br><span class="line">Description=clash daemon  </span><br><span class="line">[Service] </span><br><span class="line">Type=simple </span><br><span class="line">User=root </span><br><span class="line">ExecStart=/home/username/下载/Clash/clash -d /home/username/下载/Clash/ </span><br><span class="line">Restart=on-failure  </span><br><span class="line">[Install] </span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure>
+<ul>
+<li>运行命令</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl daemon-reload  </span><br><span class="line">sudo systemctl start clash </span><br><span class="line">sudo systemctl status clash</span><br></pre></td></tr></table></figure>
+<ul>
+<li>成功为如下：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">clash.service - clash daemon      </span><br><span class="line">  Loaded: loaded (/etc/systemd/system/clash.service; enabled; vendor preset: enabled)      </span><br><span class="line">  Active: active (running) since Sat 2021-11-06 00:16:45 CST; 5s ago    </span><br><span class="line"> Main PID: 6848 (clash)       </span><br><span class="line">  Tasks: 8 (limit: 14171)      </span><br><span class="line">  Memory: 3.2M      </span><br><span class="line">  CGroup: /system.slice/clash.service              </span><br><span class="line">      └─6848 /home/username/下载/Clash/clash -d /home/username/下载/Clash/  </span><br><span class="line">11月 06 00:16:45 ym-X550JX systemd[1]: Started clash daemon. </span><br><span class="line">11月 06 00:16:45 ym-X550JX clash[6848]: time=&quot;2021-11-06T00:16:45+08:00&quot; level=info msg=&quot;Start &gt; 11月 06 00:16:45 ym-X550JX clash[6848]: time=&quot;2021-11-06T00:16:45+08:00&quot; level=info msg=&quot;Start &gt; </span><br><span class="line">11月 06 00:16:45 ym-X550JX clash[6848]: time=&quot;2021-11-06T00:16:45+08:00&quot; level=info msg=&quot;Start &gt; </span><br><span class="line">11月 06 00:16:45 ym-X550JX clash[6848]: time=&quot;2021-11-06T00:16:45+08:00&quot; level=info msg=&quot;Start &gt; </span><br><span class="line">11月 06 00:16:45 ym-X550JX clash[6848]: time=&quot;2021-11-06T00:16:45+08:00&quot; level=info msg=&quot;Start &gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在clash文件夹下新建两个脚本文件</li>
+</ul>
+<p><code>vpns.sh</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line"># Clash Start</span><br><span class="line"># 我用的是非root用户，root用户可以直接使用systemctl start clash，password替换为自己管理员的密码</span><br><span class="line">echo &quot;lm&quot; | sudo -S systemctl start clash</span><br><span class="line"># 通过命令行更改系统代理设置为手动</span><br><span class="line">dconf write /system/proxy/mode &#x27;&quot;manual&quot;&#x27;</span><br></pre></td></tr></table></figure>
+<p><code>vpnx.sh</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line"># Clash Stop</span><br><span class="line"># 我用的是非root用户，root用户可以直接使用systemctl start clash，password替换为自己管理员的密码</span><br><span class="line">echo &quot;lm&quot; | sudo -S systemctl stop clash</span><br><span class="line"># 通过命令行禁用系统代理</span><br><span class="line">dconf write /system/proxy/mode &#x27;&quot;none&quot;&#x27;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>创建快捷方式</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vi ~/.bashrc</span><br></pre></td></tr></table></figure>
+<p>在文档最后添加下面的语句后保存退出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">alias vpns=&#x27;sh /home/username/下载/Clash/clash/vpns.sh&#x27;</span><br><span class="line">alias vpnx=&#x27;sh /home/username/下载/Clash/clash/vpnx.sh&#x27;</span><br></pre></td></tr></table></figure>
+<p>执行命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">source ~/.bashrc</span><br><span class="line"># 配置完成</span><br><span class="line"># 终端使用vpns和vpnx命令即可开启关闭代理</span><br></pre></td></tr></table></figure>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://liumeng.top">独孤白</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://liumeng.top/link/5ce0b93b.html">http://liumeng.top/link/5ce0b93b.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://liumeng.top" target="_blank">记录收获，重拾旧遗</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/ubuntu/">ubuntu</a></div><div class="post_share"><div class="social-share" data-image="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202302101944429.png" data-sites="wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/link/52986632.html" title="jetson nano b01使用准备"><img class="cover" src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202302102041093.png" onerror="onerror=null;src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">jetson nano b01使用准备</div></div></a></div><div class="next-post pull-right"><a href="/link/1684a447.html" title="ubuntu系统软件安装"><img class="cover" src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202302101944429.png" onerror="onerror=null;src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">ubuntu系统软件安装</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/link/1684a447.html" title="ubuntu系统软件安装"><img class="cover" src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202302101944429.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-02-05</div><div class="title">ubuntu系统软件安装</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/avatar.jpg" onerror="this.onerror=null;this.src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">独孤白</div><div class="author-info__description">天行健 君子以自强不息</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">56</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">18</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">15</div></a></div><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/liumeng-hub" target="_blank" title="https://github.com/liumeng-hub"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:915738464@qq.com" target="_blank" title="915738464@qq.com"><i class="fas fa-envelope"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Ubuntu%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91-clash"><span class="toc-number">1.</span> <span class="toc-text">Ubuntu科学上网-clash</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E4%B8%8B%E8%BD%BDclash%E5%B9%B6%E8%A7%A3%E5%8E%8B%EF%BC%88%E5%B7%B2%E5%AE%8C%E6%88%90%E6%AD%A4%E6%93%8D%E4%BD%9C%E7%9A%84%E5%8F%AF%E7%9B%B4%E6%8E%A5%E7%9C%8B%E7%AC%AC%E4%BA%8C%E6%AD%A5%EF%BC%89"><span class="toc-number">1.1.</span> <span class="toc-text">一、下载clash并解压（已完成此操作的可直接看第二步）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E8%BF%9B%E5%85%A5%E6%96%B0%E5%BB%BA%E7%9A%84%E8%BF%99%E4%B8%AAClash%E6%96%87%E4%BB%B6%E5%A4%B9%EF%BC%8C%E4%B8%8B%E8%BD%BDconfig-yaml%E5%92%8CCountry-mmdb-%E6%B3%A8%E6%84%8F%EF%BC%8C%E3%80%90%E8%AE%A2%E9%98%85%E9%93%BE%E6%8E%A5%E3%80%91%E6%98%AF%E5%86%99%E8%87%AA%E5%B7%B1%E5%9C%A8%E4%BB%A3%E7%90%86%E9%82%A3%E9%87%8C%E8%8E%B7%E5%8F%96%E7%9A%84%EF%BC%89"><span class="toc-number">1.2.</span> <span class="toc-text">二、进入新建的这个Clash文件夹，下载config.yaml和Country.mmdb (注意，【订阅链接】是写自己在代理那里获取的）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%90%AF%E5%8A%A8clash%EF%BC%88%E4%BD%BF%E7%94%A8%E5%BD%93%E5%89%8D%E7%9B%AE%E5%BD%95%E4%B8%8B%E7%9A%84%E9%85%8D%E7%BD%AE%E4%BB%B6%EF%BC%89"><span class="toc-number">1.3.</span> <span class="toc-text">三、启动clash（使用当前目录下的配置件）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E5%BF%AB%E6%8D%B7%E5%91%BD%E4%BB%A4%E5%90%AF%E5%8A%A8"><span class="toc-number">1.4.</span> <span class="toc-text">四、快捷命令启动</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/link/pdfaddpicture.html" title="PDF添加图片与文字"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202312162235168.png" onerror="this.onerror=null;this.src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="PDF添加图片与文字"/></a><div class="content"><a class="title" href="/link/pdfaddpicture.html" title="PDF添加图片与文字">PDF添加图片与文字</a><time datetime="2023-12-26T00:00:00.000Z" title="发表于 2023-12-26 00:00:00">2023-12-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/link/topset.html" title="堆与优先队列"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png" onerror="this.onerror=null;this.src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="堆与优先队列"/></a><div class="content"><a class="title" href="/link/topset.html" title="堆与优先队列">堆与优先队列</a><time datetime="2023-09-02T00:00:00.000Z" title="发表于 2023-09-02 00:00:00">2023-09-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/link/suixiangluday20.html" title="代码随想录(day20)"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png" onerror="this.onerror=null;this.src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="代码随想录(day20)"/></a><div class="content"><a class="title" href="/link/suixiangluday20.html" title="代码随想录(day20)">代码随想录(day20)</a><time datetime="2023-09-01T00:00:00.000Z" title="发表于 2023-09-01 00:00:00">2023-09-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/link/paixun2.html" title="排序算法n方"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png" onerror="this.onerror=null;this.src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="排序算法n方"/></a><div class="content"><a class="title" href="/link/paixun2.html" title="排序算法n方">排序算法n方</a><time datetime="2023-09-01T00:00:00.000Z" title="发表于 2023-09-01 00:00:00">2023-09-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/link/paixunlogn.html" title="排序算法nlogn"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png" onerror="this.onerror=null;this.src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="排序算法nlogn"/></a><div class="content"><a class="title" href="/link/paixunlogn.html" title="排序算法nlogn">排序算法nlogn</a><time datetime="2023-09-01T00:00:00.000Z" title="发表于 2023-09-01 00:00:00">2023-09-01</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2023 By liumeng</div><div class="framework-info"><span>小破站正在安全运行 </span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"><use id="modeicon" xlink:href="#icon-moon"></use></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container').forEach(node => {
+            if (node.hasAttribute('display')) {
+              btf.wrap(node, 'div', { class: 'mathjax-overflow' })
+            } else {
+              btf.wrap(node, 'span', { class: 'mathjax-overflow' })
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script>(() => {
+  const $mermaidWrap = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaidWrap.length) {
+    window.runMermaid = () => {
+      window.loadMermaid = true
+      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+      Array.from($mermaidWrap).forEach((item, index) => {
+        const mermaidSrc = item.firstElementChild
+        const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+        const mermaidID = 'mermaid-' + index
+        const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+        mermaid.mermaidAPI.render(mermaidID, mermaidDefinition, (svgCode) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svgCode)
+        })
+      })
+    }
+
+    const loadMermaid = () => {
+      window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+    }
+
+    window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+  }
+})()</script><script>function loadValine () {
+  function initValine () {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: 'nemsAMaYAJs1jMlB2Gqa1lCI-MdYXbMMI',
+      appKey: '96YIeaSpipct4pRmJ7Kt8r5O',
+      avatar: 'monsterid',
+      serverURLs: 'https://server.liumeng.top',
+      emojiMaps: "",
+      path: window.location.pathname,
+      master: 'bc41b72793c99baf4f681cf457f64ec1',
+      tagMeta: ["博主","小伙伴","访客"],
+      friends: [],
+      visitor: false
+    }, null))
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('/js/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><script src="/js/jquery.js" async></script><script src="/js/foot.js" async></script><script src="http://cdn.bootcss.com/pace/1.0.2/pace.min.js" async></script><script src="/js/sun_moon.js" async></script><script src="/js/nav.js" async></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

@@ -1,0 +1,303 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>机器学习之决策树（一） | 记录收获，重拾旧遗</title><meta name="author" content="独孤白"><meta name="copyright" content="独孤白"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="机器学习之决策树（一） 决策树作为传统机器学习中目前仍常用的模型，其在处理表格数据时表现优秀，效果要比神经网络更好，也具有更好的可解释性。  为什么是决策树 文本来自：XGBoost 和随机森林在表格数据上优于深度学习？ 论文地址：Why do tree-based models still outperform deep learning on typical tabular data?  ​">
+<meta property="og:type" content="article">
+<meta property="og:title" content="机器学习之决策树（一）">
+<meta property="og:url" content="http://liumeng.top/link/jueceshu0304.html">
+<meta property="og:site_name" content="记录收获，重拾旧遗">
+<meta property="og:description" content="机器学习之决策树（一） 决策树作为传统机器学习中目前仍常用的模型，其在处理表格数据时表现优秀，效果要比神经网络更好，也具有更好的可解释性。  为什么是决策树 文本来自：XGBoost 和随机森林在表格数据上优于深度学习？ 论文地址：Why do tree-based models still outperform deep learning on typical tabular data?  ​">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202302161604919.png">
+<meta property="article:published_time" content="2023-03-14T00:00:00.000Z">
+<meta property="article:modified_time" content="2023-12-16T14:37:07.447Z">
+<meta property="article:author" content="独孤白">
+<meta property="article:tag" content="经典算法">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202302161604919.png"><link rel="shortcut icon" href="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/favicon.png"><link rel="canonical" href="http://liumeng.top/link/jueceshu0304.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '机器学习之决策树（一）',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-12-16 14:37:07'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = url => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      link.onload = () => resolve()
+      link.onerror = () => reject()
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/font.css"><link rel="stylesheet" href="/css/nav.css"><link rel="stylesheet" href="/css/myStyle.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/avatar.jpg" onerror="onerror=null;src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">56</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">18</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">15</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间线</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202302161604919.png')"><nav id="nav"><span id="blog-info"><a href="/" title="记录收获，重拾旧遗"><span class="site-name">记录收获，重拾旧遗</span></a></span><div id="menus"></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间线</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div><center id="name-container"><a id="page-name" href="javascript:scrollToTop()">PAGE_NAME</a></center><div id="nav-right"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">机器学习之决策树（一）</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2023-03-14T00:00:00.000Z" title="发表于 2023-03-14 00:00:00">2023-03-14</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.8k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>5分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="机器学习之决策树（一）"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span><span class="post-meta-separator">|</span><span class="post-meta-commentcount"><i class="far fa-comments fa-fw post-meta-icon"></i><span class="post-meta-label">评论数:</span><a href="/link/jueceshu0304.html#post-comment" itemprop="discussionUrl"><span class="valine-comment-count" data-xid="/link/jueceshu0304.html" itemprop="commentCount"><i class="fa-solid fa-spinner fa-spin"></i></span></a></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="机器学习之决策树（一）"><a href="#机器学习之决策树（一）" class="headerlink" title="机器学习之决策树（一）"></a>机器学习之决策树（一）</h1><blockquote>
+<p>决策树作为传统机器学习中目前仍常用的模型，其在处理表格数据时表现优秀，效果要比神经网络更好，也具有更好的可解释性。</p>
+</blockquote>
+<h1 id="为什么是决策树"><a href="#为什么是决策树" class="headerlink" title="为什么是决策树"></a>为什么是决策树</h1><blockquote>
+<p>文本来自：<a target="_blank" rel="noopener" href="https://blog.csdn.net/Datawhale/article/details/126112888">XGBoost 和随机森林在表格数据上优于深度学习？</a></p>
+<p>论文地址：<a target="_blank" rel="noopener" href="https://hal.archives-ouvertes.fr/hal-03723551/document">Why do tree-based models still outperform deep learning on typical tabular data?</a></p>
+</blockquote>
+<p>​        深度学习在图像、语言甚至音频等领域取得了巨大的进步。然而，在处理表格数据上，深度学习却表现一般。由于<strong>表格数据具有特征不均匀、样本量小、极值较大等特点</strong>，因此很难找到相应的不变量。</p>
+<p>​        基于树的模型不可微，不能与深度学习模块联合训练，因此创建特定于表格的深度学习架构是一个非常活跃的研究领域。许多研究都声称可以击败或媲美基于树的模型，但他们的研究遭到很多质疑。</p>
+<p>​        事实上，对表格数据的学习缺乏既定基准，这样一来研究人员在评估他们的方法时就有很多自由度。此外，与其他机器学习子域中的基准相比，大多数在线可用的表格数据集都很小，这使得评估更加困难。</p>
+<p>​        为了缓解这些担忧，来自法国国家信息与自动化研究所、索邦大学等机构的研究者提出了一个表格数据基准，其能够评估最新的深度学习模型，并表明<strong>基于树的模型在中型表格数据集上仍然是 SOTA</strong>。</p>
+<p>​        对于这一结论，文中给出了确凿的证据，<strong>在表格数据上，使用基于树的方法比深度学习（甚至是现代架构）更容易实现良好的预测</strong>，研究者并探明了其中的原因。</p>
+<p><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202303041928764.png" alt="a32eb04e979f7a62407591829134a220.png"></p>
+<p>​        <strong>该研究为表格数据创建了一个新的基准（选取了 45 个开放数据集）</strong>，并通过 OpenML 共享这些数据集，这使得它们易于使用。</p>
+<p>​        该研究在表格数据的多种设置下比较了深度学习模型和基于树的模型，并考虑了选择超参数的成本。该研究还分享了随机搜索的原始结果，这将使研究人员能够廉价地测试新算法以获得固定的超参数优化预算。</p>
+<p>新基准参考 45 个表格数据集，选择基准如下 ：</p>
+<ul>
+<li>异构列，列应该对应不同性质的特征，从而排除图像或信号数据集。</li>
+<li>维度低，数据集 d/n 比率低于 1/10。</li>
+<li>无效数据集，删除可用信息很少的数据集。</li>
+<li>I.I.D.（独立同分布）数据，移除类似流的数据集或时间序列。</li>
+<li>真实世界数据，删除人工数据集，但保留一些模拟数据集。</li>
+<li>数据集不能太小，删除特征太少（&lt; 4）和样本太少（&lt; 3 000）的数据集。</li>
+<li>删除过于简单的数据集。</li>
+<li>删除扑克和国际象棋等游戏的数据集，因为这些数据集目标都是确定性的。</li>
+</ul>
+<p>​        在基于树的模型中，研究者选择了 3 种 SOTA 模型：<strong>Scikit Learn 的 RandomForest，GradientBoostingTrees (GBTs) ， <a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=XGBoost&amp;spm=1001.2101.3001.7020">XGBoost</a> 。</strong>对深度模型进行了以下基准测试：<strong>MLP、Resnet 、FT Transformer、SAINT </strong>。</p>
+<p><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202303041932693.png" alt="e34364f36cb2fa1d83c5a554bb27e4ea.png"></p>
+<p><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202303041930408.png" alt="abf439024adcc94355531d8b16ae94eb.png"></p>
+<p>​        图 1 和图 2 给出了不同类型数据集的基准测试结果。基于树的模型在各种超参数选择中击败了神经网络。事实上，<strong>处理表格数据的最佳方法有两个共有属性：它们是集成方法、bagging（<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=随机森林&amp;spm=1001.2101.3001.7020">随机森林</a>）或 boosting（XGBoost、GBT），而这些方法中使用的弱学习器是决策树。</strong></p>
+<p><strong>发现 1：神经网络（NN）倾向于过度平滑的解决方案</strong></p>
+<p>​        如图 3 所示，对于较小的尺度，平滑训练集上的目标函数会显着降低基于树的模型的准确率，但几乎不会影响 NN。这些结果表明，<strong>数据集中的目标函数并不平滑，与基于树的模型相比，NN 难以适应这些不规则函数。</strong>这与 Rahaman 等人的发现一致，他们发现 NN 偏向于低频函数。基于决策树的模型学习分段（piece-wise）常函数，没有这样的偏置。</p>
+<p><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202307011633996.png" alt="6db257a9b397fb8672d559235662d94d.png"></p>
+<p><strong>发现 2：非信息特征更能影响类似 MLP 的 NN</strong></p>
+<p>​        <strong>表格数据集包含许多非信息（ uninformative）特征</strong>，对于每个数据集，该研究根据特征的重要性会选择丢弃一定比例的特征（通常按随机森林排序）。从图 4 可以看出，去除一半以上的特征对 GBT 的分类准确率影响不大。</p>
+<p><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202307011632058.png" alt="d1cb5cfcd9ea32b73c25e39e477e5fe4.png"></p>
+<p>​        图 5 可以看到移除非信息特征 (5a) 减少了 MLP (Resnet) 与其他模型（FT Transformers 和基于树的模型）之间的性能差距 ，而添加非信息特征会扩大差距，这表明 <strong>MLP 对非信息特征的鲁棒性较差</strong>。在图 5a 中，当研究者移除更大比例的特征时，相应的也会删除有用信息特征。图 5b 表明，去除这些特征所带来的准确率下降可以通过去除非信息特征来补偿，与其他模型相比，这对 MLP 更有帮助（同时，该研究还删除了冗余特性，也不会影响模型性能）。</p>
+<p><strong><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202307011632269.png" alt="72e655ababefb66125554a436fe2fe7d.png"></strong></p>
+<p><strong>发现 3：通过旋转，数据是非不变的</strong></p>
+<p>​        与其他模型相比，<strong>为什么 MLP 更容易受到非信息特征的影响？其中一个答案是，MLP 是旋转不变的</strong>：当对训练集和测试集特征应用旋转时，在训练集上学习 MLP 并在测试集上进行评估，这一过程是不变的。事实上，任何旋转不变的学习过程都具有最坏情况下的样本复杂度，该复杂度至少在不相关特征的数量上呈线性增长。直观地说，为了去除无用特征，旋转不变算法必须首先找到特征的原始方向，然后选择信息最少的特征。</p>
+<p>​        图 6a 显示了当对数据集进行随机旋转时的测试准确率变化，证实<strong>只有 Resnets 是旋转不变的</strong>。值得注意的是，随机旋转颠倒了性能顺序：结果是 NN 在基于树的模型之上，Resnets 在 FT Transformer 之上，这表明旋转不变性是不可取的。事实上，表格数据通常具有单独含义，例如年龄、体重等。</p>
+<p>​        图 6b 中显示：删除每个数据集中最不重要的一半特征（在旋转之前），会降低除 Resnets 之外的所有模型的性能，但与没有删除特征使用所有特征时相比，相比较而言，下降的幅度较小。</p>
+<p><strong><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202307011631869.png" alt="1e3f99d968132ffa1528485552610680.png"></strong></p>
+<h1 id="如何学习决策树"><a href="#如何学习决策树" class="headerlink" title="如何学习决策树"></a>如何学习决策树</h1><ul>
+<li>首先，需要了解信息熵，条件熵，信息增益，信息增益率，基尼不纯度等概念</li>
+<li>然后，学习单个的决策树，ID3，C4.5，CART</li>
+<li>接着，学习集成的决策树，bagging（RF），boosting（GBDT，XGBoost，LightGBM，CatBoost）</li>
+<li>最后，学习决策树的剪枝等操作</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://liumeng.top">独孤白</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://liumeng.top/link/jueceshu0304.html">http://liumeng.top/link/jueceshu0304.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://liumeng.top" target="_blank">记录收获，重拾旧遗</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%BB%8F%E5%85%B8%E7%AE%97%E6%B3%95/">经典算法</a></div><div class="post_share"><div class="social-share" data-image="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202302161604919.png" data-sites="wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/link/pingjia0331.html" title="评价方法及标准"><img class="cover" src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202302161604919.png" onerror="onerror=null;src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">评价方法及标准</div></div></a></div><div class="next-post pull-right"><a href="/link/jueceshu03041.html" title="机器学习之决策树（二）"><img class="cover" src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202302161604919.png" onerror="onerror=null;src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">机器学习之决策树（二）</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/link/pingjia0331.html" title="评价方法及标准"><img class="cover" src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202302161604919.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-03-31</div><div class="title">评价方法及标准</div></div></a></div><div><a href="/link/jueceshu03041.html" title="机器学习之决策树（二）"><img class="cover" src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202302161604919.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-03-14</div><div class="title">机器学习之决策树（二）</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/avatar.jpg" onerror="this.onerror=null;this.src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">独孤白</div><div class="author-info__description">天行健 君子以自强不息</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">56</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">18</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">15</div></a></div><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/liumeng-hub" target="_blank" title="https://github.com/liumeng-hub"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:915738464@qq.com" target="_blank" title="915738464@qq.com"><i class="fas fa-envelope"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E5%86%B3%E7%AD%96%E6%A0%91%EF%BC%88%E4%B8%80%EF%BC%89"><span class="toc-number">1.</span> <span class="toc-text">机器学习之决策树（一）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%98%AF%E5%86%B3%E7%AD%96%E6%A0%91"><span class="toc-number">2.</span> <span class="toc-text">为什么是决策树</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E5%AD%A6%E4%B9%A0%E5%86%B3%E7%AD%96%E6%A0%91"><span class="toc-number">3.</span> <span class="toc-text">如何学习决策树</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/link/pdfaddpicture.html" title="PDF添加图片与文字"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202312162235168.png" onerror="this.onerror=null;this.src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="PDF添加图片与文字"/></a><div class="content"><a class="title" href="/link/pdfaddpicture.html" title="PDF添加图片与文字">PDF添加图片与文字</a><time datetime="2023-12-26T00:00:00.000Z" title="发表于 2023-12-26 00:00:00">2023-12-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/link/topset.html" title="堆与优先队列"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png" onerror="this.onerror=null;this.src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="堆与优先队列"/></a><div class="content"><a class="title" href="/link/topset.html" title="堆与优先队列">堆与优先队列</a><time datetime="2023-09-02T00:00:00.000Z" title="发表于 2023-09-02 00:00:00">2023-09-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/link/suixiangluday20.html" title="代码随想录(day20)"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png" onerror="this.onerror=null;this.src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="代码随想录(day20)"/></a><div class="content"><a class="title" href="/link/suixiangluday20.html" title="代码随想录(day20)">代码随想录(day20)</a><time datetime="2023-09-01T00:00:00.000Z" title="发表于 2023-09-01 00:00:00">2023-09-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/link/paixun2.html" title="排序算法n方"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png" onerror="this.onerror=null;this.src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="排序算法n方"/></a><div class="content"><a class="title" href="/link/paixun2.html" title="排序算法n方">排序算法n方</a><time datetime="2023-09-01T00:00:00.000Z" title="发表于 2023-09-01 00:00:00">2023-09-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/link/paixunlogn.html" title="排序算法nlogn"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png" onerror="this.onerror=null;this.src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="排序算法nlogn"/></a><div class="content"><a class="title" href="/link/paixunlogn.html" title="排序算法nlogn">排序算法nlogn</a><time datetime="2023-09-01T00:00:00.000Z" title="发表于 2023-09-01 00:00:00">2023-09-01</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2023 By liumeng</div><div class="framework-info"><span>小破站正在安全运行 </span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"><use id="modeicon" xlink:href="#icon-moon"></use></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container').forEach(node => {
+            if (node.hasAttribute('display')) {
+              btf.wrap(node, 'div', { class: 'mathjax-overflow' })
+            } else {
+              btf.wrap(node, 'span', { class: 'mathjax-overflow' })
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script>(() => {
+  const $mermaidWrap = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaidWrap.length) {
+    window.runMermaid = () => {
+      window.loadMermaid = true
+      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+      Array.from($mermaidWrap).forEach((item, index) => {
+        const mermaidSrc = item.firstElementChild
+        const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+        const mermaidID = 'mermaid-' + index
+        const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+        mermaid.mermaidAPI.render(mermaidID, mermaidDefinition, (svgCode) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svgCode)
+        })
+      })
+    }
+
+    const loadMermaid = () => {
+      window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+    }
+
+    window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+  }
+})()</script><script>function loadValine () {
+  function initValine () {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: 'nemsAMaYAJs1jMlB2Gqa1lCI-MdYXbMMI',
+      appKey: '96YIeaSpipct4pRmJ7Kt8r5O',
+      avatar: 'monsterid',
+      serverURLs: 'https://server.liumeng.top',
+      emojiMaps: "",
+      path: window.location.pathname,
+      master: 'bc41b72793c99baf4f681cf457f64ec1',
+      tagMeta: ["博主","小伙伴","访客"],
+      friends: [],
+      visitor: false
+    }, null))
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('/js/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><script src="/js/jquery.js" async></script><script src="/js/foot.js" async></script><script src="http://cdn.bootcss.com/pace/1.0.2/pace.min.js" async></script><script src="/js/sun_moon.js" async></script><script src="/js/nav.js" async></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

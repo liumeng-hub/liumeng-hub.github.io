@@ -1,0 +1,382 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>ubuntu系统软件安装 | 记录收获，重拾旧遗</title><meta name="author" content="独孤白"><meta name="copyright" content="独孤白"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="ubuntu系统软件安装第一小节：安装ubuntu系统 网页搜索ubuntu，下载iso镜像文件 下载Rufus制作U盘启动盘 磁盘分区，为ubuntu系统分配空间，单系统忽略 进入bios后，选择U盘启动，根据提示安装 当出现pcie报错时，在grup界面选中ubuntu，按e进行编译，在quiet salash后空格添加pcie_aspm&#x3D;off 安装完成后，重启时仍需要重复上一步骤，重启后在">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ubuntu系统软件安装">
+<meta property="og:url" content="http://liumeng.top/link/1684a447.html">
+<meta property="og:site_name" content="记录收获，重拾旧遗">
+<meta property="og:description" content="ubuntu系统软件安装第一小节：安装ubuntu系统 网页搜索ubuntu，下载iso镜像文件 下载Rufus制作U盘启动盘 磁盘分区，为ubuntu系统分配空间，单系统忽略 进入bios后，选择U盘启动，根据提示安装 当出现pcie报错时，在grup界面选中ubuntu，按e进行编译，在quiet salash后空格添加pcie_aspm&#x3D;off 安装完成后，重启时仍需要重复上一步骤，重启后在">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202302101944429.png">
+<meta property="article:published_time" content="2023-02-05T13:18:56.000Z">
+<meta property="article:modified_time" content="2023-12-16T14:37:07.439Z">
+<meta property="article:author" content="独孤白">
+<meta property="article:tag" content="ubuntu">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202302101944429.png"><link rel="shortcut icon" href="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/favicon.png"><link rel="canonical" href="http://liumeng.top/link/1684a447.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'ubuntu系统软件安装',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-12-16 14:37:07'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = url => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      link.onload = () => resolve()
+      link.onerror = () => reject()
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/font.css"><link rel="stylesheet" href="/css/nav.css"><link rel="stylesheet" href="/css/myStyle.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/avatar.jpg" onerror="onerror=null;src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">56</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">18</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">15</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间线</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202302101944429.png')"><nav id="nav"><span id="blog-info"><a href="/" title="记录收获，重拾旧遗"><span class="site-name">记录收获，重拾旧遗</span></a></span><div id="menus"></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间线</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div><center id="name-container"><a id="page-name" href="javascript:scrollToTop()">PAGE_NAME</a></center><div id="nav-right"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">ubuntu系统软件安装</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2023-02-05T13:18:56.000Z" title="发表于 2023-02-05 13:18:56">2023-02-05</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85/">系统安装</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>4分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="ubuntu系统软件安装"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span><span class="post-meta-separator">|</span><span class="post-meta-commentcount"><i class="far fa-comments fa-fw post-meta-icon"></i><span class="post-meta-label">评论数:</span><a href="/link/1684a447.html#post-comment" itemprop="discussionUrl"><span class="valine-comment-count" data-xid="/link/1684a447.html" itemprop="commentCount"><i class="fa-solid fa-spinner fa-spin"></i></span></a></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="ubuntu系统软件安装"><a href="#ubuntu系统软件安装" class="headerlink" title="ubuntu系统软件安装"></a>ubuntu系统软件安装</h2><h3 id="第一小节：安装ubuntu系统"><a href="#第一小节：安装ubuntu系统" class="headerlink" title="第一小节：安装ubuntu系统"></a>第一小节：安装ubuntu系统</h3><ul>
+<li>网页搜索ubuntu，下载iso镜像文件</li>
+<li>下载Rufus制作U盘启动盘</li>
+<li>磁盘分区，为ubuntu系统分配空间，单系统忽略</li>
+<li>进入bios后，选择U盘启动，根据提示安装</li>
+<li>当出现pcie报错时，在grup界面选中ubuntu，按e进行编译，在quiet salash后空格添加pcie_aspm=off</li>
+<li>安装完成后，重启时仍需要重复上一步骤，重启后在终端输入<code>sudo gedit /etc/default/grub</code></li>
+<li>在文件中找到GRUB_CMDLINE_LINUX_DEFAULT，修改关键字在quiet salash后空格添加pcie_aspm=off</li>
+<li>保存退出，更新grub<code>sudo update-grub</code></li>
+</ul>
+<h3 id="第二小节：安装pycharm"><a href="#第二小节：安装pycharm" class="headerlink" title="第二小节：安装pycharm"></a>第二小节：安装pycharm</h3><ul>
+<li><p>在pycharm官网下载社区版</p>
+</li>
+<li><p>解压文件，打开终端</p>
+</li>
+<li><p>进入到pycharm对应文件的bin文件夹下</p>
+</li>
+<li><p>执行  <code>sh  ./pycharm.sh</code>  命令</p>
+</li>
+<li><p>根据指引按步骤安装</p>
+</li>
+<li><p>输入命令 <code>sudo gedit ~/.bashrc</code> 更改ubuntu配置文件</p>
+</li>
+<li><p>最后加上<code>alias pycharm=&quot;pycharm-community-2021.3/bin/pycharm.sh 路径&quot;</code>保存</p>
+</li>
+<li><p><code>source ~/.bashrc</code>更新配置文件</p>
+</li>
+<li><p><code>crtl + alt + t</code> 打开终端，输入pycharm打开软件</p>
+<p>PS：没有新建项目可能是窗口太小显示不全</p>
+</li>
+</ul>
+<h3 id="第三小节：安装anaconda"><a href="#第三小节：安装anaconda" class="headerlink" title="第三小节：安装anaconda"></a>第三小节：安装anaconda</h3><ul>
+<li><p>通过清华镜像源下载anaconda的发行版本Anaconda3-2019.10-Linux-x86_64.sh</p>
+</li>
+<li><p>执行命令<code>sh Anaconda3-2019.10-Linux-x86_64.sh</code> </p>
+</li>
+<li><p>根据指引完成安装</p>
+</li>
+<li><p>终端中输入conda，如果没找到指令则进行下一步，</p>
+</li>
+<li><p>执行<code>echo &#39;export PATH=&quot;/home/用户名/anaconda3/bin:$PATH&quot;&#39; &gt;&gt; ~/.bashrc</code></p>
+</li>
+<li><p><code>source ~/.bashrc</code>更新配置文件</p>
+</li>
+<li><p>终端中输入conda，安装完成</p>
+</li>
+<li><p>配置国内源</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free</span><br><span class="line">conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main</span><br><span class="line">conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge/</span><br><span class="line">conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/msys2/</span><br><span class="line">conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/bioconda/</span><br><span class="line">conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/menpo/</span><br><span class="line">conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/pytorch/</span><br><span class="line">conda config --set show_channel_urls yes</span><br><span class="line">conda config --show   # 显示配置的源</span><br><span class="line">    </span><br><span class="line">conda config --remove-key channels  # 恢复默认源</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>pip换源：<code>pip config set global.index-url https://mirrors.aliyun.com/pypi/simple/</code></p>
+</li>
+</ul>
+<h3 id="第四小节：安装labelme"><a href="#第四小节：安装labelme" class="headerlink" title="第四小节：安装labelme"></a>第四小节：安装labelme</h3><ul>
+<li><code>pip install --upgrade setuptools</code></li>
+<li><code>sudo pip install labelme -i https://pypi.tuna.tsinghua.edu.cn/simple some-package</code></li>
+<li>终端输入labelme，打开软件</li>
+</ul>
+<h3 id="第五小节：安装docker"><a href="#第五小节：安装docker" class="headerlink" title="第五小节：安装docker"></a>第五小节：安装docker</h3><h4 id="方法一：curl下载"><a href="#方法一：curl下载" class="headerlink" title="方法一：curl下载"></a>方法一：curl下载</h4><ul>
+<li><pre><code>curl -sSL https://get.daocloud.io/docker | sh
+</code></pre></li>
+</ul>
+<h4 id="方法二：yum下载"><a href="#方法二：yum下载" class="headerlink" title="方法二：yum下载"></a>方法二：yum下载</h4><ul>
+<li>配置yum源</li>
+</ul>
+<p># vim /etc/yum.repos.d/docker.repo</p>
+<p>[dockerrepo]</p>
+<p>name=Docker Repository</p>
+<p>baseurl=<a target="_blank" rel="noopener" href="https://yum.dockerproject.org/repo/main/centos/$releasever/">https://yum.dockerproject.org/repo/main/centos/$releasever/</a></p>
+<p>enabled=1</p>
+<p>gpgcheck=1</p>
+<p>gpgkey=<a target="_blank" rel="noopener" href="https://yum.dockerproject.org/gpg">https://yum.dockerproject.org/gpg</a></p>
+<ul>
+<li>通过yum安装</li>
+</ul>
+<p># yum install docker-engine</p>
+<p># service docker start</p>
+<p># service docker status</p>
+<ul>
+<li>日志</li>
+</ul>
+<p># vim /var/log/docker</p>
+<h3 id="第六小节：安装typora"><a href="#第六小节：安装typora" class="headerlink" title="第六小节：安装typora"></a>第六小节：安装typora</h3><p>直接应用商店下载即可</p>
+<h3 id="第七小节：ubuntu使用"><a href="#第七小节：ubuntu使用" class="headerlink" title="第七小节：ubuntu使用"></a>第七小节：ubuntu使用</h3><h4 id="1-解压rar文件"><a href="#1-解压rar文件" class="headerlink" title="1.解压rar文件"></a>1.解压rar文件</h4><p>比如你有一个nam.rar的文件，</p>
+<blockquote>
+<p>sudo unrar name.rar  </p>
+</blockquote>
+<p>但是一般会显示unrar命令不存在，那么你需要安装rar</p>
+<blockquote>
+<p>sudo apt-get install rar</p>
+</blockquote>
+<p>然后你在执行第一个命令，提示还是这一句：unrar命令不存在</p>
+<p>那么你需要</p>
+<blockquote>
+<p>sudo apt-get install unrar</p>
+</blockquote>
+<p>那么你再用第一个，命令，需要带上参数：</p>
+<blockquote>
+<p>sudo unrar x name.rar</p>
+<p>sudo unrar e name.rar</p>
+</blockquote>
+<p>其中x参数是解压到一个文件夹，e参数是把里面的文件都解压到当前路径下。</p>
+<h4 id="2-添加新用户"><a href="#2-添加新用户" class="headerlink" title="2.添加新用户"></a>2.添加新用户</h4><ul>
+<li><p>Ctrl+Alt+T打开终端，输入sudo adduser ubuntu<em>(ubuntu是我创建的新用户名)，</em>回车之后输入密码，根据提示输入新用户的密码，直接回车即可。</p>
+</li>
+<li><p>输入sudo adduser ubuntt(新创建的用户名) sudo,给新用户赋予管理员的权限。</p>
+</li>
+<li><p>切换到新用户，Ctrl+Alt+T打开终端，输入sudo su查看添加管理员权限是否成功。</p>
+</li>
+</ul>
+<h4 id="3-监控gpu"><a href="#3-监控gpu" class="headerlink" title="3.监控gpu"></a>3.监控gpu</h4><ul>
+<li>先使用<code>sudo apt install nvidia-340</code>命令安装</li>
+<li>然后<code>nvidia-smi</code>命令单次查看GPU使用率</li>
+<li>实时显示，可以使用<code>nvidia-smi -l 1</code> 命令每秒刷新一次。</li>
+</ul>
+<h3 id="第八小节：显卡驱动及cuda安装"><a href="#第八小节：显卡驱动及cuda安装" class="headerlink" title="第八小节：显卡驱动及cuda安装"></a>第八小节：显卡驱动及cuda安装</h3><ul>
+<li><p>换国内源<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/luoganttcc/article/details/122619962">https://blog.csdn.net/luoganttcc/article/details/122619962</a></p>
+</li>
+<li><p>确保nvidia跟cuda卸载干净<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/XYKenny/article/details/96891116">https://blog.csdn.net/XYKenny/article/details/96891116</a></p>
+</li>
+<li><p>Ubuntu 20.04安装CUDA 11.0、cuDNN 8.0.5、PyTorch 1.7.0<br><a target="_blank" rel="noopener" href="https://www.tqwba.com/x_d/jishu/253775.html">https://www.tqwba.com/x_d/jishu/253775.html</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/booturbo/p/13960935.html">https://www.cnblogs.com/booturbo/p/13960935.html</a></p>
+</li>
+</ul>
+<ul>
+<li><p>安装显卡驱动<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/buluxianfeng/article/details/117395319">https://blog.csdn.net/buluxianfeng/article/details/117395319</a></p>
+</li>
+<li><p>freeimg.h找不到<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/xhw205/article/details/116297555">https://blog.csdn.net/xhw205/article/details/116297555</a></p>
+</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://liumeng.top">独孤白</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://liumeng.top/link/1684a447.html">http://liumeng.top/link/1684a447.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://liumeng.top" target="_blank">记录收获，重拾旧遗</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/ubuntu/">ubuntu</a></div><div class="post_share"><div class="social-share" data-image="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202302101944429.png" data-sites="wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/link/5ce0b93b.html" title="ubuntu 科学上网"><img class="cover" src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202302101944429.png" onerror="onerror=null;src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">ubuntu 科学上网</div></div></a></div><div class="next-post pull-right"><a href="/link/adcb768c.html" title="网络编程基础"><img class="cover" src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202302102004662.png" onerror="onerror=null;src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">网络编程基础</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/link/5ce0b93b.html" title="ubuntu 科学上网"><img class="cover" src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202302101944429.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-02-06</div><div class="title">ubuntu 科学上网</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/avatar.jpg" onerror="this.onerror=null;this.src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">独孤白</div><div class="author-info__description">天行健 君子以自强不息</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">56</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">18</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">15</div></a></div><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/liumeng-hub" target="_blank" title="https://github.com/liumeng-hub"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:915738464@qq.com" target="_blank" title="915738464@qq.com"><i class="fas fa-envelope"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#ubuntu%E7%B3%BB%E7%BB%9F%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85"><span class="toc-number">1.</span> <span class="toc-text">ubuntu系统软件安装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E5%B0%8F%E8%8A%82%EF%BC%9A%E5%AE%89%E8%A3%85ubuntu%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.1.</span> <span class="toc-text">第一小节：安装ubuntu系统</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E5%B0%8F%E8%8A%82%EF%BC%9A%E5%AE%89%E8%A3%85pycharm"><span class="toc-number">1.2.</span> <span class="toc-text">第二小节：安装pycharm</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E5%B0%8F%E8%8A%82%EF%BC%9A%E5%AE%89%E8%A3%85anaconda"><span class="toc-number">1.3.</span> <span class="toc-text">第三小节：安装anaconda</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E5%B0%8F%E8%8A%82%EF%BC%9A%E5%AE%89%E8%A3%85labelme"><span class="toc-number">1.4.</span> <span class="toc-text">第四小节：安装labelme</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%94%E5%B0%8F%E8%8A%82%EF%BC%9A%E5%AE%89%E8%A3%85docker"><span class="toc-number">1.5.</span> <span class="toc-text">第五小节：安装docker</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E4%B8%80%EF%BC%9Acurl%E4%B8%8B%E8%BD%BD"><span class="toc-number">1.5.1.</span> <span class="toc-text">方法一：curl下载</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E4%BA%8C%EF%BC%9Ayum%E4%B8%8B%E8%BD%BD"><span class="toc-number">1.5.2.</span> <span class="toc-text">方法二：yum下载</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E5%85%AD%E5%B0%8F%E8%8A%82%EF%BC%9A%E5%AE%89%E8%A3%85typora"><span class="toc-number">1.6.</span> <span class="toc-text">第六小节：安装typora</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%83%E5%B0%8F%E8%8A%82%EF%BC%9Aubuntu%E4%BD%BF%E7%94%A8"><span class="toc-number">1.7.</span> <span class="toc-text">第七小节：ubuntu使用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E8%A7%A3%E5%8E%8Brar%E6%96%87%E4%BB%B6"><span class="toc-number">1.7.1.</span> <span class="toc-text">1.解压rar文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E6%B7%BB%E5%8A%A0%E6%96%B0%E7%94%A8%E6%88%B7"><span class="toc-number">1.7.2.</span> <span class="toc-text">2.添加新用户</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E7%9B%91%E6%8E%A7gpu"><span class="toc-number">1.7.3.</span> <span class="toc-text">3.监控gpu</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E5%85%AB%E5%B0%8F%E8%8A%82%EF%BC%9A%E6%98%BE%E5%8D%A1%E9%A9%B1%E5%8A%A8%E5%8F%8Acuda%E5%AE%89%E8%A3%85"><span class="toc-number">1.8.</span> <span class="toc-text">第八小节：显卡驱动及cuda安装</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/link/pdfaddpicture.html" title="PDF添加图片与文字"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202312162235168.png" onerror="this.onerror=null;this.src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="PDF添加图片与文字"/></a><div class="content"><a class="title" href="/link/pdfaddpicture.html" title="PDF添加图片与文字">PDF添加图片与文字</a><time datetime="2023-12-26T00:00:00.000Z" title="发表于 2023-12-26 00:00:00">2023-12-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/link/topset.html" title="堆与优先队列"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png" onerror="this.onerror=null;this.src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="堆与优先队列"/></a><div class="content"><a class="title" href="/link/topset.html" title="堆与优先队列">堆与优先队列</a><time datetime="2023-09-02T00:00:00.000Z" title="发表于 2023-09-02 00:00:00">2023-09-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/link/suixiangluday20.html" title="代码随想录(day20)"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png" onerror="this.onerror=null;this.src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="代码随想录(day20)"/></a><div class="content"><a class="title" href="/link/suixiangluday20.html" title="代码随想录(day20)">代码随想录(day20)</a><time datetime="2023-09-01T00:00:00.000Z" title="发表于 2023-09-01 00:00:00">2023-09-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/link/paixun2.html" title="排序算法n方"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png" onerror="this.onerror=null;this.src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="排序算法n方"/></a><div class="content"><a class="title" href="/link/paixun2.html" title="排序算法n方">排序算法n方</a><time datetime="2023-09-01T00:00:00.000Z" title="发表于 2023-09-01 00:00:00">2023-09-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/link/paixunlogn.html" title="排序算法nlogn"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png" onerror="this.onerror=null;this.src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="排序算法nlogn"/></a><div class="content"><a class="title" href="/link/paixunlogn.html" title="排序算法nlogn">排序算法nlogn</a><time datetime="2023-09-01T00:00:00.000Z" title="发表于 2023-09-01 00:00:00">2023-09-01</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2023 By liumeng</div><div class="framework-info"><span>小破站正在安全运行 </span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"><use id="modeicon" xlink:href="#icon-moon"></use></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container').forEach(node => {
+            if (node.hasAttribute('display')) {
+              btf.wrap(node, 'div', { class: 'mathjax-overflow' })
+            } else {
+              btf.wrap(node, 'span', { class: 'mathjax-overflow' })
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script>(() => {
+  const $mermaidWrap = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaidWrap.length) {
+    window.runMermaid = () => {
+      window.loadMermaid = true
+      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+      Array.from($mermaidWrap).forEach((item, index) => {
+        const mermaidSrc = item.firstElementChild
+        const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+        const mermaidID = 'mermaid-' + index
+        const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+        mermaid.mermaidAPI.render(mermaidID, mermaidDefinition, (svgCode) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svgCode)
+        })
+      })
+    }
+
+    const loadMermaid = () => {
+      window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+    }
+
+    window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+  }
+})()</script><script>function loadValine () {
+  function initValine () {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: 'nemsAMaYAJs1jMlB2Gqa1lCI-MdYXbMMI',
+      appKey: '96YIeaSpipct4pRmJ7Kt8r5O',
+      avatar: 'monsterid',
+      serverURLs: 'https://server.liumeng.top',
+      emojiMaps: "",
+      path: window.location.pathname,
+      master: 'bc41b72793c99baf4f681cf457f64ec1',
+      tagMeta: ["博主","小伙伴","访客"],
+      friends: [],
+      visitor: false
+    }, null))
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('/js/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><script src="/js/jquery.js" async></script><script src="/js/foot.js" async></script><script src="http://cdn.bootcss.com/pace/1.0.2/pace.min.js" async></script><script src="/js/sun_moon.js" async></script><script src="/js/nav.js" async></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

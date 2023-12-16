@@ -1,0 +1,624 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>评价方法及标准 | 记录收获，重拾旧遗</title><meta name="author" content="独孤白"><meta name="copyright" content="独孤白"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="机器学习之模型评价方法及标准 在模型训练中，能够有一个评价模型好坏的标准至关重要，能够帮忙选出表现最好的模型。  1. 模型评价方法1.1. 留出法​        也就是最常见的模型划分方法，划分为训练集和测试集，一般比例为3:1或者4:1，当作为模型评估标准时，可以按照该方法多次随机划分，能得到多个不同的测试集训练集组合，平均他们的结果，作为评价模型好坏的标准。 1.2. 交叉验证法​">
+<meta property="og:type" content="article">
+<meta property="og:title" content="评价方法及标准">
+<meta property="og:url" content="http://liumeng.top/link/pingjia0331.html">
+<meta property="og:site_name" content="记录收获，重拾旧遗">
+<meta property="og:description" content="机器学习之模型评价方法及标准 在模型训练中，能够有一个评价模型好坏的标准至关重要，能够帮忙选出表现最好的模型。  1. 模型评价方法1.1. 留出法​        也就是最常见的模型划分方法，划分为训练集和测试集，一般比例为3:1或者4:1，当作为模型评估标准时，可以按照该方法多次随机划分，能得到多个不同的测试集训练集组合，平均他们的结果，作为评价模型好坏的标准。 1.2. 交叉验证法​">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202302161604919.png">
+<meta property="article:published_time" content="2023-03-31T00:00:00.000Z">
+<meta property="article:modified_time" content="2023-12-16T14:37:07.447Z">
+<meta property="article:author" content="独孤白">
+<meta property="article:tag" content="经典算法">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202302161604919.png"><link rel="shortcut icon" href="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/favicon.png"><link rel="canonical" href="http://liumeng.top/link/pingjia0331.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '评价方法及标准',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-12-16 14:37:07'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = url => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      link.onload = () => resolve()
+      link.onerror = () => reject()
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/font.css"><link rel="stylesheet" href="/css/nav.css"><link rel="stylesheet" href="/css/myStyle.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/avatar.jpg" onerror="onerror=null;src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">56</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">18</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">15</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间线</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202302161604919.png')"><nav id="nav"><span id="blog-info"><a href="/" title="记录收获，重拾旧遗"><span class="site-name">记录收获，重拾旧遗</span></a></span><div id="menus"></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间线</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div><center id="name-container"><a id="page-name" href="javascript:scrollToTop()">PAGE_NAME</a></center><div id="nav-right"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">评价方法及标准</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2023-03-31T00:00:00.000Z" title="发表于 2023-03-31 00:00:00">2023-03-31</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3.1k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>10分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="评价方法及标准"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span><span class="post-meta-separator">|</span><span class="post-meta-commentcount"><i class="far fa-comments fa-fw post-meta-icon"></i><span class="post-meta-label">评论数:</span><a href="/link/pingjia0331.html#post-comment" itemprop="discussionUrl"><span class="valine-comment-count" data-xid="/link/pingjia0331.html" itemprop="commentCount"><i class="fa-solid fa-spinner fa-spin"></i></span></a></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="机器学习之模型评价方法及标准"><a href="#机器学习之模型评价方法及标准" class="headerlink" title="机器学习之模型评价方法及标准"></a>机器学习之模型评价方法及标准</h1><blockquote>
+<p>在模型训练中，能够有一个评价模型好坏的标准至关重要，能够帮忙选出表现最好的模型。</p>
+</blockquote>
+<h2 id="1-模型评价方法"><a href="#1-模型评价方法" class="headerlink" title="1. 模型评价方法"></a>1. 模型评价方法</h2><h2 id="1-1-留出法"><a href="#1-1-留出法" class="headerlink" title="1.1. 留出法"></a>1.1. 留出法</h2><p>​        也就是最常见的模型划分方法，划分为训练集和测试集，一般比例为3:1或者4:1，当作为模型评估标准时，可以按照该方法多次随机划分，能得到多个不同的测试集训练集组合，平均他们的结果，作为评价模型好坏的标准。</p>
+<h3 id="1-2-交叉验证法"><a href="#1-2-交叉验证法" class="headerlink" title="1.2. 交叉验证法"></a>1.2. 交叉验证法</h3><p>​        也就是常说的k折交叉验证，将数据集分为k份，每次取k-1份作为训练集，1份作为验证集，共有k种不同的数据集，最后训练k次。当作为评价标准时，可以进行多次的k折交叉验证，取平均作为最后结果，例如“10次10折交叉验证”。极端情况下，每次只使用一个样本作为测试集，被称为留一法。</p>
+<h3 id="1-3-自助法"><a href="#1-3-自助法" class="headerlink" title="1.3. 自助法"></a>1.3. 自助法</h3><p>​        数据集划分时，使用留出法会因为数据集规模大小不同带来估计偏差，留一法受训练样本规模变化的影响小，但是计算复杂度高。基于自主采样的自助法是一个比较好的解决方法。</p>
+<p>​        给定一个包含有m个数据集的数据集D：</p>
+<ul>
+<li>每次随机从D中挑选一个样本，拷贝放入训练集中并放回</li>
+<li>重复m次，得到包含有m个样本的训练集</li>
+<li>剩下的样本作为验证集</li>
+</ul>
+<p>​        在上面这个过程中，经过概率计算，大概会有三分之一的数据作为验证集保留，这样能够在初始的数据集中得到更多不同的训练集，对集成学习有好处。</p>
+<p>​        但是，这种方法破坏了数据集的样本分布，当样本数量足够时，留出法和交叉验证法更常用。</p>
+<h2 id="2-评价标准"><a href="#2-评价标准" class="headerlink" title="2. 评价标准"></a>2. 评价标准</h2><h3 id="2-1-均方误差，错误率与精度"><a href="#2-1-均方误差，错误率与精度" class="headerlink" title="2.1. 均方误差，错误率与精度"></a>2.1. 均方误差，错误率与精度</h3><ul>
+<li>最常用的回归性能度量“均方误差”</li>
+</ul>
+<p><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202303312113732.png" alt="image-20230331211334986"></p>
+<ul>
+<li>分类最常用的性能度量</li>
+</ul>
+<p><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202303312114904.png" alt="image-20230331211444005"></p>
+<h3 id="2-2-查准率，查全率与-F1"><a href="#2-2-查准率，查全率与-F1" class="headerlink" title="2.2. 查准率，查全率与 F1"></a>2.2. 查准率，查全率与 F1</h3><p><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202303312115634.png" alt="image-20230331211541247"></p>
+<p>​        一般来讲，查准率和查全率不能兼得，当希望尽可能的增加正例判断的成功概率，可以通过增加选中的样本数，当所有的样本全判断为正例时，查全率为1，相应的查准率会降低。只有在简单的任务中，才有可能做到查准率和查全率都很高。</p>
+<p>​        P-R曲线能够较为直观的显示出样本总体的查全率和查准率：</p>
+<p><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202303312126731.png" alt="image-20230331212600251"></p>
+<ul>
+<li>首先将所有的样本按照正样本概率从大到小排列</li>
+<li>逐个将样本作为正例进行预测，每次计算当前的查准率和查全率</li>
+<li>以查准率为纵轴，查全率为横轴画出图像得到P-R曲线</li>
+</ul>
+<p>​        当P-R曲线上一个学习器的曲线被另一个完全包住，则可断言，后面的学习器性能优于前者。</p>
+<p>​        常用的综合考虑查准率与查全率的是F1度量：</p>
+<p><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202303312132491.png" alt="image-20230331213208302"></p>
+<p>​        更一般的是$F_{\beta}$度量：</p>
+<p><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202303312133197.png" alt="image-20230331213330915"></p>
+<p>​        当$\beta = 1$时即为F1度量，当$\beta &gt; 1$时查全率有更大影响，当$\beta &lt; 1$时查准率有更大影响。</p>
+<p>F1-score适用于二分类问题，对于多分类问题，将二分类的F1-score推广，有Micro-F1和Macro-F1两种度量。</p>
+<p><strong>【Macro-F1】</strong></p>
+<p>​        统计各个类别的TP、FP、FN、TN，分别计算各自的Precision和Recall，得到各自的F1值，然后取平均值得到Macro-F1。</p>
+<p><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202303312147201.png" alt="image-20230331214737524"></p>
+<p><strong>【Micro-F1】</strong></p>
+<p>​        统计各个类别的TP、FP、FN、TN，加和构成新的TP、FP、FN、TN，然后计算Micro-Precision和Micro-Recall，得到Micro-F1。具体的说，统计出来各个类别的混淆矩阵，然后把混淆矩阵“相加”起来，得到一个多类别的混淆矩阵，然后再计算F1score。</p>
+<p><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202303312148488.png" alt="image-20230331214832235"></p>
+<p><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202303312148498.png" alt="image-20230331214853139"></p>
+<p><strong>【总结】</strong></p>
+<p>​        从上面二者计算方式上可以看出，Macro-F1平等地看待各个类别，它的值会受到稀有类别的影响；而Micro-F1则更容易受到常见类别的影响。</p>
+<h3 id="2-3-真正例率，假正例率与AUC"><a href="#2-3-真正例率，假正例率与AUC" class="headerlink" title="2.3. 真正例率，假正例率与AUC"></a>2.3. 真正例率，假正例率与AUC</h3><h4 id="2-3-1-概念"><a href="#2-3-1-概念" class="headerlink" title="2.3.1 概念"></a>2.3.1 概念</h4><p>​        真正例率（TPR）和假正例率（FPR）:</p>
+<p><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202303312153226.png" alt="image-20230331215332023"></p>
+<p><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202303312235264.png" alt="image-20230331223525494"></p>
+<p>​        ROC曲线的绘画方式类似P-R曲线，过程如下：</p>
+<ul>
+<li>将测试样本按照正例概率从大到小排列</li>
+<li>逐个将样本作为正例进行预测，每次计算当前的TPR和FPR</li>
+<li>以TPR为纵轴，FPR为横轴画出图像得到P-R曲线</li>
+</ul>
+<p>​        评价标准一般计算AUC，曲线下面积，AUC面积大的效果好。</p>
+<h4 id="2-3-2-AUC计算"><a href="#2-3-2-AUC计算" class="headerlink" title="2.3.2 AUC计算"></a>2.3.2 AUC计算</h4><ul>
+<li>方法一：</li>
+</ul>
+<p>​        在有M个正样本,N个负样本的数据集里。一共有M<em>N对样本（一对样本即，一个正样本与一个负样本）。统计这M</em>N对样本里，正样本的预测概率大于负样本的预测概率的个数。<br>$\frac {\sum I(P<em>{正样本}，P</em>{负样本})}{M*N}$，其中，</p>
+<p><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202303312224462.png" alt="image-20230331222404262"></p>
+<p>举一个例子</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>label</th>
+<th>pro</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>0</td>
+<td>0.1</td>
+</tr>
+<tr>
+<td>B</td>
+<td>0</td>
+<td>0.4</td>
+</tr>
+<tr>
+<td>C</td>
+<td>1</td>
+<td>0.35</td>
+</tr>
+<tr>
+<td>D</td>
+<td>1</td>
+<td>0.8</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>假设有4条样本。2个正样本，2个负样本，那么M*N=4。即总共有4个样本对。分别是：$（D,B）,（D,A）,(C,B),（C,A$）。</p>
+<p>在$（D,B）$样本对中，正样本D预测的概率大于负样本B预测的概率（也就是D的得分比B高），记为1。</p>
+<p>同理，对于$（C,B）$。正样本C预测的概率小于负样本C预测的概率，记为0.</p>
+<p>最后可以算得，总共有3个符合正样本得分高于负样本得分，故最后的AUC为$ \frac {1+1+1+0}{4} = 0.75$</p>
+<p>在这个案例里，没有出现得分一致的情况，假如出现得分一致的时候，例如：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>label</th>
+<th>pro</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>0</td>
+<td>0.1</td>
+</tr>
+<tr>
+<td>B</td>
+<td>0</td>
+<td>0.4</td>
+</tr>
+<tr>
+<td>C</td>
+<td>1</td>
+<td>0.4</td>
+</tr>
+<tr>
+<td>D</td>
+<td>1</td>
+<td>0.8</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>同样本是4个样本对，对于样本对（C,B）其I值为0.5。<br>最后的AUC为 $\frac {1+1+1+0.5}{4} = 0.875$</p>
+<ul>
+<li>方法二：</li>
+</ul>
+<p>​        另外一个方法就是利用下面的公式：</p>
+<p>​                                                                        $AUC = \frac {\sum<em>{ins_i \in positiveclass}rank</em>{ins_i} - \frac {M \times (M+1)}{2}}{M \times N}$</p>
+<p>​        $rank_{ins_i}$，代表第i条样本的序号。（概率得分从小到大排，排在第rank个位置）</p>
+<p>​        $M,N$分别是正样本的个数和负样本的个数</p>
+<p>​        $\sum_{ins_i \in positiveclass}$只把正样本的序号加起来。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>label</th>
+<th>pro</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>0</td>
+<td>0.1</td>
+</tr>
+<tr>
+<td>B</td>
+<td>0</td>
+<td>0.4</td>
+</tr>
+<tr>
+<td>C</td>
+<td>1</td>
+<td>0.35</td>
+</tr>
+<tr>
+<td>D</td>
+<td>1</td>
+<td>0.8</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>将这个例子排序。按概率排序后得到：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>label</th>
+<th>pro</th>
+<th>rank</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>0</td>
+<td>0.1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>C</td>
+<td>1</td>
+<td>0.35</td>
+<td>2</td>
+</tr>
+<tr>
+<td>B</td>
+<td>0</td>
+<td>0.4</td>
+<td>3</td>
+</tr>
+<tr>
+<td>D</td>
+<td>1</td>
+<td>0.8</td>
+<td>4</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>​        按照上面的公式，只把正样本的序号加起来也就是只把样本C,D的rank值加起来后减去一个常数项$ \frac{M(M+1)}{2}$</p>
+<p>即：$\frac{(4+2) - \frac{2<em>(2+1)}{2}}{2</em>2} = \frac{6-3}{4} = 0.75$，这个答案和我们上面所计算的是一样的。</p>
+<p>这个时候，有个问题，假如出现得分一致的情况怎么办？下面举一个例子说明：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>label</th>
+<th>pro</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>1</td>
+<td>0.8</td>
+</tr>
+<tr>
+<td>B</td>
+<td>1</td>
+<td>0.7</td>
+</tr>
+<tr>
+<td>C</td>
+<td>0</td>
+<td>0.5</td>
+</tr>
+<tr>
+<td>D</td>
+<td>0</td>
+<td>0.5</td>
+</tr>
+<tr>
+<td>E</td>
+<td>1</td>
+<td>0.5</td>
+</tr>
+<tr>
+<td>F</td>
+<td>1</td>
+<td>0.5</td>
+</tr>
+<tr>
+<td>G</td>
+<td>0</td>
+<td>0.3</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>​        在这个例子中，有4个取值概率为0.5，而且既有正样本也有负样本的情况。计算的时候，其实原则就是相等得分的rank取平均值。具体来说如下：<br>先排序：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>label</th>
+<th>pro</th>
+<th>rank</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>G</td>
+<td>0</td>
+<td>0.3</td>
+<td>1</td>
+</tr>
+<tr>
+<td>F</td>
+<td>1</td>
+<td>0.5</td>
+<td>2</td>
+</tr>
+<tr>
+<td>E</td>
+<td>1</td>
+<td>0.5</td>
+<td>3</td>
+</tr>
+<tr>
+<td>D</td>
+<td>0</td>
+<td>0.5</td>
+<td>4</td>
+</tr>
+<tr>
+<td>C</td>
+<td>0</td>
+<td>0.5</td>
+<td>5</td>
+</tr>
+<tr>
+<td>B</td>
+<td>1</td>
+<td>0.7</td>
+<td>6</td>
+</tr>
+<tr>
+<td>A</td>
+<td>1</td>
+<td>0.8</td>
+<td>7</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>这里需要注意的是：相等概率得分的样本，无论正负，谁在前，谁在后无所谓。</strong></p>
+<p>由于只考虑正样本的rank值：<br>对于正样本A，其rank值为7<br>对于正样本B，其rank值为6<br>对于正样本E，其rank值为（5+4+3+2）/4<br>对于正样本F，其rank值为（5+4+3+2）/4</p>
+<p>最后我们得到：</p>
+<p><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202303312217497.png" alt="在这里插入图片描述"></p>
+<h4 id="2-3-3-多分类下ROC曲线："><a href="#2-3-3-多分类下ROC曲线：" class="headerlink" title="2.3.3 多分类下ROC曲线："></a>2.3.3 多分类下ROC曲线：</h4><p>​        假设测试样本个数为m，类别个数为n。在训练完成后，计算出每个测试样本的在各类别下的概率或置信度，得到一个</p>
+<p>$[m， n]$形状的矩阵P，每一行表示一个测试样本在各类别下概率值（按类别标签排序）。相应地，将每个测试样本的标签用</p>
+<p>$[0,1,0,0,0,..]$形式表示，可以获得一个$[m， n]$的标签矩阵L。</p>
+<ul>
+<li><p>①方法一：</p>
+<p>n类中每次取一个类别作为正例，其余作为反例，可以计算出各个阈值下的假正例率（FPR）和真正例率（TPR），从而绘</p>
+<p>制出一条ROC曲线。这样总共可以绘制出n条ROC曲线。最后对n条ROC曲线取平均，即可得到最终的ROC曲线。</p>
+</li>
+<li><p>②方法二：</p>
+<p>首先，对于一个测试样本：</p>
+<p>1）标签只由0和1组成，1的位置表明了它的类别（可对应二分类问题中的‘’正’’），0就表示其他类别（‘’负‘’）；</p>
+<p>2）要是分类器对该测试样本分类正确，则该样本标签中1对应的位置在概率矩阵P中的值是大于0对应的位置的概率值的。</p>
+<p>基于这两点，将标签矩阵L和概率矩阵P分别按行展开，转置后形成两列，这就得到了一个二分类的结果。所以，此方法经</p>
+<p>过计算后可以直接得到最终的ROC曲线。</p>
+</li>
+</ul>
+<p>​        上面的两个方法得到的ROC曲线是不同的，当然曲线下的面积AUC也是不一样的。 在python中，方法1和方法2分别对应sklearn.metrics.roc_auc_score函数中参数average值为’macro’和’micro’的情况。</p>
+<h3 id="2-4-代价敏感错误率以及代价曲线"><a href="#2-4-代价敏感错误率以及代价曲线" class="headerlink" title="2.4. 代价敏感错误率以及代价曲线"></a>2.4. 代价敏感错误率以及代价曲线</h3><p>​        在非均等代价下,我们所希望的不再是简单地最小化错误次数,而是希望最小化”总体代价”(total cost)。因此，我们引入”代价敏感”(cost-sensitive)错误率的这样一个代价敏感性指标：</p>
+<p><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202304041539047.png" alt="image-20230404153947927"></p>
+<p>代价曲线绘制：</p>
+<ol>
+<li><p>ROC曲线上每一点对应了代价平面上的一条线段；</p>
+</li>
+<li><p>设ROC曲线上点的坐标为(TPR,FPR),则可相应计算出FNR；</p>
+</li>
+<li><p>然后在代价平面上绘制一条从(0,FPR)到(1,FNR)的线段,线段下的面积即表示了该条件下的期望总体代价;</p>
+</li>
+<li><p>如此将ROC曲线上的每个点转化为代价平面上的一条线段（例如红色线）；</p>
+</li>
+<li><p>然后取所有线段的下界形成代价曲线,围成的面积即为在所有条件下学习器的期望总体代价。</p>
+</li>
+</ol>
+<p><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202304041528570.jpeg" alt="图片"></p>
+<p><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202304041537369.png" alt="image-20230404153725391"></p>
+<p><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202304041537817.png" alt="image-20230404153757284"></p>
+<h3 id="2-5-比较总结"><a href="#2-5-比较总结" class="headerlink" title="2.5. 比较总结"></a>2.5. 比较总结</h3><ul>
+<li>ROC曲线由于兼顾正例与负例，所以适用于评估分类器的整体性能，相比而言PR曲线完全聚焦于正例。</li>
+<li>如果有多份数据且存在不同的类别分布，比如信用卡欺诈问题中每个月正例和负例的比例可能都不相同，这时候如果只想单纯地比较分类器的性能且剔除类别分布改变的影响，则ROC曲线比较适合，因为类别分布改变可能使得PR曲线发生变化时好时坏，这种时候难以进行模型比较；反之，如果想测试不同类别分布下对分类器的性能的影响，则PR曲线比较适合。</li>
+<li>如果想要评估在相同的类别分布下正例的预测情况，则宜选PR曲线。</li>
+<li>如果是不平衡类，正负样本比例悬殊的情况下：正样本的数目非常的稀有，而且很重要，那么选择PR会更合适，比如常见的目标检测任务中，一般正样本相对于负样本来占比小，所以通常选择PR曲线，计算mAP来对进行模型性能对比。</li>
+<li>类别不平衡问题中，ROC曲线通常会给出一个乐观的效果估计，所以大部分时候还是PR曲线更好。</li>
+<li>最后可以根据具体的应用，在曲线上找到最优的点，得到相对应的precision，recall，f1 score等指标，去调整模型的阈值，从而得到一个符合具体应用的模型。</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://liumeng.top">独孤白</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://liumeng.top/link/pingjia0331.html">http://liumeng.top/link/pingjia0331.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://liumeng.top" target="_blank">记录收获，重拾旧遗</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%BB%8F%E5%85%B8%E7%AE%97%E6%B3%95/">经典算法</a></div><div class="post_share"><div class="social-share" data-image="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202302161604919.png" data-sites="wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/link/yaml0410.html" title="yaml文件读写"><img class="cover" src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202302102004662.png" onerror="onerror=null;src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">yaml文件读写</div></div></a></div><div class="next-post pull-right"><a href="/link/jueceshu0304.html" title="机器学习之决策树（一）"><img class="cover" src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202302161604919.png" onerror="onerror=null;src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">机器学习之决策树（一）</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/link/jueceshu0304.html" title="机器学习之决策树（一）"><img class="cover" src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202302161604919.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-03-14</div><div class="title">机器学习之决策树（一）</div></div></a></div><div><a href="/link/jueceshu03041.html" title="机器学习之决策树（二）"><img class="cover" src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202302161604919.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-03-14</div><div class="title">机器学习之决策树（二）</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/avatar.jpg" onerror="this.onerror=null;this.src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">独孤白</div><div class="author-info__description">天行健 君子以自强不息</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">56</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">18</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">15</div></a></div><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/liumeng-hub" target="_blank" title="https://github.com/liumeng-hub"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:915738464@qq.com" target="_blank" title="915738464@qq.com"><i class="fas fa-envelope"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BB%B7%E6%96%B9%E6%B3%95%E5%8F%8A%E6%A0%87%E5%87%86"><span class="toc-number">1.</span> <span class="toc-text">机器学习之模型评价方法及标准</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BB%B7%E6%96%B9%E6%B3%95"><span class="toc-number">1.1.</span> <span class="toc-text">1. 模型评价方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-%E7%95%99%E5%87%BA%E6%B3%95"><span class="toc-number">1.2.</span> <span class="toc-text">1.1. 留出法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E4%BA%A4%E5%8F%89%E9%AA%8C%E8%AF%81%E6%B3%95"><span class="toc-number">1.2.1.</span> <span class="toc-text">1.2. 交叉验证法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-%E8%87%AA%E5%8A%A9%E6%B3%95"><span class="toc-number">1.2.2.</span> <span class="toc-text">1.3. 自助法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E8%AF%84%E4%BB%B7%E6%A0%87%E5%87%86"><span class="toc-number">1.3.</span> <span class="toc-text">2. 评价标准</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E5%9D%87%E6%96%B9%E8%AF%AF%E5%B7%AE%EF%BC%8C%E9%94%99%E8%AF%AF%E7%8E%87%E4%B8%8E%E7%B2%BE%E5%BA%A6"><span class="toc-number">1.3.1.</span> <span class="toc-text">2.1. 均方误差，错误率与精度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E6%9F%A5%E5%87%86%E7%8E%87%EF%BC%8C%E6%9F%A5%E5%85%A8%E7%8E%87%E4%B8%8E-F1"><span class="toc-number">1.3.2.</span> <span class="toc-text">2.2. 查准率，查全率与 F1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E7%9C%9F%E6%AD%A3%E4%BE%8B%E7%8E%87%EF%BC%8C%E5%81%87%E6%AD%A3%E4%BE%8B%E7%8E%87%E4%B8%8EAUC"><span class="toc-number">1.3.3.</span> <span class="toc-text">2.3. 真正例率，假正例率与AUC</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-1-%E6%A6%82%E5%BF%B5"><span class="toc-number">1.3.3.1.</span> <span class="toc-text">2.3.1 概念</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-2-AUC%E8%AE%A1%E7%AE%97"><span class="toc-number">1.3.3.2.</span> <span class="toc-text">2.3.2 AUC计算</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-3-%E5%A4%9A%E5%88%86%E7%B1%BB%E4%B8%8BROC%E6%9B%B2%E7%BA%BF%EF%BC%9A"><span class="toc-number">1.3.3.3.</span> <span class="toc-text">2.3.3 多分类下ROC曲线：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-%E4%BB%A3%E4%BB%B7%E6%95%8F%E6%84%9F%E9%94%99%E8%AF%AF%E7%8E%87%E4%BB%A5%E5%8F%8A%E4%BB%A3%E4%BB%B7%E6%9B%B2%E7%BA%BF"><span class="toc-number">1.3.4.</span> <span class="toc-text">2.4. 代价敏感错误率以及代价曲线</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-%E6%AF%94%E8%BE%83%E6%80%BB%E7%BB%93"><span class="toc-number">1.3.5.</span> <span class="toc-text">2.5. 比较总结</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/link/pdfaddpicture.html" title="PDF添加图片与文字"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202312162235168.png" onerror="this.onerror=null;this.src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="PDF添加图片与文字"/></a><div class="content"><a class="title" href="/link/pdfaddpicture.html" title="PDF添加图片与文字">PDF添加图片与文字</a><time datetime="2023-12-26T00:00:00.000Z" title="发表于 2023-12-26 00:00:00">2023-12-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/link/topset.html" title="堆与优先队列"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png" onerror="this.onerror=null;this.src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="堆与优先队列"/></a><div class="content"><a class="title" href="/link/topset.html" title="堆与优先队列">堆与优先队列</a><time datetime="2023-09-02T00:00:00.000Z" title="发表于 2023-09-02 00:00:00">2023-09-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/link/suixiangluday20.html" title="代码随想录(day20)"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png" onerror="this.onerror=null;this.src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="代码随想录(day20)"/></a><div class="content"><a class="title" href="/link/suixiangluday20.html" title="代码随想录(day20)">代码随想录(day20)</a><time datetime="2023-09-01T00:00:00.000Z" title="发表于 2023-09-01 00:00:00">2023-09-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/link/paixun2.html" title="排序算法n方"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png" onerror="this.onerror=null;this.src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="排序算法n方"/></a><div class="content"><a class="title" href="/link/paixun2.html" title="排序算法n方">排序算法n方</a><time datetime="2023-09-01T00:00:00.000Z" title="发表于 2023-09-01 00:00:00">2023-09-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/link/paixunlogn.html" title="排序算法nlogn"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png" onerror="this.onerror=null;this.src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="排序算法nlogn"/></a><div class="content"><a class="title" href="/link/paixunlogn.html" title="排序算法nlogn">排序算法nlogn</a><time datetime="2023-09-01T00:00:00.000Z" title="发表于 2023-09-01 00:00:00">2023-09-01</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2023 By liumeng</div><div class="framework-info"><span>小破站正在安全运行 </span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"><use id="modeicon" xlink:href="#icon-moon"></use></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container').forEach(node => {
+            if (node.hasAttribute('display')) {
+              btf.wrap(node, 'div', { class: 'mathjax-overflow' })
+            } else {
+              btf.wrap(node, 'span', { class: 'mathjax-overflow' })
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script>(() => {
+  const $mermaidWrap = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaidWrap.length) {
+    window.runMermaid = () => {
+      window.loadMermaid = true
+      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+      Array.from($mermaidWrap).forEach((item, index) => {
+        const mermaidSrc = item.firstElementChild
+        const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+        const mermaidID = 'mermaid-' + index
+        const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+        mermaid.mermaidAPI.render(mermaidID, mermaidDefinition, (svgCode) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svgCode)
+        })
+      })
+    }
+
+    const loadMermaid = () => {
+      window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+    }
+
+    window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+  }
+})()</script><script>function loadValine () {
+  function initValine () {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: 'nemsAMaYAJs1jMlB2Gqa1lCI-MdYXbMMI',
+      appKey: '96YIeaSpipct4pRmJ7Kt8r5O',
+      avatar: 'monsterid',
+      serverURLs: 'https://server.liumeng.top',
+      emojiMaps: "",
+      path: window.location.pathname,
+      master: 'bc41b72793c99baf4f681cf457f64ec1',
+      tagMeta: ["博主","小伙伴","访客"],
+      friends: [],
+      visitor: false
+    }, null))
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('/js/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><script src="/js/jquery.js" async></script><script src="/js/foot.js" async></script><script src="http://cdn.bootcss.com/pace/1.0.2/pace.min.js" async></script><script src="/js/sun_moon.js" async></script><script src="/js/nav.js" async></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

@@ -1,0 +1,333 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>机器学习之决策树（二） | 记录收获，重拾旧遗</title><meta name="author" content="独孤白"><meta name="copyright" content="独孤白"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="机器学习之决策树（二） 决策树学习前了解相关的概念很重要。  决策树相关概念 文章来源：https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;399549773?utm_id&#x3D;0  ​        决策树模型是一种if-else型的模型，通过对数据集的学习，生成树模型的内部节点，内部节点表示对一个属性的判断。以一个小球分类问题为例，假设有100个小球，其中40个为红色球，60个为蓝色球。而小">
+<meta property="og:type" content="article">
+<meta property="og:title" content="机器学习之决策树（二）">
+<meta property="og:url" content="http://liumeng.top/link/jueceshu03041.html">
+<meta property="og:site_name" content="记录收获，重拾旧遗">
+<meta property="og:description" content="机器学习之决策树（二） 决策树学习前了解相关的概念很重要。  决策树相关概念 文章来源：https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;399549773?utm_id&#x3D;0  ​        决策树模型是一种if-else型的模型，通过对数据集的学习，生成树模型的内部节点，内部节点表示对一个属性的判断。以一个小球分类问题为例，假设有100个小球，其中40个为红色球，60个为蓝色球。而小">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202302161604919.png">
+<meta property="article:published_time" content="2023-03-14T00:00:00.000Z">
+<meta property="article:modified_time" content="2023-12-16T14:37:07.447Z">
+<meta property="article:author" content="独孤白">
+<meta property="article:tag" content="经典算法">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202302161604919.png"><link rel="shortcut icon" href="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/favicon.png"><link rel="canonical" href="http://liumeng.top/link/jueceshu03041.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '机器学习之决策树（二）',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-12-16 14:37:07'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = url => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      link.onload = () => resolve()
+      link.onerror = () => reject()
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/font.css"><link rel="stylesheet" href="/css/nav.css"><link rel="stylesheet" href="/css/myStyle.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/avatar.jpg" onerror="onerror=null;src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">56</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">18</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">15</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间线</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202302161604919.png')"><nav id="nav"><span id="blog-info"><a href="/" title="记录收获，重拾旧遗"><span class="site-name">记录收获，重拾旧遗</span></a></span><div id="menus"></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间线</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div><center id="name-container"><a id="page-name" href="javascript:scrollToTop()">PAGE_NAME</a></center><div id="nav-right"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">机器学习之决策树（二）</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2023-03-14T00:00:00.000Z" title="发表于 2023-03-14 00:00:00">2023-03-14</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2.8k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>9分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="机器学习之决策树（二）"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span><span class="post-meta-separator">|</span><span class="post-meta-commentcount"><i class="far fa-comments fa-fw post-meta-icon"></i><span class="post-meta-label">评论数:</span><a href="/link/jueceshu03041.html#post-comment" itemprop="discussionUrl"><span class="valine-comment-count" data-xid="/link/jueceshu03041.html" itemprop="commentCount"><i class="fa-solid fa-spinner fa-spin"></i></span></a></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="机器学习之决策树（二）"><a href="#机器学习之决策树（二）" class="headerlink" title="机器学习之决策树（二）"></a>机器学习之决策树（二）</h1><blockquote>
+<p>决策树学习前了解相关的概念很重要。</p>
+</blockquote>
+<h2 id="决策树相关概念"><a href="#决策树相关概念" class="headerlink" title="决策树相关概念"></a>决策树相关概念</h2><blockquote>
+<p>文章来源：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/399549773?utm_id=0">https://zhuanlan.zhihu.com/p/399549773?utm_id=0</a></p>
+</blockquote>
+<p>​        决策树模型是一种if-else型的模型，通过对数据集的学习，生成树模型的内部节点，内部节点表示对一个属性的判断。以一个小球分类问题为例，假设有100个小球，其中40个为红色球，60个为蓝色球。而小球有三种特征，分别是表面粗糙度、半径和质量。现在需要依据这三个特征来推算出小球颜色。假设我们尝试使用小球半径这一特征来区分小球，如使用0.5作为分界。将这100个小球分到两个箱子里，大于0.5的在一个箱子里，小于等于0.5的在另一个箱子里。我们得到了如下图所示的结果</p>
+<p><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202303042219523.webp" alt="img"></p>
+<p>​        凭感觉可以看出，使用这一特征对小球进行区分，看似红和蓝分的更开了。但这不够严谨，而且无法使用数字去比较使用不同特征去对小球分类获得的结果的好坏，也难以比较r使用0.4或者0.6分类，哪个效果更好。为了度量分类结果的好坏，引入了信息熵的概念。</p>
+<p>​        从定义上讲，<strong>信息熵用来衡量不确定性，不确定性越强，则信息熵越大，不确定性越弱，则信息熵越小。</strong>其公式如下所示。</p>
+<p>​                                                                      <script type="math/tex">H(X)=-\sum_{i=1}^{n} P(X=i) \log _{2} P(X=i)</script></p>
+<p>​        有了信息熵，我们就可以量化计算之前的小球分类问题了。但为了表述准确，还需要引入两个概念，条件熵和信息增益。</p>
+<p>​        <strong>条件熵，定义是在给定随机变量Y的条件下，随机变量X的不确定性。</strong>用通俗的话讲就是，施加一个条件后（如r&gt;0.5），在这一条件下的信息熵。可以类比条件概率去理解。</p>
+<p>​                                                           <script type="math/tex">H(X \mid Y=v)=-\sum_{i=1}^{n} P(X=i \mid Y=v) \log _{2} P(X=i \mid Y=v)</script></p>
+<p>​        <strong>信息增益则是用于衡量给定条件后，信息的不确定性减少了多少</strong>。即加了个条件后，信息熵的变化。</p>
+<p>​                                                                              <script type="math/tex">I(X, Y)=H(X)-H(X \mid Y)</script></p>
+<p>使用这三个概念，再来看小球分类问题。</p>
+<p><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202303042221385.webp" alt="img"></p>
+<p>​        代入公式就可以算出叶子结点的条件熵以及根结点的信息熵。而信息增益则是父节点的熵减去子节点的加权熵。<strong>使用信息增益则可以用来衡量这一节点构建的好坏。</strong></p>
+<p>​                                    <script type="math/tex">\text{信息增益 = 父节点熵 - 子节点的加权熵} = 0.971 - (0.62360.45+0.22540.55)/2=0.5664\\</script></p>
+<h2 id="决策树原理"><a href="#决策树原理" class="headerlink" title="决策树原理"></a>决策树原理</h2><h3 id="ID3"><a href="#ID3" class="headerlink" title="ID3"></a>ID3</h3><p>​        理解了信息增益和决策树的基本概念之后，就可以开始学习决策树的构建算法。这一部分将借鉴于大名鼎鼎的西瓜书里的例子。以选西瓜为例（数据集的情况见下图），根结点(即原始数据集)中，<strong>有8个好瓜和9个坏瓜，信息熵为0.998</strong>。</p>
+<p><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202303042224021.webp" alt="img"></p>
+<p>​        现在开始选择第一个特征，如果第一个特征选色泽，则根据前面介绍的方法，计算出的信息增益为0.109，即Gain(D,色泽)=0.109。同理，如果选择其他特征，则信息增益如下，</p>
+<p><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202303042224027.webp" alt="img"></p>
+<p>​        而该算法的逻辑是<strong>每次进行特征选择时，选取最大信息增益的特征</strong>。而根据计算结果，纹理是信息增益最大的特征。因此该决策树的第一层就构建完成了，其结构见下图</p>
+<p><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202303042224897.webp" alt="img"></p>
+<p>​        使用纹理这一<strong>特征将树的第一层构建完成之后，继续递归寻找除了纹理之外的特征的信息增益最大的特征</strong>。分别对纹理分类后的三个子节点计算增益，以纹理清晰这一子节点为例。继续计算各个特征带来的信息增益，得到如下计算结果。</p>
+<p><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202303042224952.webp" alt="img"></p>
+<p>发现触感、根蒂、脐部的信息增益最大，三则任选其一即可。对这一层递归完成后，得到下图的树结构。</p>
+<p><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202303042224706.webp" alt="img"></p>
+<p><strong>以此类推，直到叶子节点全部输出或无数据集可遍历即结束</strong>。</p>
+<p>在这里总结一下，ID3的决策树算法的流程为：</p>
+<ul>
+<li><p>1.寻找最优特征，即计算信息增益</p>
+</li>
+<li><p>2.将最优特征的特征值作为有向边，判断子数据集</p>
+</li>
+</ul>
+<blockquote>
+<p>若子数据集均为同一类，则输出叶子节点；反之，若子数据集中仍有特征，重复1，2过程，若没有更多特征，则将最多的一类输出为叶子节点</p>
+</blockquote>
+<ul>
+<li>3.叶子节点全部输出或无数据集可遍历即结束。</li>
+</ul>
+<p>​        但ID3算法的缺点依旧明显，从上述例子可以看出，<strong>该方法只适用于计算特征是离散的</strong>，比如触感是硬滑还是软粘这种特征，但<strong>不能处理比如0-1这样的连续特征值</strong>。并且用<strong>这种方式遍历构建决策树，会有过拟合问题</strong>。而且ID3倾向于选择大量值的属性(即特征值多的)。为了解决这些问题，引出了C4.5算法。</p>
+<h3 id="C4-5"><a href="#C4-5" class="headerlink" title="C4.5"></a>C4.5</h3><p>​        <strong>为了解决特征值数量问题对信息增益计算的影响。该算法使用信息增益率替代信息增益作为寻找最优特征的判据</strong>。其计算公式就是信息增益除以子节点的熵。</p>
+<p>​                                                            <script type="math/tex">GainRatio(D|A)=\frac{infoGain(D|A)}{IV(A)}</script></p>
+<p>​                 <script type="math/tex">IV(A)=-\sum_{k=1}^{K}{\frac{|D_k|}{|D|}*log_2{\frac{|D_k|}{|D|}}}</script></p>
+<p>​        其中 $A=[a_1,a_2,…,a_k] $，$K$个值。若使用$A$来对样本集$D$进行划分，则会产生$K$个分支节点，其中第$k$个节点包含$D$中所有属性$A$上取值为$ a_k $的样本，记为 $D_k $。<strong>通常，属性$A$的可能取值数越多（即$K$越大），则$IV(A)$的值通常会越大</strong>。</p>
+<p><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202303042246254.webp" alt="image.png"></p>
+<p>​        <strong>针对ID3算法不能处理连续特征的问题，该算法使用二分法做离散化处理，先将连续特征从小到大排序，对N个连续数据进行N-1个二分划分，遍历N-1个划分点，分别计算这些子节点的信息增益，选择信息增益最大的二分结果作为该连续特征的最佳划分点。</strong></p>
+<p>​        信息增益率准则对可取值数目较少的属性有所偏好。所以，<strong>C4.5算法不是直接选择信息增益率最大的候选划分属性，而是先从候选划分属性中找出<code>信息增益</code>高于平均水平的属性，再从中选择<code>信息增益率</code>最高的</strong>。</p>
+<p><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202303042228018.webp" alt="img"></p>
+<p>​        总结一下，该方法使用信息增益率解决了ID3倾向于特征数量多的特征这一问题，并且实现了应用在连续特征中。并且<strong>可以使用剪枝来避免过拟合</strong>，剪枝由于是一个单独的知识体系，本文先不涉及。但是，可以看出，使用二分法对连续特征离散化的计算量很大。当连续特征数量比较多的时候，往往需要花费很长的时间去计算连续特征的信息增益率。并且，该算法没有考虑各个特征之间的相关性。</p>
+<h3 id="CART3"><a href="#CART3" class="headerlink" title="CART3"></a>CART3</h3><p>​        CART3算法针对分类数，引入了<strong>基尼不纯度（又称基尼指数）</strong>这一概念，这一概念<strong>表示样本集合中在一个随机选中的样本被分错的概率</strong>。<strong>该指数越小表示该集合的纯度越高</strong>，所有样本为同一类时，基尼指数为0。其中pk表示选中的样本属于第k个类别的概率。</p>
+<p>​                                                                                            <script type="math/tex">\operatorname{Gini}(\mathrm{p})=\sum_{k=1}^{K} p_{k}\left(1-p_{k}\right)=1-\sum_{k=1}^{K} p_{k}{ }^{2}</script></p>
+<p>数据集合D在特征A的条件下分成了D1和D2，则集合D的基尼指数被定义为：</p>
+<p>​                                                                                        <script type="math/tex">\operatorname{Gini}(D, A)=\frac{\left|D_{1}\right|}{|D|} \operatorname{Gini}\left(D_{1}\right)+\frac{\left|D_{2}\right|}{|D|} \operatorname{Gini}\left(D_{2}\right)</script></p>
+<p>​        分类依据和前两种算法不同，其他都大体相似，在此不过多赘述。本文重点关注<strong>CART3回归树，回归树的构建是用平方误差最小化准则进行特征选择，去生成二叉树。</strong></p>
+<p>目标准则可以用如下公式来表达，第j个特征选择s为切分点，使得label值和该划分区域的值c平方和最小。</p>
+<p>​                                                                          <script type="math/tex">\min {j, s}\left[\min {c_{1}} \sum_{x_{i} \in R_{1}(j, s)}\left(y_{i}-c_{1}\right)^{2}+\min {c{2}} \sum_{x_{2} \in R_{2}(j, s)}\left(y_{i}-c_{2}\right)^{2}\right]</script></p>
+<p>第j个特征选择s为切分点，则划分出了两个集合，其中x为特征值，y为label。</p>
+<p>​                                                                                 <script type="math/tex">R_{1}(j , s)=\left\{x \mid x^{(j)} \leq s\right\}, \quad R_{2}(j, s)=\left\{x \mid x^{(j)}>s\right\}.</script></p>
+<p>被s划分出的两个区域，使用这两个区域的均值代表这个两个区域的值，即</p>
+<p>​                                                                                      <script type="math/tex">c_{1}=\frac{1}{N_{1}} \sum_{x_{i} \in R_{1}} y_{i}, \quad c_{2}=\frac{1}{N_{2}} \sum_{x_{i} \in R_{2}} y_{i}</script></p>
+<p>这是c的一般形式，递归至整棵树构建完成。</p>
+<p>​                                                                                      <script type="math/tex">\hat{c}_{m}=\frac{1}{N_{m}} \operatorname{\sum}_{x_{i} \in R_{m}(j, s)} y_{i}, x \in R_{m}, m=1,2</script></p>
+<p>该回归树的数学表达式，可理解为将输入空间划分为M个区域$R1,R2,…Rm$所生成的决策树。 <script type="math/tex">f(x)=\sum_{m=1}^{M} \hat{c}_{m} I(x \in R)</script></p>
+<p>相信第一次看到上述的公式很大可能一头雾水吧，数学表达式为了反应一般情况而变得十分抽象。下面给出一个例子，结合例子再回过去看上面的公式和符号，就会比较清晰。假如目标是对下面这一组x和y做回归。</p>
+<p><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202307011636261.png" alt="img"></p>
+<p>​        该特征为连续特征，前文提到的<strong>C4.5算法采取的策略是对其进行二分法并逐个计算信息增益率，来寻找最优的切分点</strong>。而<strong>CART3算法则不然，该算法计算不同的切分点的平方误差</strong>。以切分点$s=1.5$为例，则该切分点划出了两个区域$R1={1}，R2={2,3,…,10}$。计算这两个区域中y的平均值，得$c1=5.56，c2=7.50$。现在需要计算使用c1和c2代表该区域的值是否准确，带入前文的目标准则函数来计算平方误差。</p>
+<p>​                                       <script type="math/tex">m(s)=\min _{j, s}\left[\min _{c_{1}} \sum_{x_{i} \in R_{1}(j, s)}\left(y_{i}-c_{1}\right)^{2}+\min _{c_{2}} \sum_{x_{i} \in R_{2}(j, s)}\left(y_{i}-c_{2}\right)^{2}\right]=0+15.72=15.72</script></p>
+<p>这表明了使用$s=1.5$作为切分点，平方误差为15.72。同理，算出切分点s在$1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5$时的m(s)如下表。</p>
+<p><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202307011637293.png" alt="img"></p>
+<p>可以看出，<strong>$s=6.5$时，该误差最小。因此在6.5处设置切分点是最优选择</strong>。</p>
+<p>此时，$c1=6.24，c2=8.91$。则该节点的表达式为</p>
+<p>​                                                                                        <script type="math/tex">\begin{array}{c} T_{1}(x)=\left\{\begin{array}{ll} 6.24, & x<6.5 \\ 8.91, & x \geq 6.5 \end{array}\right. \\ f_{1}(x)=T_{1}(x) \end{array}</script></p>
+<p>之后，在子集合中继续递归，直到最终将构建出该回归树模型。</p>
+<p>​        至此，主要的决策树算法已经讲解的差不多了。为了进一步提高树模型的精度，将结合集成学习的思想。集成学习的两大思想分别为Boosting和Bagging，结合树模型，则分别对应着GBDT和Random Forest算法。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://liumeng.top">独孤白</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://liumeng.top/link/jueceshu03041.html">http://liumeng.top/link/jueceshu03041.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://liumeng.top" target="_blank">记录收获，重拾旧遗</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%BB%8F%E5%85%B8%E7%AE%97%E6%B3%95/">经典算法</a></div><div class="post_share"><div class="social-share" data-image="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202302161604919.png" data-sites="wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/link/jueceshu0304.html" title="机器学习之决策树（一）"><img class="cover" src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202302161604919.png" onerror="onerror=null;src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">机器学习之决策树（一）</div></div></a></div><div class="next-post pull-right"><a href="/link/8f66e916.html" title="1.8tft彩屏测试代码（stm32f407ve）"><img class="cover" src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202302281933583.png" onerror="onerror=null;src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">1.8tft彩屏测试代码（stm32f407ve）</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/link/pingjia0331.html" title="评价方法及标准"><img class="cover" src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202302161604919.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-03-31</div><div class="title">评价方法及标准</div></div></a></div><div><a href="/link/jueceshu0304.html" title="机器学习之决策树（一）"><img class="cover" src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202302161604919.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-03-14</div><div class="title">机器学习之决策树（一）</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/avatar.jpg" onerror="this.onerror=null;this.src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">独孤白</div><div class="author-info__description">天行健 君子以自强不息</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">56</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">18</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">15</div></a></div><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/liumeng-hub" target="_blank" title="https://github.com/liumeng-hub"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:915738464@qq.com" target="_blank" title="915738464@qq.com"><i class="fas fa-envelope"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E5%86%B3%E7%AD%96%E6%A0%91%EF%BC%88%E4%BA%8C%EF%BC%89"><span class="toc-number">1.</span> <span class="toc-text">机器学习之决策树（二）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%B3%E7%AD%96%E6%A0%91%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5"><span class="toc-number">1.1.</span> <span class="toc-text">决策树相关概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%B3%E7%AD%96%E6%A0%91%E5%8E%9F%E7%90%86"><span class="toc-number">1.2.</span> <span class="toc-text">决策树原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ID3"><span class="toc-number">1.2.1.</span> <span class="toc-text">ID3</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#C4-5"><span class="toc-number">1.2.2.</span> <span class="toc-text">C4.5</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CART3"><span class="toc-number">1.2.3.</span> <span class="toc-text">CART3</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/link/pdfaddpicture.html" title="PDF添加图片与文字"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202312162235168.png" onerror="this.onerror=null;this.src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="PDF添加图片与文字"/></a><div class="content"><a class="title" href="/link/pdfaddpicture.html" title="PDF添加图片与文字">PDF添加图片与文字</a><time datetime="2023-12-26T00:00:00.000Z" title="发表于 2023-12-26 00:00:00">2023-12-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/link/topset.html" title="堆与优先队列"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png" onerror="this.onerror=null;this.src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="堆与优先队列"/></a><div class="content"><a class="title" href="/link/topset.html" title="堆与优先队列">堆与优先队列</a><time datetime="2023-09-02T00:00:00.000Z" title="发表于 2023-09-02 00:00:00">2023-09-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/link/suixiangluday20.html" title="代码随想录(day20)"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png" onerror="this.onerror=null;this.src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="代码随想录(day20)"/></a><div class="content"><a class="title" href="/link/suixiangluday20.html" title="代码随想录(day20)">代码随想录(day20)</a><time datetime="2023-09-01T00:00:00.000Z" title="发表于 2023-09-01 00:00:00">2023-09-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/link/paixun2.html" title="排序算法n方"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png" onerror="this.onerror=null;this.src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="排序算法n方"/></a><div class="content"><a class="title" href="/link/paixun2.html" title="排序算法n方">排序算法n方</a><time datetime="2023-09-01T00:00:00.000Z" title="发表于 2023-09-01 00:00:00">2023-09-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/link/paixunlogn.html" title="排序算法nlogn"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png" onerror="this.onerror=null;this.src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="排序算法nlogn"/></a><div class="content"><a class="title" href="/link/paixunlogn.html" title="排序算法nlogn">排序算法nlogn</a><time datetime="2023-09-01T00:00:00.000Z" title="发表于 2023-09-01 00:00:00">2023-09-01</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2023 By liumeng</div><div class="framework-info"><span>小破站正在安全运行 </span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"><use id="modeicon" xlink:href="#icon-moon"></use></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container').forEach(node => {
+            if (node.hasAttribute('display')) {
+              btf.wrap(node, 'div', { class: 'mathjax-overflow' })
+            } else {
+              btf.wrap(node, 'span', { class: 'mathjax-overflow' })
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script>(() => {
+  const $mermaidWrap = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaidWrap.length) {
+    window.runMermaid = () => {
+      window.loadMermaid = true
+      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+      Array.from($mermaidWrap).forEach((item, index) => {
+        const mermaidSrc = item.firstElementChild
+        const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+        const mermaidID = 'mermaid-' + index
+        const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+        mermaid.mermaidAPI.render(mermaidID, mermaidDefinition, (svgCode) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svgCode)
+        })
+      })
+    }
+
+    const loadMermaid = () => {
+      window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+    }
+
+    window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+  }
+})()</script><script>function loadValine () {
+  function initValine () {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: 'nemsAMaYAJs1jMlB2Gqa1lCI-MdYXbMMI',
+      appKey: '96YIeaSpipct4pRmJ7Kt8r5O',
+      avatar: 'monsterid',
+      serverURLs: 'https://server.liumeng.top',
+      emojiMaps: "",
+      path: window.location.pathname,
+      master: 'bc41b72793c99baf4f681cf457f64ec1',
+      tagMeta: ["博主","小伙伴","访客"],
+      friends: [],
+      visitor: false
+    }, null))
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('/js/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><script src="/js/jquery.js" async></script><script src="/js/foot.js" async></script><script src="http://cdn.bootcss.com/pace/1.0.2/pace.min.js" async></script><script src="/js/sun_moon.js" async></script><script src="/js/nav.js" async></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

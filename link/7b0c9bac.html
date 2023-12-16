@@ -1,0 +1,1331 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>Google调参笔记 | 记录收获，重拾旧遗</title><meta name="author" content="独孤白"><meta name="copyright" content="独孤白"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Deep Learning Tuning PlaybookThis is not an officially supported Google product. Varun Godbole&amp;dagger;, George E. Dahl&amp;dagger;, Justin Gilmer&amp;dagger;, Christopher J. Shallue&amp;Dagger;, Zachary Nado&amp;dagg">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Google调参笔记">
+<meta property="og:url" content="http://liumeng.top/link/7b0c9bac.html">
+<meta property="og:site_name" content="记录收获，重拾旧遗">
+<meta property="og:description" content="Deep Learning Tuning PlaybookThis is not an officially supported Google product. Varun Godbole&amp;dagger;, George E. Dahl&amp;dagger;, Justin Gilmer&amp;dagger;, Christopher J. Shallue&amp;Dagger;, Zachary Nado&amp;dagg">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306191021819.jpeg">
+<meta property="article:published_time" content="2023-06-18T00:00:00.000Z">
+<meta property="article:modified_time" content="2023-12-16T14:37:07.439Z">
+<meta property="article:author" content="独孤白">
+<meta property="article:tag" content="调参">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306191021819.jpeg"><link rel="shortcut icon" href="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/favicon.png"><link rel="canonical" href="http://liumeng.top/link/7b0c9bac.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Google调参笔记',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-12-16 14:37:07'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = url => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      link.onload = () => resolve()
+      link.onerror = () => reject()
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/font.css"><link rel="stylesheet" href="/css/nav.css"><link rel="stylesheet" href="/css/myStyle.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/avatar.jpg" onerror="onerror=null;src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">56</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">18</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">15</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间线</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306191021819.jpeg')"><nav id="nav"><span id="blog-info"><a href="/" title="记录收获，重拾旧遗"><span class="site-name">记录收获，重拾旧遗</span></a></span><div id="menus"></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间线</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div><center id="name-container"><a id="page-name" href="javascript:scrollToTop()">PAGE_NAME</a></center><div id="nav-right"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Google调参笔记</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2023-06-18T00:00:00.000Z" title="发表于 2023-06-18 00:00:00">2023-06-18</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BD%91%E7%BB%9C%E4%BC%98%E5%8C%96/">网络优化</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">25.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>76分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Google调参笔记"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span><span class="post-meta-separator">|</span><span class="post-meta-commentcount"><i class="far fa-comments fa-fw post-meta-icon"></i><span class="post-meta-label">评论数:</span><a href="/link/7b0c9bac.html#post-comment" itemprop="discussionUrl"><span class="valine-comment-count" data-xid="/link/7b0c9bac.html" itemprop="commentCount"><i class="fa-solid fa-spinner fa-spin"></i></span></a></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="Deep-Learning-Tuning-Playbook"><a href="#Deep-Learning-Tuning-Playbook" class="headerlink" title="Deep Learning Tuning Playbook"></a>Deep Learning Tuning Playbook</h1><p><em>This is not an officially supported Google product.</em></p>
+<p><strong>Varun Godbole<sup>&dagger;</sup>, George E. Dahl<sup>&dagger;</sup>, Justin Gilmer<sup>&dagger;</sup>, Christopher J. Shallue<sup>&Dagger;</sup>, Zachary Nado<sup>&dagger;</sup></strong></p>
+<p>&dagger; Google Research, Brain Team</p>
+<p>&Dagger; Harvard University</p>
+<h2 id="Table-of-Contents"><a href="#Table-of-Contents" class="headerlink" title="Table of Contents"></a>Table of Contents</h2><ul>
+<li><a href="#who-is-this-document-for">这个文件是给谁看的?</a></li>
+<li><a href="#why-a-tuning-playbook">为什么会有这篇调优文档?</a></li>
+<li><a href="#guide-for-starting-a-new-project">开始一个新项目的指南</a><ul>
+<li><a href="#choosing-a-model-architecture">选择一个模型架构</a></li>
+<li><a href="#choosing-the-optimizer">选择优化器</a></li>
+<li><a href="#choosing-the-batch-size">选择批量大小</a></li>
+<li><a href="#choosing-the-initial-configuration">选择初始配置</a></li>
+</ul>
+</li>
+<li><a href="#a-scientific-approach-to-improving-model-performance">改进模型性能的科学方法</a><ul>
+<li><a href="#the-incremental-tuning-strategy">增量调优策略</a></li>
+<li><a href="#exploration-vs-exploitation">探索未知 vs 利用已知</a></li>
+<li><a href="#choosing-the-goal-for-the-next-round-of-experiments">选择下一轮实验的目标</a></li>
+<li><a href="#Designing-the-next-round-of-experiments">设计下一轮实验</a></li>
+<li><a href="#Determining-whether-to-adopt-a-training-pipeline-change-or-hyperparameter-configuration">决定是否采用训练通道变更或超参数配置</a></li>
+<li><a href="#After-exploration-concludes">探索结束后</a></li>
+</ul>
+</li>
+<li><a href="#Determining-the-number-of-steps-for-each-training-run">确定每次训练的步数</a><ul>
+<li><a href="#Deciding-how-long-to-train-when-training-is-not-compute-bound">决定训练不受计算限制时训练多长时间</a></li>
+<li><a href="#Deciding-how-long-to-train-when-training-is-compute-bound">决定训练受计算限制时训练多长时间</a></li>
+</ul>
+</li>
+<li><a href="#Additional-guidance-for-the-training-pipeline">训练通道的附加指南</a><ul>
+<li><a href="#Optimizing-the-input-pipeline">优化输入通道</a></li>
+<li><a href="Evaluating-model-performance">评估模型性能</a></li>
+<li><a href="#Saving-checkpoints-and-retrospectively-selecting-the-best-checkpoint">保存检查点并回顾性的选择最佳检查点</a></li>
+<li><a href="#Setting-up-experiment-tracking">设置实验跟踪</a></li>
+<li><a href="#Batch-normalization-implementation-details">批量归一化实现细节</a></li>
+<li><a href="#Considerations-for-multi-host-pipelines">多主机通道考虑</a></li>
+</ul>
+</li>
+<li><a href="#faqs">常见问题</a></li>
+<li><a href="#acknowledgments">Acknowledgments</a></li>
+<li><a href="#citing">Citing</a></li>
+<li><a href="#contributing">Contributing</a></li>
+</ul>
+<h2 id="Who-is-this-document-for"><a href="#Who-is-this-document-for" class="headerlink" title="Who is this document for?"></a>Who is this document for?</h2><p>​        本文档适用于有兴趣<strong>最大化深度学习模型的性能</strong>的工程师和研究人员(个人和团队)。我们假设机器学习和深度学习概念的基本知识。</p>
+<p>​        我们的重点是<strong>超参数调优的过程</strong>。我们谈到了其他深度学习训练方面，如管道实现和优化，但我们对这些方面的处理并不打算是完整的。</p>
+<p>​        我们假设机器学习问题是一个监督学习问题或者看起来很像的东西(例如自我监督)。也就是说，有些本文件中的规定也可以适用于其他类型的问题。</p>
+<h2 id="Why-a-tuning-playbook"><a href="#Why-a-tuning-playbook" class="headerlink" title="Why a tuning playbook?"></a>Why a tuning playbook?</h2><p>​        目前，要让深度神经网络在实践中很好地工作，需要进行大量的辛劳和猜测。更糟糕的是，人们使用深度学习来获得良好结果的实际方法很少被记录下来。论文掩盖了导致最终结果的过程，以呈现一个更清晰的故事，而研究商业问题的机器学习工程师很少有时间退一步，概括他们的过程。教科书倾向于回避实际指导，优先考虑基本原则，即使它们的作者在应用工作中有必要的经验，可以提供有用的建议。在准备创建本文档时，我们找不到任何全面的尝试来真正解释“如何使用深度学习获得良好的结果”。相反，我们在博客文章和社交媒体上找到了一些建议的片段，在研究论文的附录中发现了一些技巧，偶尔会有关于某个特定项目或管道的案例研究，还有很多困惑。深度学习专家和不太熟练的从业者使用表面上相似的方法所取得的结果之间存在着巨大的鸿沟。与此同时，这些专家欣然承认，他们所做的一些事情可能并不完全合理。随着深度学习的成熟并对世界产生更大的影响，社区需要更多的资源来涵盖有用的配方，包括所有对获得良好结果至关重要的实际细节。</p>
+<p>​        我们是一个由五名研究人员和工程师组成的团队，他们在深度学习领域工作了多年，其中一些人早在2006年就开始了。我们已经将深度学习应用于从语音识别到天文学的所有问题，并在此过程中学到了很多东西。这份文档源于我们自己训练神经网络的经验，教授新的机器学习工程师，并就深度学习的实践为我们的同事提供建议。尽管看到深度学习从少数学术实验室实践的机器学习方法发展为数十亿人使用的产品技术是令人欣慰的，但深度学习作为一门工程学科仍处于起步阶段，我们希望这份文件鼓励其他人帮助系统化该领域的实验协议。</p>
+<p>​        这份文件的出现是为了明确我们自己的深度学习方法，因此它代表了作者在写作时的观点，而不是任何形式的客观事实。我们自己在超参数调优方面的挣扎使它成为我们指南的一个特别重点，但我们也涵盖了我们在工作中遇到的其他重要问题(或看到的错误)。我们的意图是让这项工作成为一份活的文件，随着我们信念的改变而成长和发展。例如，关于调试和减轻训练失败的材料在两年前是不可能写出来的，因为它是基于最近的结果和正在进行的调查。不可避免地，我们的一些建议将需要更新，以说明新的结果和改进的工作流程。我们不知道“最佳”的深度学习配方，但在社区开始写下并讨论不同的过程之前，我们无法指望找到它。为此，我们鼓励那些对我们的建议有异议的读者提出替代建议，并提供令人信服的证据，这样我们就可以更新剧本。我们也很乐意看到可能有不同建议的替代指南和剧本，这样我们就可以作为一个社区努力实现最佳实践。最后，任何标有🤖表情符号的区域都是我们想做更多研究的地方。只有在尝试写完这本剧本之后，我才完全清楚在深度学习从业者的工作流程中可以找到多少有趣而被忽视的研究问题。</p>
+<h2 id="指导开始一个新项目"><a href="#指导开始一个新项目" class="headerlink" title="指导开始一个新项目"></a><strong>指导开始一个新项目</strong></h2><p>我们在调优过程中所做的许多决定可以在项目开始时一次性做出，只有在环境发生变化时才会偶尔重新进行。</p>
+<p>我们的指导原则基于以下假设:</p>
+<ul>
+<li>已经完成了足够多的问题制定、数据清理等基本工作，因此在模型架构和训练配置上花费时间是有意义的。</li>
+<li>已经建立了一个进行训练和评估的流程，且很容易为各种感兴趣的模型执行训练和预测工作。</li>
+<li>已经选择并实现了适当的度量。这些应该尽可能代表在部署环境中将要度量的内容。</li>
+</ul>
+<h3 id="选择模型结构"><a href="#选择模型结构" class="headerlink" title="选择模型结构"></a><strong>选择模型结构</strong></h3><p><strong><em>总结:</em></strong> <em>当开始一个新项目时，尝试重用一个已经工作的模型</em></p>
+<ul>
+<li>选择一个建立良好的、常用的模型体系结构来开始工作。以后总是可以构建自定义模型。</li>
+<li>模型架构通常具有各种超参数，它们决定模型的大小和其他细节(例如层数、层宽度、激活函数类型)。<ul>
+<li>因此，选择架构实际上意味着选择一系列不同的模型(每个模型超参数设置对应一个模型)。</li>
+<li>我们将在<a href="#选择初始配置">选择初始配置</a>和<a href="# 提高模型性能的科学方法">提高模型性能的科学方法</a>中考虑模型超参数的选择问题。</li>
+</ul>
+</li>
+<li>如果可能的话，试着找到一篇论文，尽可能地解决手头的问题，并重现该模型作为起点。</li>
+</ul>
+<h3 id="选择优化器"><a href="#选择优化器" class="headerlink" title="选择优化器"></a><strong>选择优化器</strong></h3><p><strong><em>总结:</em></strong> <em>从针对当前问题类型的最流行的优化器开始</em></p>
+<ul>
+<li>在所有类型的机器学习问题和模型架构中，没有优化器是“最好的”。即使只是<a target="_blank" rel="noopener" href="https://arxiv.org/abs/1910.05446">比较优化器的性能是一项艰巨的任务</a>。🤖</li>
+<li>我们建议坚持使用成熟的、流行的优化器，尤其是在开始一个新项目的时候。<ul>
+<li>理想情况下，选择用于同一类型问题的最流行的优化器。</li>
+</ul>
+</li>
+<li>准备好关注所选优化器的<strong>所有</strong>超参数。<ul>
+<li>具有更多超参数的优化器可能需要更多的调优工作来找到最佳配置。</li>
+<li>在项目的开始阶段，当我们试图找到各种其他超参数的最佳值(例如架构超参数)，同时将优化器超参数视为<a href="# identifying-scientific-nuisance-and-fixed-hyperparameters">麻烦的参数</a>时，这一点尤其相关。</li>
+<li>从一个更简单的优化器开始可能更好(例如，具有固定动量的SGD或具有固定$\epsilon$， $\beta<em>{1}$的Adam $\beta</em>{2}$)在项目的初始阶段，然后切换到更通用的优化器。</li>
+</ul>
+</li>
+<li>我们喜欢的完善的优化器包括(但不限于):<ul>
+<li><a href="#所有流行的优化算法的更新规则是什么?">SGD with momentum</a>(我们喜欢Nesterov变体)</li>
+<li><a href="#所有流行的优化算法的更新规则是什么?">Adam和NAdam</a>，这比有动量的SGD更通用。注意Adam有4个可调超参数<a target="_blank" rel="noopener" href="https://arxiv.org/abs/1910.05446">它们都很重要</a>!<ul>
+<li>参见<a href="#如何调优Adam的超参数">如何调优Adam的超参数?</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="选择批次大小"><a href="#选择批次大小" class="headerlink" title="选择批次大小"></a>选择批次大小</h3><p><strong><em>总结:</em></strong> <em>批大小决定了训练速度，不应用于直接调优验证集性能。通常，理想的批大小将是可用硬件支持的最大批大小</em></p>
+<ul>
+<li>批处理大小是决定<em>训练时间</em>和<em>计算资源消耗</em>的关键因素。</li>
+<li>增加批大小通常会减少训练时间。这是非常有益的，因为它:<ul>
+<li>允许在固定的时间间隔内更彻底地调整超参数，可能会产生更好的最终模型。</li>
+<li>减少开发周期的延迟，允许更频繁地测试新想法。</li>
+</ul>
+</li>
+<li>增加批处理大小可以减少、增加或不改变资源消耗。</li>
+<li>批大小不应该被当作验证集性能的可调超参数。<ul>
+<li>只要所有超参数都经过了良好的调优(特别是学习率和正则化超参数)，并且训练步骤的数量足够多，使用任何批处理大小都应该可以获得相同的最终性能(参见<a target="_blank" rel="noopener" href="https://arxiv.org/abs/1811.03600">Shallue et al. 2018</a>)。</li>
+<li>请参阅<a href="#为什么不调整批大小以直接提高验证集性能?">为什么不调整批大小以直接提高验证集性能?</a></li>
+</ul>
+</li>
+</ul>
+<h4 id="确定可行的批大小和估计训练吞吐量"><a href="#确定可行的批大小和估计训练吞吐量" class="headerlink" title="确定可行的批大小和估计训练吞吐量"></a>确定可行的批大小和估计训练吞吐量</h4><details><summary><em>[Click to expand]</em></summary>
+<br>
+
+-   对于给定的模型和优化器，可用硬件通常会支持一定范围的批处理大小。限制因素通常是显存。
+-   不幸的是，如果不运行或至少编译完整的训练程序，就很难计算出哪些批处理大小适合内存。
+-   最简单的解决方案通常是以不同的批处理大小(例如增加2的幂)运行少量步骤的训练作业，直到其中一个作业超过可用内存。
+-   对于每个批次大小，我们应该训练足够长的时间，以获得*训练吞吐量*的可靠估计
+
+<p align="center">训练吞吐量(training throughput)=(每秒处理的示例数量)</p>
+
+<p align="center">或者，等价每一个step的时间(time per step)</p>
+
+<p align="center">time per step = (batch size) / (training throughput)</p>
+
+-   当显存尚未饱和时，如果批量大小翻倍，训练吞吐量也应该翻倍(或至少接近翻倍)。同样，随着批处理大小的增加，每个步骤的时间应该是恒定的(或至少接近恒定)。
+-   如果不是这种情况，则训练流程存在瓶颈，例如计算节点之间的I/O或同步。在继续之前，这可能值得诊断和纠正。
+-   如果训练吞吐量只增加到某个最大批处理大小，那么我们应该只考虑最大批处理大小，即使硬件支持更大的批处理大小。也就是说选择CPU和GPU的短板来作为上限，能更快的处理。
+    -   使用更大批量的所有好处都假定训练吞吐量增加。如果不能，修复瓶颈或使用较小的批处理大小。
+    -   **梯度累积**模拟的批处理大小大于硬件所能支持的批处理大小，因此不提供任何吞吐量优势。在实际工作中一般应避免使用。
+-   这些步骤可能需要在每次模型或优化器更改时重复执行(例如，不同的模型架构可能允许更大的批处理大小以适应显存)。
+
+</details>
+
+<h4 id="选择批的大小以减少训练时间"><a href="#选择批的大小以减少训练时间" class="headerlink" title="选择批的大小以减少训练时间"></a><strong>选择批的大小以减少训练时间</strong></h4><p align="center">Training time = (time per step) x (total number of steps)</p>
+
+<ul>
+<li>对于所有可行的批量大小，我们通常可以认为每一步的时间近似恒定。当没有并行计算的开销，并且所有的训练瓶颈都已经被诊断和纠正时，这是正确的(关于如何识别训练瓶颈，请参阅<a href="#确定可行的批大小和估计训练吞吐量">前一节</a>。在实践中，增加批处理大小通常至少会产生一些开销。</li>
+<li>随着批处理大小的增加，达到固定性能目标所需的总步骤数通常会减少(当批处理大小改变时，所有相关的超参数都被重新调优;<a target="_blank" rel="noopener" href="https://arxiv.org/abs/1811.03600">Shallue et al. 2018</a>)。<ul>
+<li>例如，批处理大小加倍可能会使所需的总步骤数减半。这被称为完美缩放。</li>
+<li>完美的缩放适用于所有批量大小，直到一个关键批量大小，超过这个批量大小，就会实现收益递减。</li>
+<li>最终，增加批大小不再减少训练步骤的数量(但不会增加它)。</li>
+</ul>
+</li>
+<li>因此，使训练时间最小化的批处理大小通常是最大的批处理大小，但仍然可以减少所需的训练步骤数。<ul>
+<li>批处理大小取决于数据集、模型和优化器，如何计算它是一个开放的问题，而不是为每个新问题通过实验找到它。🤖</li>
+<li>在比较批量大小时，注意示例预算/<a target="_blank" rel="noopener" href="https://developers.google.com/machine-learning/glossary#epoch">epoch</a>预算(运行所有实验，同时固定训练示例演示的数量)和步骤预算(运行所有实验，并固定训练步骤的数量)之间的区别。<ul>
+<li>将批大小与epoch预算进行比较只能探测完美的扩展机制，即使当更大的批大小仍然可以通过减少所需的训练步骤数量来提供有意义的加速。</li>
+</ul>
+</li>
+<li><strong>通常，可用硬件支持的最大批大小将小于临界批大小。因此，一个好的经验法则(不进行任何实验)是使用尽可能大的批处理大小。</strong></li>
+</ul>
+</li>
+<li>如果使用更大的批量会增加训练时间，那就没有意义了。</li>
+</ul>
+<p>&lt;/details&gt;</p>
+<h4 id="选择批处理大小以最小化资源消耗"><a href="#选择批处理大小以最小化资源消耗" class="headerlink" title="选择批处理大小以最小化资源消耗"></a><strong>选择批处理大小以最小化资源消耗</strong></h4><details><summary><em>[Click to expand]</em></summary>
+<br>
+- 增加批处理规模会带来两种资源成本:
+
+  1. *前期成本*，例如购买新硬件或重写培训管道以实现多gpu /多tpu培训。
+
+  2. *使用成本*，例如根据团队的资源预算计费，从云提供商计费，电力/维护成本。
+- 如果增加批量规模的前期成本很大，那么最好将增加批量规模推迟到项目成熟后，这样更容易评估成本效益权衡。实现多主机并行训练程序可能会引入[bug](#多主机管道的注意事项)和[微妙问题](#Batchnorm实现细节)，因此最好从一个更简单的管道开始。(另一方面，在需要进行大量调优实验的过程早期，训练时间的大幅加速可能非常有益)。
+- 我们将总使用成本(可能包括多种不同类型的成本)称为“资源消耗”。我们可以将资源消耗分解为以下几个部分:
+
+<p align="center">资源消耗=(每步资源消耗)x(总步数)</p>
+
+-   增加批量大小通常允许我们[减少总步骤数](#选择批的大小以减少训练时间)。资源消耗是增加还是减少取决于每一步消耗的变化情况。
+    -   增加批处理大小可能会减少资源消耗。例如，如果具有较大批处理大小的每个步骤都可以在与较小批处理大小相同的硬件上运行(每个步骤只增加了少量时间)，那么每个步骤所增加的资源消耗可能会被步骤数量的减少所抵消。
+    -   增加批处理大小可能不会改变资源消耗。例如，如果批处理大小增加一倍，所需的步骤数减半，使用的gpu数量增加一倍，那么总消耗(以gpu小时为单位)将不会改变。
+    -   增加批处理大小可能会增加资源消耗。例如，如果增加批处理大小需要升级硬件，那么每一步消耗的增加可能会超过减少的步骤数。
+
+</details>
+
+<h4 id="更改批处理大小需要重新调优大多数超参数"><a href="#更改批处理大小需要重新调优大多数超参数" class="headerlink" title="更改批处理大小需要重新调优大多数超参数"></a><strong>更改批处理大小需要重新调优大多数超参数</strong></h4><details><summary><em>[Click to expand]</em></summary>
+<br>
+-   **大多数超参数的最优值对批量大小敏感**。因此，更改批处理大小通常需要重新开始调优过程。
+-   与批处理大小相互作用最强烈的超参数是优化器超参数(例如学习率，动量)和正则化超参数，因此对每个批处理大小分别进行调优是最重要的。
+-   在项目开始时选择批处理大小时请记住这一点。如果稍后需要切换到不同的批处理大小，为新的批处理大小重新调整所有内容可能会很困难、耗时且昂贵。
+
+</details>
+
+<h4 id="Batchnorm与批量大小如何相互作用"><a href="#Batchnorm与批量大小如何相互作用" class="headerlink" title="Batchnorm与批量大小如何相互作用"></a><strong>Batchnorm与批量大小如何相互作用</strong></h4><details><summary><em>[Click to expand]</em></summary>
+<br>
+-   批量大小范数比较复杂，通常应该使用不同于梯度计算的批大小来计算统计量。有关详细讨论，请参阅[Batchnorm实现细节](#Batchnorm实现细节)。
+
+</details>
+
+<h3 id="选择初始配置"><a href="#选择初始配置" class="headerlink" title="选择初始配置"></a><strong>选择初始配置</strong></h3><ul>
+<li>在开始超参数调优之前，我们必须确定起始点。这包括指定(1)模型配置(例如层数)，(2)优化器超参数(例如学习率)，以及(3)训练步骤的数量。</li>
+<li>确定这个初始配置将需要一些手动配置的训练运行和试错。</li>
+<li>我们的指导原则是找到一个简单、相对快速、相对低资源消耗的配置，以获得“合理”的结果。<ul>
+<li>“简单”是指尽可能避免花哨的装饰;这些都可以在以后添加。即使事后证明这些功能是有用的，在初始配置中添加它们也有浪费时间调整无用功能和/或陷入不必要的复杂性的风险。<ul>
+<li>例如，在添加花哨的衰减时间表之前，先从恒定的学习速度开始。</li>
+</ul>
+</li>
+<li>选择一个快速且消耗最少资源的初始配置将使超参数调优更加有效。<ul>
+<li>例如，从一个较小的模型开始。</li>
+</ul>
+</li>
+<li>“合理”的性能取决于问题，但至少意味着训练过的模型在验证集上的表现比随机机会要好得多(尽管它可能坏到不值得部署)。</li>
+</ul>
+</li>
+<li>选择训练步数涉及到平衡以下方面:<ul>
+<li>一方面，训练更多的步骤可以提高性能，使超参数调优更容易(参见<a target="_blank" rel="noopener" href="https://arxiv.org/abs/1811.03600">Shallue et al. 2018</a>)。</li>
+<li>另一方面，更少步骤的训练意味着每次训练运行更快，使用更少的资源，通过减少周期之间的时间和允许更多的实验并行运行来提高调优效率。此外，如果一开始选择了一个不必要的大步骤预算，那么在接下来的过程中可能很难改变它，例如，一旦学习率计划针对该步骤数进行了调整。</li>
+</ul>
+</li>
+</ul>
+<h2 id="提高模型性能的科学方法"><a href="#提高模型性能的科学方法" class="headerlink" title="提高模型性能的科学方法"></a><strong>提高模型性能的科学方法</strong></h2><p>就本文而言，机器学习开发的最终目标是最大化已部署模型的效用。尽管不同应用程序的开发过程在许多方面有所不同(例如，时间长度、可用的计算资源、模型类型)，但我们通常可以在任何问题上使用相同的基本步骤和原则。</p>
+<p>我们的指导原则基于以下假设:</p>
+<ul>
+<li>已经有一个完全运行的训练流程，以及一个获得合理结果的配置。</li>
+<li>有足够的计算资源来进行有意义的调优实验，并并行运行至少几个训练工作。</li>
+</ul>
+<h3 id="增量调优策略"><a href="#增量调优策略" class="headerlink" title="增量调优策略"></a><strong>增量调优策略</strong></h3><p><strong><em>总结:</em></strong> <em>从一个简单的配置开始，逐步改进，同时建立对问题的洞察力。确保任何改进都是基于强有力的证据，以避免增加不必要的复杂性。</em></p>
+<ul>
+<li>我们的最终目标是找到一个配置，最大限度地提高我们的模型的性能。<ul>
+<li>在某些情况下，我们的目标是在一个固定的截止日期前最大化我们可以改进模型的程度(例如提交给一个比赛)。</li>
+<li>在其他情况下，我们希望无限期地不断改进模型(例如，不断改进生产中使用的模型)。</li>
+</ul>
+</li>
+<li>原则上，我们可以通过使用算法自动搜索可能配置的整个空间来最大化性能，但这不是一个实际的选择。<ul>
+<li>可能配置的空间非常大，目前还没有任何复杂的算法能够在没有人类引导的情况下有效地搜索这个空间。</li>
+</ul>
+</li>
+<li>大多数自动搜索算法依赖于手工设计的“搜索空间”，该空间定义了要搜索的配置集，而这些搜索空间可能相当重要。</li>
+<li>最大化性能的最有效方法是从简单的配置开始，逐步添加功能，并在深入了解问题的同时进行改进。<ul>
+<li>我们在每一轮调优中使用自动搜索算法，并随着我们理解的增长不断更新我们的搜索空间。</li>
+</ul>
+</li>
+<li>在探索过程中，我们自然会发现越来越好的配置，因此我们的“最佳”模型将不断改进。<ul>
+<li>当我们更新我们的最佳配置时，我们称之为“发布”(这可能与生产模型的实际发布不相对应)。</li>
+<li>对于每一次，我们必须确保改变是基于强有力的证据——而不是基于一个幸运配置的随机机会——这样我们就不会给训练流程增加不必要的复杂性。</li>
+</ul>
+</li>
+</ul>
+<p>在高层次上，我们的增量调优策略包括重复以下四个步骤:</p>
+<ol>
+<li>为下一轮实验确定一个适当范围的目标。</li>
+<li>设计并运行一组朝着这个目标前进的实验。</li>
+<li>从结果中学习我们能学到的东西。</li>
+<li>考虑是否启动新的最佳配置。</li>
+</ol>
+<p>本节的其余部分将更详细地考虑这一策略。</p>
+<h3 id="探索vs开发"><a href="#探索vs开发" class="headerlink" title="探索vs开发"></a><strong>探索vs开发</strong></h3><p><strong><em>总结:</em></strong> <em>大多数时候，我们的主要目标是深入了解问题。</em></p>
+<ul>
+<li>尽管有人可能认为我们会花大部分时间在验证集上试图最大化性能，但在实践中，我们花了大部分时间试图深入了解问题，相对而言，很少有时间过度地关注验证错误。<ul>
+<li>换句话说，我们把大部分时间花在了“探索”上，而只花了一小部分时间在“开发”上。</li>
+</ul>
+</li>
+<li>从长远来看，如果我们想要最大化我们的最终表现，理解问题是至关重要的。将洞察力置于短期收益之上可以帮助我们:<ul>
+<li>避免因为历史事故而在运行良好的情况下进行不必要的更改。</li>
+<li>确定验证错误对哪些超参数最敏感，哪些超参数相互作用最多，因此需要一起重新调优，哪些超参数对其他变化相对不敏感，因此可以在未来的实验中修复。</li>
+<li>建议潜在的新功能尝试，如新的正则化，如果过度拟合是一个问题。</li>
+<li>识别没有帮助的功能，因此可以删除，降低未来实验的复杂性。</li>
+<li>识别何时超参数调整的改进可能已经饱和。</li>
+<li>缩小最优值周围的搜索空间，以提高调优效率。</li>
+</ul>
+</li>
+<li>当我们最终准备好时，我们可以纯粹地关注验证错误，即使实验不能最大限度地提供关于调优问题结构的信息。</li>
+</ul>
+<h3 id="选择下一轮实验的目标"><a href="#选择下一轮实验的目标" class="headerlink" title="选择下一轮实验的目标"></a><strong>选择下一轮实验的目标</strong></h3><p><strong><em>总结:</em></strong> <em>每一轮实验都应该有一个明确的目标，并且范围要足够窄，使实验能够朝着目标实际取得进展。</em></p>
+<ul>
+<li>每一轮实验都应该有一个明确的目标，范围要足够窄，这样实验才能朝着目标前进:如果我们试图同时添加多个功能或回答多个问题，我们可能无法理清对结果的单独影响。</li>
+<li>目标示例包括:<ul>
+<li>尝试对流程进行潜在的改进(例如，一个新的正则化器，预处理选择等)。</li>
+<li>理解特定模型超参数的影响(例如激活函数)</li>
+<li>过度地最大化验证错误。</li>
+</ul>
+</li>
+</ul>
+<h3 id="设计下一轮实验"><a href="#设计下一轮实验" class="headerlink" title="设计下一轮实验"></a><strong>设计下一轮实验</strong></h3><p><strong><em>总结:</em></strong> <em>确定哪些超参数是科学的，冗余的以及实验目标的固定超参数。创建一系列的研究来比较科学超参数的不同值，同时优化多余超参数。选择冗余超参数的搜索空间，以平衡资源成本和科学价值。</em></p>
+<h4 id="识别科学的、冗余的和固定的超参数"><a href="#识别科学的、冗余的和固定的超参数" class="headerlink" title="识别科学的、冗余的和固定的超参数"></a><strong>识别科学的、冗余的和固定的超参数</strong></h4><details><summary><em>[Click to expand]</em></summary>
+
+<br>
+
+-   对于给定的目标，所有超参数将是**科学超参数**、**冗余超参数**或**固定超参数**。
+    -   科学超参数是那些我们试图测量的对模型性能的影响。
+    -   冗余的超参数是那些为了公平比较科学超参数的不同值而需要优化的超参数。这类似于[妨害参数](https://en.wikipedia.org/wiki/Nuisance_parameter)的统计概念。
+    -   固定超参数将在本轮实验中固定其值。在比较科学超参数的不同值时，这些超参数的值不需要(或者我们不希望)改变。
+        -   通过固定一组实验的某些超参数，我们必须接受从实验中得出的结论可能对固定超参数的其他设置无效。换句话说，固定超参数会对我们从实验中得出的任何结论产生警告。.
+-   例如，如果我们的目标是“确定具有更多隐藏层的模型是否会减少验证错误”，那么隐藏层的数量就是一个科学的超参数。
+    -   如果学习率为每个层数分别调整(最佳学习率通常取决于模型架构)，学习率是一个冗余的超参数，因为我们只能公平地比较具有不同隐藏层数的模型。
+    -   激活函数可以是一个固定的超参数，如果我们在之前的实验中确定了激活函数的最佳选择对模型深度不敏感，或者如果我们愿意限制我们关于隐藏层数的结论，只覆盖这个特定的激活函数选择。或者，如果我们准备为每个隐藏层的数量分别调优它，它可能是一个冗余的参数。
+-   一个特定的超参数是科学超参数、冗余超参数还是固定超参数不是超参数固有的，而是根据实验目标而变化。
+    -   例如，激活函数的选择可以是一个科学的超参数(对于我们的问题，ReLU或tanh是更好的选择吗?)，一个冗余的超参数(当我们允许几个不同的可能的激活函数时，最好的5层模型比最好的6层模型更好吗?)，或者一个固定的超参数(对于ReLU网络，在特定位置添加批量归一化是否有帮助?)
+-   在设计新一轮实验时，我们首先确定实验目标的科学超参数。
+    -   在这个阶段，我们认为所有其他超参数都是冗余超参数。
+-   接下来，我们将一些冗余的超参数转换为固定的超参数。
+    -   有了无限的资源，我们会把所有非科学的超参数都当作冗余参数，这样我们从实验中得出的结论就不会受到固定超参数值的限制。
+    -   然而，我们试图调优的超参数越多，我们在每次设置科学超参数时无法充分调优的风险就越大，最终从实验中得出错误的结论。
+        -   正如[下面](#在更多实验和有限资源之间取得平衡)所描述的，我们可以通过增加计算预算来应对这种风险，但通常我们的最大资源预算小于调优所有非科学超参数所需的资源。.
+    -   我们选择将一个冗余的超参数转换为一个固定的超参数，根据我们的判断，修复它所带来的警告比将它作为一个冗余的超参数所带来的成本要小。
+        -   给定的冗余超参数与科学超参数的交互作用越多，确定其值的破坏性就越大。例如，权值衰减强度的最佳值通常取决于模型大小，因此比较不同的模型大小假设一个单一的权值衰减将不是很好。
+-   尽管我们分配给每个超参数的类型取决于实验目标，但对于某些类别的超参数，我们有以下经验法则:
+    -   在各种优化器超参数(例如学习率，动量，学习率计划参数，Adam beta等)中，至少有一些是冗余参数，因为它们倾向于与其他变化交互。
+        -   它们很少是科学的超参数，因为像“当前的最佳学习率是多少?”这样的目标并不能提供太多的洞见——无论如何，最佳设置很容易随着下一个处理变化而改变。
+        -   虽然我们可能会由于资源限制或当我们有特别有力的证据表明它们不与科学参数相互作用时偶尔修复其中的一些，但我们通常应该假设优化器超参数必须单独调优，以在不同的科学超参数设置之间进行公平的比较，因此不应该被修复。
+            -   此外，我们没有“先验”的理由选择一个优化超参数值而不是另一个(例如，它们通常不会以任何方式影响前向传递或梯度的计算成本)。
+    -   相比之下，优化器的*选择*通常是一个科学超参数或固定超参数。
+        -   如果我们的实验目标是在两个或多个不同的优化器之间进行公平的比较，那么它就是一个科学超参数。“确定哪个优化器在给定数量的步骤中产生的验证错误最低”)。
+        -   或者，我们可能出于多种原因使其成为一个固定的超参数，包括:(1)先前的实验使我们相信针对我们的问题的最佳优化器对当前的科学超参数不敏感;(2)我们更喜欢使用这个优化器来比较科学超参数的值，因为它的训练曲线更容易推理;(3)我们更喜欢使用这个优化器，因为它比替代方案使用更少的内存。
+    -   由正则化技术引入的超参数通常是冗余的超参数，但无论我们是否包含正则化技术都是一个科学的或固定的超参数。
+        -   例如，dropout会增加代码复杂度，所以当决定是否包含它时，我们会把“no dropout”和“dropout”作为一个科学超参数，而把dropout率作为一个冗余的超参数。
+            -   如果我们决定在这个实验的基础上添加dropout到我们的管道中，那么dropout率将是未来实验中一个冗余的超参数。
+    -   架构超参数通常是科学的或固定的超参数，因为架构更改会影响服务和训练成本、延迟和内存需求。
+        -   例如，层数通常是一个科学的或固定的超参数，因为它往往对训练速度和内存使用有显著的影响。
+-   在某些情况下，冗余超参数集和固定超参数集将取决于科学超参数的值。
+    -   例如，假设我们试图确定哪个优化器的Nesterov动量和Adam结果的验证误差最小。科学超参数是`优化器`，它接受值`{"Nesterov_momentum"， "Adam"}`。值`optimizer="Nesterov_momentum`引入了冗余/固定的超参数`{learning_rate, momentum}`，但值`optimizer="Adam"`引入了冗余/固定的超参数`{learning_rate, beta1, beta2, epsilon}`。
+    -   只存在于科学超参数的某些值的超参数称为**条件超参数**。
+    -   我们不应该仅仅因为两个条件超形参有相同的名称就假定它们是相同的!在上面的例子中，名为`learning_rate`的条件超参数对于`optimizer="Nesterov_momentum"`和`optimizer="Adam"`是一个不同的超参数。它在两种算法中的作用相似(尽管不完全相同)，但是在每个优化器中工作良好的值范围通常有几个数量级的差异。
+
+</details>
+
+<h4 id="创建一系列的研究"><a href="#创建一系列的研究" class="headerlink" title="创建一系列的研究"></a><strong>创建一系列的研究</strong></h4><details><summary><em>[Click to expand]</em></summary>
+<br>
+- 一旦我们确定了科学的和冗余的超参数，我们设计一个“研究”或一系列的研究，以朝着实验目标前进。
+  -   研究指定一组超参数配置，用于后续分析。每个配置被称为“试验”。
+  -   创建一项研究通常包括选择在不同试验中不同的超参数，选择这些超参数可以取什么值(“搜索空间”)，选择试验的数量，并选择一个自动搜索算法从搜索空间中采样这些试验。或者，我们可以通过手动指定超参数配置集来创建一个研究。
+- 研究的目的是使用不同的科学超参数值运行管道，同时**“优化掉”**冗余的超参数，以便在不同的科学超参数值之间进行尽可能公平的比较。
+-   在最简单的情况下，我们会对科学参数的每个配置进行单独的研究，其中每个研究都会对冗余的超参数进行调整。
+
+    -   例如，如果我们的目标是从Nesterov动量和Adam中选择最好的优化器，我们可以创建一个研究`optimizer="Nesterov_momentum"`和冗余的超参数是 `{learning_rate, momentum}` ，而另一项研究中 `optimizer="Adam"`和冗余的超参数是`{learning_rate, beta1, beta2, epsilon}` 。我们将通过从每个研究中选择性能最好的试验来比较两种优化器。
+
+    -   我们可以使用任何无梯度优化算法，包括贝叶斯优化或进化算法等方法来优化冗余的超参数，尽管[我们更喜欢](#why-use-quasi-random-search-instead-of-more-sophisticated-black-box-optimization-algorithms-during-the-exploration-phase-of-tuning)在优化的[开发阶段](#exploration-vs-exploitation)使用准随机搜索，因为它在这种设置中具有各种优势。[开发结束后](#after-exploration-concludes)，如果有最先进的贝叶斯优化软件，这是我们的首选。
+-   在更复杂的情况下，我们想要比较大量的科学超参数的值，并且进行许多独立的研究是不切实际的，我们可以将科学参数与冗余超参数包含在同一个搜索空间中，并使用搜索算法在单个研究中对*科学超参数和*冗余超参数的值进行采样。
+    -   当采用这种方法时，条件超参数可能会导致问题，因为很难指定搜索空间，除非冗余超参数集对于科学超参数的所有值是相同的。
+    -   在这种情况下，[我们的偏好](#为什么在调优的探索阶段使用准随机搜索而不是更复杂的黑盒优化算法?)使用准随机搜索比花哨的黑盒优化工具更强，因为它确保我们获得相对统一的科学超参数值采样。不管搜索算法是什么，我们都需要确保它能以某种方式统一地搜索科学参数。
+
+</details>
+
+<h4 id="在更多实验和有限资源之间取得平衡"><a href="#在更多实验和有限资源之间取得平衡" class="headerlink" title="在更多实验和有限资源之间取得平衡"></a><strong>在更多实验和有限资源之间取得平衡</strong></h4><details><summary><em>[Click to expand]</em></summary>
+<br>
+
+
+-   在设计一项研究或一系列研究时，我们需要分配有限的预算，以充分实现以下三个目标:
+    1.    比较足够多的不同科学超参数值。
+    2.  在足够大的搜索空间内调优冗余的超参数。
+    3.  对冗余超参数的搜索空间进行足够密集的采样。
+-   我们越能更好地实现这三个愿望，我们就越能从实验中获得更多的见解。
+    -   比较尽可能多的科学超参数值拓宽了我们从实验中获得的见解的范围。
+    -   包括尽可能多的冗余超参数，并允许每个冗余超参数在尽可能宽的范围内变化，这增加了我们的信心，即在科学超参数的每个配置的搜索空间中存在冗余超参数的“好”值。
+        -   否则，我们可能会在科学超参数的值之间进行不公平的比较，因为我们没有搜索冗余参数空间的可能区域，在这些区域中，一些科学参数的值可能存在更好的值。
+    -   尽可能密集地对冗余超参数的搜索空间进行采样，增加了我们的信心，即搜索过程将发现恰好存在于搜索空间中的冗余超参数的任何良好设置。
+        -   否则，我们可能会在科学参数的值之间进行不公平的比较，因为一些值随着冗余的超参数的采样而变得更幸运。
+-   不幸的是，这三个维度中的任何一个维度的改进都需要增加试验次数，从而增加资源成本，或者找到一种方法来节省其他维度中的资源。
+    -   每个问题都有自己的特点和计算限制，所以如何在这三个需求中分配资源需要一定程度的领域知识。
+    -   在进行一项研究后，我们总是试图了解该研究是否足够好地调整了冗余的超参数(即搜索了足够大的空间)，以公平地比较科学的超参数(如更详细的描述[下面](# 从实验结果中提取见解))。
+
+</details>
+
+<h3 id="从实验结果中提取见解"><a href="#从实验结果中提取见解" class="headerlink" title="从实验结果中提取见解"></a>从实验结果中提取见解</h3><p><strong><em>总结:</em></strong> <em>除了努力实现每组实验的原始科学目标外，还要检查附加问题的清单，如果发现问题，修改实验并重新运行</em></p>
+<ul>
+<li><p>最终，每组实验都有一个特定的目标，我们想要评估实验提供的朝着这个目标的证据。</p>
+<ul>
+<li>然而，如果我们提出正确的问题，我们经常会发现需要纠正的问题，然后一组给定的实验才能朝着最初的目标取得很大进展。<ul>
+<li>如果不问这些问题，就可能得出错误的结论。</li>
+</ul>
+</li>
+<li>由于运行实验可能是昂贵的，我们也想借此机会从每组实验中提取其他有用的见解，即使这些见解与当前目标没有直接关系。</li>
+</ul>
+</li>
+<li><p>-在分析一组给定的实验以朝着最初的目标前进之前，我们应该问自己以下额外的问题:</p>
+<ul>
+<li><a href="# 识别错误的搜索空间边界">搜索空间够大吗?</a><ul>
+<li>如果研究中的最佳点在一个或多个维度的搜索空间边界附近，则搜索可能不够宽。在这种情况下，我们应该进行另一项研究，扩大搜索空间。</li>
+</ul>
+</li>
+<li><a href="#在搜索空间中没有采样足够多的点">我们从搜索空间中采样了足够多的点吗?</a><ul>
+<li>如果不是，请运行更多的点，或者在调优目标中不要太雄心勃勃。</li>
+</ul>
+</li>
+<li><p>每项研究中<strong>不可行的试验有多少比例</strong>(即试验偏离，得到非常糟糕的损失值，或因为违反了一些隐含的约束而根本无法运行)?</p>
+<ul>
+<li><p>当一项研究中有很大一部分点是<strong>不可行的</strong>，我们应该尝试调整搜索空间以避免这样的采样点，这有时需要重新参数化搜索空间。</p>
+</li>
+<li><p>在某些情况下，大量的不可行点可能表明训练代码中的bug。</p>
+</li>
+</ul>
+</li>
+<li><a href="#如何调试和缓解优化失败">模型是否存在优化问题?</a></li>
+<li><a href="#检查训练曲线">我们能从最佳试验的训练曲线中学到什么?</a><ul>
+<li>例如，最佳试验的训练曲线是否与有问题的过拟合一致?</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>如有必要，根据上述问题的答案，改进最近的研究(或研究组)，以改善搜索空间和/或抽样更多试验，或采取其他纠正措施。</li>
+<li>一旦我们回答了上述问题，我们就可以继续评估实验提供的证据，以实现我们的原始目标(例如，<a href="#检测有隔离的变化图是否有用">评估一个变化是否有用</a>)。</li>
+</ul>
+<h4 id="识别错误的搜索空间边界"><a href="#识别错误的搜索空间边界" class="headerlink" title="识别错误的搜索空间边界"></a>识别错误的搜索空间边界</h4><details><summary><em>[Click to expand]</em></summary>
+<br>
+
+
+-   如果一个搜索空间的最佳采样点接近它的边界，则该搜索空间是可疑的。如果我们把搜索范围扩大到那个方向也许能找到更好的点。
+-   为了检查搜索空间边界，我们喜欢在我们所谓的**基本超参数轴图**上绘制完成的试验，其中我们绘制验证目标值与其中一个超参数(例如学习率)的关系。图上的每个点都对应一次试验。
+    -   每次试验的验证目标值通常应是在训练过程中所达到的最佳值。
+
+<p align="center" id="figure-1">
+<img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/bad_search_space.png" width="49%" alt="Example of bad search space boundaries">
+<img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/good_search_space.png" width="49%" alt="Example of good search space boundaries">
+</p>
+<p align="center"><b>图1:</b>糟糕搜索空间边界和可接受搜索空间边界的示例。</p>
+
+- [图1](# Figure -1)中的图显示了错误率(越低越好)与初始学习率的关系。
+- 如果最佳观察点聚集在搜索空间的边缘(在某些维度上)，则搜索空间的边界可能需要扩展，直到最佳观察点不再靠近边界。
+- 通常，一项研究将包括“不可行”的试验，这些试验偏离或得到非常糟糕的结果(在上面的图中用红色x标记)。
+
+  -   如果所有试验对于学习率大于某个阈值都是不可行的，并且如果表现最好的试验具有学习率在该区域的边缘，模型[可能会受到稳定性问题的影响，从而无法获得更高的学习率](#如何调试和缓解优化失败)。
+
+
+</details>
+
+<h4 id="在搜索空间中没有采样足够多的点"><a href="#在搜索空间中没有采样足够多的点" class="headerlink" title="在搜索空间中没有采样足够多的点"></a>在搜索空间中没有采样足够多的点</h4><details><summary><em>[Click to expand]</em></summary>
+<br>
+
+
+-   一般来说，[很难知道](#准随机搜索需要多少次试验才能得到好的结果?)如果搜索空间的采样足够密集。🤖
+-   运行更多的试验当然更好，但代价很明显。
+-   因为很难知道我们什么时候已经采样了足够多，我们通常会采样我们能承受的范围，并试图通过反复查看各种超参数轴图来校准我们的直觉信心，并试图获得搜索空间的“好”区域中有多少点。
+
+</details>
+
+<h4 id="检查训练曲线"><a href="#检查训练曲线" class="headerlink" title="检查训练曲线"></a>检查训练曲线</h4><details><summary><em>[Click to expand]</em></summary>
+<br>
+
+***总结:*** *检查训练曲线是识别常见故障模式的简单方法，可以帮助我们优先考虑下一步采取什么行动。*
+
+-   虽然在许多情况下，我们实验的主要目标只需要考虑每次试验的验证误差，但在将每次试验减少到一个数字时，我们必须小心，因为它可能隐藏了表面之下发生的事情的重要细节。
+-   对于每一项研究，我们总是查看至少最好的几次试验的**训练曲线**(训练误差和验证误差在训练期间与训练步骤的关系)。
+-   即使这不是解决主要实验目标所必需的，检查训练曲线是确定常见故障模式的简单方法，并可以帮助我们优先考虑下一步采取的行动。
+-   在检查训练曲线时，我们对以下问题感兴趣。
+-   是否有任何试验表现出**有问题的过拟合?**
+    -   当验证错误在训练过程中的某个时间点开始“增加”时，就会出现问题过拟合。
+    -   在实验设置中，我们通过为每个科学超参数设置选择“最佳”试验来优化恼人的超参数，我们应该检查与我们正在比较的科学超参数设置对应的*至少*每个最佳试验中是否存在问题过拟合。
+        -   如果任何最佳试验显示出有问题的过拟合，我们通常希望在比较科学超参数的值之前，使用额外的正则化技术重新运行实验和/或更好地调整现有的正则化参数。
+            -   如果科学超参数包括正则化参数，这可能不适用，因为如果这些正则化参数的低强度设置导致有问题的过拟合也就不足为奇了。
+        -   减少过拟合通常是简单的，使用常见的正则化技术，添加最小的代码复杂性或额外的计算(例如，dropout，标签平滑，权重衰减)，所以在下一轮实验中添加一个或多个这些通常不是什么大问题。
+        -   例如，如果科学超参数是“隐藏层数”，而使用最大隐藏层数的最佳试验显示出有问题的过拟合，那么我们通常更愿意用额外的正则化再次尝试，而不是立即选择较小数量的隐藏层。
+        -   即使没有一个“最佳”试验表现出有问题的过拟合，如果它发生在*任何*个试验中，仍然可能是一个问题。
+            -   选择最佳试验抑制了表现出有问题的过拟合的配置，并倾向于那些没有过拟合的配置。换句话说，它将倾向于更正则化的配置
+            -   然而，任何让训练变得更糟的东西都可以作为一个规则，即使它不是故意的。例如，选择较小的学习率可以通过阻碍优化过程来正则化训练，但我们通常不希望以这种方式选择学习率。
+            -   因此，我们必须意识到，科学超参数的每一种设置的“最佳”试验可能是以有利于某些科学超参数或讨厌超参数的“坏”值的方式选择的。
+-   在训练中是否存在较高的步间差异或训练后期的验证错误?
+    -   如果是这样，这可能会干扰我们比较不同科学超参数值的能力(因为每次试验随机结束于“幸运”或“不幸”步骤)，以及我们在生产中再现最佳试验结果的能力(因为生产模型可能不会像研究中那样结束于相同的“幸运”步骤)。
+    -   step- step- step方差最可能的原因是批次方差(从每批训练集中随机抽样样本)，小的验证集，以及在训练后期使用过高的学习率。
+    -   可能的补救措施包括增加批大小，获得更多的验证数据，使用学习率衰减，或使用**Polyak平均**。
+-   训练结束后，还在提升?
+    -   如果是这样，这表明我们处于[“计算约束”状态](#确定每次训练的步数)，我们可能会从[增加训练步数](#当训练受计算限制时，决定训练多长时间)或改变学习率计划中受益。
+-   在最后的训练步骤之前，训练和验证集的性能是否已经饱和?
+    -   如果是这样，这表明我们处于[“不受计算限制”](#确定每次训练的步数)制度中，并且我们可能能够[减少训练步数](当训练*不* 受计算限制时，决定训练多长时间)。
+-   虽然我们无法一一列举，但通过检查训练曲线，可以明显地发现许多其他行为(例如，训练期间训练损失*增加*通常表明训练管道中存在错误)。
+
+</details>
+
+<h4 id="检测有隔离的变化图是否有用"><a href="#检测有隔离的变化图是否有用" class="headerlink" title="检测有隔离的变化图是否有用"></a>检测有隔离的变化图是否有用</h4><details><summary><em>[Click to expand]</em></summary>
+
+<br>
+
+<p align="center" id="figure-2">
+<img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/isolation_plot.png" width="49%" alt="Isolation plot that investigates the best value of weight decay for ResNet-50
+trained on ImageNet.">
+</p>
+
+
+<p align="center"><b>Figure 2:</b> 研究在ImageNet上训练的ResNet-50的权重衰减的最佳值的隔离图。</p>
+
+-   通常，一组实验的目标是比较科学超参数的不同值。
+    -   例如，我们可能想要确定导致最佳验证错误的权重衰减值。
+-   **隔离图**是基本超参数轴图的一种特殊情况。隔离图上的每个点对应于**最佳试验**在一些(或全部)有害超参数上的性能。
+    -   换句话说，我们在“优化掉”讨厌的超参数后绘制模型性能。
+-   隔离图可以更容易地在科学超参数的不同值之间进行比较。
+-   例如，[图2](# Figure 2)揭示了在ImageNet上训练的ResNet-50的特定配置产生最佳验证性能的权重衰减值。
+    -   如果我们的目标是确定是否包含权重衰减，那么我们会将该图中的最佳点与没有权重衰减的基线进行比较。为了进行公平的比较，基线还应该对其学习率进行同样良好的调整。
+-   当我们有由(准)随机搜索生成的数据，并考虑隔离图的连续超参数时，我们可以通过将基本超参数轴图的x轴值装入桶，并在桶定义的每个垂直切片中进行最佳试验来近似隔离图。
+
+</details>
+
+<h4 id="自动化生成常用的图"><a href="#自动化生成常用的图" class="headerlink" title="自动化生成常用的图"></a>自动化生成常用的图</h4><details><summary><em>[Click to expand]</em></summary>
+<br>
+
+-   生成图的努力越多，我们就越不可能尽可能多地查看它们，所以我们有必要设置我们的基础设施来自动生成尽可能多的图。
+-   至少，我们会自动为实验中变化的所有超参数生成基本超参数坐标轴图。
+-   此外，我们自动生成所有试验的训练曲线，并尽可能容易地找到每个研究中最好的几个试验，并检查它们的训练曲线。
+-   我们可以添加许多其他有用的潜在情节和可视化效果。虽然上面描述的是一个很好的起点，但套用Geoffrey Hinton的话，“每次你策划一些新东西，你就会学到一些新东西。”
+
+</details>
+
+<h3 id="决定是采用改变训练流程还是超参数配置"><a href="#决定是采用改变训练流程还是超参数配置" class="headerlink" title="决定是采用改变训练流程还是超参数配置"></a>决定是采用改变训练流程还是超参数配置</h3><p><strong>摘要:</strong> <em>当决定是否对我们的模型或训练过程进行更改或采用新的超参数配置时，我们需要了解结果中的不同变化来源。</em></p>
+<ul>
+<li>当我们试图改进模型时，我们可能会观察到，与现有配置相比，特定的候选更改最初实现了更好的验证误差，但在重复实验后，发现没有一致的优势。非正式地，我们可以将可能导致这种不一致结果的最重要的变化来源分为以下大类:<ul>
+<li><strong>训练过程方差</strong>、<strong>再训练方差</strong>或<strong>试验方差</strong>:我们看到的使用相同超参数但不同随机种子的训练运行之间的差异。<ul>
+<li>例如，不同的随机初始化、训练数据顺序、dropout mask、数据增强操作的模式和并行算术操作的顺序，都是试变的潜在来源。</li>
+</ul>
+</li>
+<li><strong>超参数搜索方差</strong>，或<strong>学习方差</strong>:由我们选择超参数的过程引起的结果变化。<ul>
+<li>例如，我们可能对特定的搜索空间运行相同的实验，但使用两种不同的种子进行准随机搜索，并最终选择不同的超参数值。</li>
+</ul>
+</li>
+<li><strong>数据收集和采样方差</strong>:任何类型的随机划分为训练数据、验证数据和测试数据的方差，或者更一般地说，由于训练数据生成过程产生的方差。</li>
+</ul>
+</li>
+<li>使用严格的统计测试比较有限验证集上估计的验证错误率是很好的，但通常仅试方差就可以在使用相同超参数设置的两个不同训练模型之间产生统计上显著的差异。</li>
+<li>当我们试图做出超出超参数空间中单个点的水平的结论时，我们最关心的是研究方差。<ul>
+<li>研究方差取决于试验的数量和搜索空间，我们已经看到了它大于试验方差的情况，也有比试验方差小得多的情况。</li>
+</ul>
+</li>
+<li>因此，在采用候选变化之前，考虑进行N次最佳试验，以描述试验之间的差异。<ul>
+<li>通常，我们可以在流程发生重大变化后重新描述试验方差，但在某些应用程序中，我们可能需要更新的估计。</li>
+<li>在其他应用中，表征试验方差的代价太大，不值得。</li>
+</ul>
+</li>
+<li>最后，尽管我们只想采用能够产生真正改进的更改(包括新的超参数配置)，但要求完全确定有什么东西可以帮助也不是正确的答案。</li>
+<li>因此，如果一个新的超参数点(或其他变化)得到了比基线更好的结果(尽可能考虑到新点和基线的再训练方差)，那么我们可能应该采用它作为未来比较的新基线。<ul>
+<li>然而，我们应该只采用那些能带来改进的更改，这些改进会超过它们增加的复杂性。</li>
+</ul>
+</li>
+</ul>
+<h3 id="探索后总结"><a href="#探索后总结" class="headerlink" title="探索后总结"></a>探索后总结</h3><p><strong>摘要:</strong> <em>一旦我们完成了对良好搜索空间的探索，并决定了应该调整哪些超参数，贝叶斯优化工具是一个令人瞩目的选择。</em></p>
+<ul>
+<li>在某些时候，我们的优先级将从学习更多关于调优问题的内容，转移到生成用于启动或其他用途的最佳配置。</li>
+<li>此时，应该有一个精确的搜索空间，其中舒适地包含最佳观察试验周围的局部区域，并已进行充分的采样。</li>
+<li>我们的探索工作应该揭示了要调优的最基本的超参数(以及它们的合理范围)，我们可以使用尽可能大的调优预算来构建一个搜索空间，以进行最终的自动调优研究。</li>
+<li>由于我们不再关心最大化我们对调优问题的洞察力，许多<a href="#为什么在调优的探索阶段使用准随机搜索而不是更复杂的黑盒优化算法">准随机搜索的优势</a>不再适用，应该使用贝叶斯优化工具自动找到最佳超参数配置。<ul>
+<li>如果搜索空间包含大量的发散点(得到NaN训练损失甚至训练损失比均值差许多标准偏差的点)，那么使用黑盒优化工具来正确处理发散的试验是很重要的(请参阅<a target="_blank" rel="noopener" href="https://arxiv.org/abs/1403.5607">带有未知约束的贝叶斯优化</a>以获得处理此问题的优秀方法)。</li>
+</ul>
+</li>
+<li>在这一点上，我们还应该考虑检查测试集的性能。<ul>
+<li>原则上，我们甚至可以将验证集折叠到训练集中，并重新训练使用贝叶斯优化找到的最佳配置。然而，这只适用于将来不会有这种特定工作负载的启动(例如，一次性的Kaggle竞赛)。</li>
+</ul>
+</li>
+</ul>
+<h2 id="确定每次训练的步数"><a href="#确定每次训练的步数" class="headerlink" title="确定每次训练的步数"></a>确定每次训练的步数</h2><ul>
+<li>有两种workloads工作负载:计算密集型和非计算密集型。</li>
+<li>当训练是<strong>计算约束</strong>时，训练受限于我们愿意等待的时间，而不是我们有多少训练数据或其他一些因素。<ul>
+<li>在这种情况下，如果我们可以以某种方式更长或更有效地训练，我们应该看到更低的训练损失，并且通过适当的调优，改进的验证损失。</li>
+<li>换句话说，<strong>加速</strong>训练等同于<strong>改善</strong>训练，而“最佳”训练时间总是“在我们负担得起的情况下”。</li>
+<li>也就是说，仅仅因为工作负载是计算有限的，并不意味着更长/更快的训练是提高结果的唯一方法。</li>
+</ul>
+</li>
+<li>当训练<strong>不受计算限制</strong>时，我们可以想训练多长时间就训练多长时间，并且在某种程度上，训练更长时间并没有太大帮助(甚至会导致问题过度拟合)。<ul>
+<li>在这种情况下，我们应该期望能够训练到非常低的训练损失，直到训练时间更长可能会略微减少训练损失，但不会有意意义地减少验证损失。</li>
+<li>特别是当训练不受计算限制时，更慷慨的训练时间预算可以使调优更容易，特别是在调整学习率衰减表时，因为它们与训练预算有特别强的交互作用。<ul>
+<li>换句话说，非常吝啬的训练时间预算可能需要一个调整到完美的学习率衰减计划，以实现良好的错误率。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>无论给定的工作负载是否受计算限制，增加梯度方差(跨批次)的方法通常会导致训练进度变慢，因此可能会增加达到特定验证损失所需的训练步骤数量。高梯度方差可能由以下原因造成:<ul>
+<li>使用较小的批量大小</li>
+<li>增加数据扩充</li>
+<li>添加一些类型的正则化(例如dropout)</li>
+</ul>
+</li>
+</ul>
+<h3 id="当训练不-受计算限制时，决定训练多长时间"><a href="#当训练不-受计算限制时，决定训练多长时间" class="headerlink" title="当训练不 受计算限制时，决定训练多长时间"></a>当训练<em>不</em> 受计算限制时，决定训练多长时间</h3><ul>
+<li>我们的主要目标是确保我们的训练时间足够长，以使模型达到最佳的可能结果，同时避免在训练步骤数量上过度浪费。</li>
+<li>当有疑问时，宁可训练得更久。假设正确地使用回溯(最佳)检查点选择，并且检查点足够频繁，那么当训练时间更长时，性能永远不会下降。</li>
+<li>永远不要在研究中调整<code>max_train_steps</code>数字。选择一个值并将其用于所有试验。从这些试验中，绘制回溯检查点选择找到的训练步骤，以改进<code>max_train_steps</code>的选择。<ul>
+<li>例如，如果最好的步数总是在训练的前10%，那么最大步数就太高了。</li>
+<li>或者，如果最佳步骤在训练的最后25%中始终如一，我们可能会从更长时间的训练和重新调整衰减表中受益。</li>
+</ul>
+</li>
+<li>当架构或数据发生变化(例如添加数据增强)时，理想的训练步数可能会发生变化。</li>
+<li>下面我们将描述如何根据使用恒定学习率“完美拟合”训练集所需的步数为<code>max_train_steps</code>选择初始候选值。<ul>
+<li>注意，我们并没有以精确或数学定义良好的方式使用“完美拟合训练集”这个短语。它只是作为一种非正式的描述符，表示非常低的训练损失。<ul>
+<li>例如，当使用缺失正则化项的对数损失进行训练时，随着网络权重无限制地增长，模型对训练集的预测变得越来越有信心，我们可能会看到训练损失持续缓慢地改善，直到达到浮点极限。在这种情况下，我们可以说模型在训练集上的错误分类误差达到零的时候“完美拟合”了训练集。</li>
+</ul>
+</li>
+<li>如果训练过程中的梯度噪声量增加，我们发现<code>max_train_steps</code>的初始值可能需要增加。<ul>
+<li>例如，如果在模型中引入数据增强或dropout等正则化方法。</li>
+</ul>
+</li>
+<li>如果训练过程有所改善，则可以降低<code>max_train_steps</code>。<ul>
+<li>例如，使用更好的优化器或更好的学习率调度。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="使用学习率扫描为max-train-steps选择初始候选的算法"><a href="#使用学习率扫描为max-train-steps选择初始候选的算法" class="headerlink" title="使用学习率扫描为max_train_steps选择初始候选的算法"></a>使用学习率扫描为max_train_steps选择初始候选的算法</h4><details><summary><em>[Click to expand]</em></summary>
+<br>
+
+-   这个过程假设不仅可以“完美”拟合训练集，而且可以使用恒定的学习率计划来实现。
+-   如果可以完美拟合整个训练集，那么必须存在一个完美拟合训练集的配置(某些值为`max_train_steps`);找到任何这样的配置，并使用其`max_train_steps`的值作为起点`N`。
+-   运行一个恒定的学习率sweep扫描(即网格搜索学习率)，而不进行数据增强和正则化，其中每个试验都为`N`步进行训练。
+-   为了达到完美的训练性能，最快的测试所需的步数是我们对`max_train_steps`的初步猜测。
+-   **注意:**糟糕的搜索空间可能会导致自我欺骗。
+    -   例如，如果在一项研究中所有的学习率都太小，我们可能会错误地得出结论，认为需要一个非常大的值`max_train_steps`。
+    -   至少，我们应该检查学习中的最佳学习率是否不在搜索空间的边界上。
+
+</details>
+
+<h3 id="当训练受计算限制时，决定训练多长时间"><a href="#当训练受计算限制时，决定训练多长时间" class="headerlink" title="当训练受计算限制时，决定训练多长时间"></a>当训练受计算限制时，决定训练多长时间</h3><ul>
+<li>在某些情况下，训练损失无限期地提高，我们的耐心和计算资源成为限制因素。</li>
+<li>如果训练损失(甚至验证损失)不断提高，我们是否应该一直训练到我们负担得起?不一定。<ul>
+<li>通过运行大量较短的实验，并为我们希望推出的模型保留最长的“生产长度”运行，我们可能能够更有效地调整。</li>
+<li>随着试验的训练时间接近我们的耐心极限，优化实验与我们的潜在发布候选人变得更加相关，但我们可以完成的实验更少。</li>
+<li>虽然我们仅对生产长度的~10%进行训练，但可能有很多问题可以回答，但总有风险，我们在这个时间限制下的结论不适用于生产长度的20%的实验，更不用说100%的实验。</li>
+</ul>
+</li>
+<li>通过增加每次训练的步长限制进行多轮调整是一种明智的方法。<ul>
+<li>我们可以按自己的想法做多少轮，但通常1-3轮是最实用的。</li>
+<li>本质上，尝试使用具有非常快的周转时间的试验来获得尽可能多的问题理解，权衡调优的彻底性与最终的、最长的运行的相关性。</li>
+<li>一旦给定的每次试验时间限制产生了有用的见解，就可以增加训练时间并继续调优，根据需要再次检查较短运行的结论。</li>
+</ul>
+</li>
+<li>首先，我们推荐两轮调优:<ul>
+<li>第1轮:用更短的时间找到好的模型和优化器超参数。</li>
+<li>第2轮:在较少的好的超参数上的长时间运行来获得最终模型。</li>
+</ul>
+</li>
+<li>最大的问题来自<code>Round i</code>&rarr;<code>Round i+1</code>是如何调整学习率衰减时间表。<ul>
+<li>在两轮之间调整学习率时间表时，一个常见的陷阱是使用学习率过小的所有额外训练步骤。</li>
+</ul>
+</li>
+</ul>
+<h4 id="第1轮"><a href="#第1轮" class="headerlink" title="第1轮"></a>第1轮</h4><details><summary><em>[Click to expand]</em></summary>
+<br>
+
+-   不幸的是，短的轮次不能保证找到好的超参数，当训练长度显著增加时，不完整的训练仍然是很好的选择。然而，对于某些类型的超参数，它们之间的相关性通常足以使第1轮有用。
+-   在短期训练中发现的超参数值我们希望转移到长期训练中?对于所有这些，我们需要更多的研究。但根据我们目前所知，作者的猜测是这样的:
+    -   很有可能能转移的
+        -   早期训练不稳定可以在第一轮调优中使用更少的训练步骤来解决。也许这些超参数是我们拥有的最接近可靠的转移。
+            -   Warmup 轮次
+            -   初始化
+    -   可能能转移的
+        -   模型架构-在模型架构中的特殊的方法通常能够转移，但可能有许多反例。
+    -   大概能转移的
+        -   优化算法/优化器超参数-我们认为这将“轻松的”迁移。它肯定比上面的东西弱。
+        -   数据增强
+        -   正则化
+            -   如果不能完美拟合训练集，那么模型可能处于正则化帮助不大的状态。
+    -   不太可能转移的
+        -   学习率时间表:不太可能完美迁移。
+            -   [这篇论文](https://arxiv.org/abs/2203.15556)表明，即使是衰减时间表转移，但我们认为一般情况下这不是真的。示例:在训练步骤的小#上调整根号衰减，然后扩展到大#，将导致大多数训练发生在过小的步骤上。
+                -   在极限训练预算的限制下，人们可能对大多数时间表都做得“足够好”，但如果调整，可能会看到明显的性能改善。
+            -   [理解随机元优化中的短期偏差](https://arxiv.org/abs/1803.02021)描述了试图短视地选择学习率的危险。
+
+</details>
+
+<h4 id="第2轮"><a href="#第2轮" class="headerlink" title="第2轮"></a>第2轮</h4><details><summary><em>[Click to expand]</em></summary>
+
+<br>
+
+-   从第一轮开始运行最佳的超参数配置。
+-   **(推测)**🤖使用额外的步骤来延长高学习率下的训练周期。
+    -   例如，如果线性时间表从第1轮开始保持衰减的长度固定，并从一开始延长恒定lr的周期。
+    -   对于余弦衰减，只需保持轮1的基础lr并扩展`max_train_steps`，如[Chinchilla paper](https://arxiv.org/abs/2203.15556)。
+-   对于具有非常成熟的建模和调优管道以及非常长且昂贵的生产培训运行的团队来说，更多的轮次可能是有意义的，但它们通常会过度。
+    -   我们已经描述了如何从步骤1 &rarr;步骤2。如果我们不关心分析时间，如果高效地利用计算是压倒一切的考虑，那么理想的做法是在许多轮调优中成倍地增加训练运行的长度(以及完成研究的端到端时间)。
+        -   在每一轮中，我们都系统地确保我们的选择继续有效。
+        -   新想法经过一个流程，从步骤i到步骤i+1，通过越来越长时间的实验逐步消除风险。
+
+</details>
+
+<h2 id="训练流程外的内容"><a href="#训练流程外的内容" class="headerlink" title="训练流程外的内容"></a>训练流程外的内容</h2><h3 id="优化输入流程"><a href="#优化输入流程" class="headerlink" title="优化输入流程"></a>优化输入流程</h3><p><strong><em>总结:</em></strong> <em>输入受限管道的原因和干预是高度任务依赖的;使用分析器检查常见问题</em></p>
+<ul>
+<li>使用合适的分析器来诊断输入受限的管道。例如，JAX的<a target="_blank" rel="noopener" href="https://jax.readthedocs.io/en/latest/profiling.html">Perfetto</a>或TensorFlow的<a target="_blank" rel="noopener" href="https://www.tensorflow.org/guide/profiler">TensorFlow profiler</a>。</li>
+<li>最终，具体的原因和干预措施将高度依赖于任务。更广泛的工程考虑(例如，最小化磁盘占用)可能会导致更差的输入管道性能。</li>
+<li>常见原因：<ul>
+<li>数据没有与训练过程放在一起，导致I/O延迟(这可能发生在通过网络读取训练数据时)。</li>
+<li>昂贵的在线数据预处理(考虑离线执行一次并保存)。</li>
+<li>干扰数据管道预取的非故意同步障碍。例如，在CommonLoopUtils (<a target="_blank" rel="noopener" href="https://github.com/google/CommonLoopUtils/blob/fea2518ada8814a78e1492023fd9f00edb0b0568/clu/metrics.py#L291">link</a>)中同步设备和主机之间的度量时。</li>
+</ul>
+</li>
+<li>常见技巧：<ul>
+<li>预取的仪器输入管道示例(例如<a target="_blank" rel="noopener" href="https://www.tensorflow.org/guide/data_performance#prefetching">tf.data.Dataset.prefetch</a>)</li>
+<li>尽可能早地从管道中删除未使用的功能/元数据。</li>
+<li>增加为输入管道生成示例的作业的复制数量。例如，通过使用<a target="_blank" rel="noopener" href="https://www.tensorflow.org/api_docs/python/tf/data/experimental/service">tf.data service</a>。</li>
+</ul>
+</li>
+</ul>
+<h3 id="评估模型性能"><a href="#评估模型性能" class="headerlink" title="评估模型性能"></a>评估模型性能</h3><p><strong><em>总结:</em></strong> <em>以比训练更大的批处理大小运行评估。以固定的步长(而不是固定的时间间隔)运行求值</em></p>
+<h4 id="评估设置"><a href="#评估设置" class="headerlink" title="评估设置"></a>评估设置</h4><details><summary><em>[Click to expand]</em></summary>
+<br>
+
+-   我们可以通过几种设置来评估模型的性能。
+    -   **在线评估**——当模型在生产环境中服务于预测时，收集指标。
+    -   **离线评估**——当模型在代表生产环境的离线训练/验证/测试集上运行时，收集指标。
+    -   **定期评估**——在模型训练期间收集指标，这些指标可能是离线评估的代理，或者是离线评估中使用的数据子集。
+-   在线评估是黄金标准，但在模型开发阶段往往不切实际。
+-   根据不同的问题，离线计算可能相当复杂，计算量也很大。
+-   定期评估是最实际和最经济的选择，但可能不能完全代表生产环境。
+    -   在定期评估期间，我们的目标是使用离线评估的方便代替，而不牺牲训练期间获得信号的可靠性。
+
+</details>
+
+<h4 id="建立定期评估"><a href="#建立定期评估" class="headerlink" title="建立定期评估"></a>建立定期评估</h4><details><summary><em>[Click to expand]</em></summary>
+<br>
+
+-   我们在训练期间进行定期评估以实时监控其进展，以[促进回顾模型检查点选择](#保存检查点并回顾选择最好的检查点)，这样我们就可以[在训练结束时检查训练曲线](#检查训练曲线)。
+-   最简单的配置是在同一个计算实例中执行训练和定期评估，定期在训练和评估之间交替。
+    -   在这种情况下，用于执行评估的批大小应该**至少**与用于训练的批大小相同，因为在评估期间不需要维护模型激活，从而降低了每个示例的计算需求。
+-   定期评估应该按固定的步长间隔进行，而不是按时间间隔。
+    -   基于时间间隔的评估可能会使解释训练曲线变得更加困难，特别是当训练可能受到训练作业的抢占、网络延迟问题等的影响时。
+-   有效/测试指标的周期性(当使用打乱的训练/验证/测试划分时)可以表明实现中的bug，例如测试数据与训练数据重叠，或者训练数据没有正确打乱。定期评估可以使这些问题更容易发现。
+-   当评估集不能被批量大小整除时，可能会出现部分批量。确保经过填充的样本被正确加权，以防止损失函数受到它们的偏差。通常，这些填充样例的权重为零。
+-   在每次评估中保存足够的信息以支持离线分析。理想情况下，我们应该将预测保存在选择的单个示例上，因为它们对调试来说是无价的。
+    -   生成像[SavedModels](https://www.tensorflow.org/guide/saved_model)这样的工件，可以在评估工作完成后轻松地进行特定的模型检查。
+
+</details>
+
+<h4 id="选择样本进行周期性评估"><a href="#选择样本进行周期性评估" class="headerlink" title="选择样本进行周期性评估"></a>选择样本进行周期性评估</h4><details><summary><em>[Click to expand]</em></summary>
+<br>
+
+-   定期评估作业的运行速度可能不够快，无法在合理的时间内计算完整的离线评估集上的指标。这常常需要采样数据进行定期评估。
+-   在构建采样数据集时，我们考虑以下因素:
+    -   <ins>Sample size</ins>
+        -   检查周期作业使用的采样数据集的性能计算与整个离线评估集的性能匹配，即采样集和完整数据集之间没有倾斜。
+        -   用于周期性评估的数据集应该足够小，以便于在整个数据集上生成模型预测，但又要足够大，以便可以准确地测量模型的改进(即不被标签噪声淹没)。
+        -   它应该足够大，以适应在顺序的试验中进行多次这样的评估，并仍然产生准确的估计。也就是说，避免随着时间的推移自适应地“拟合”验证集，以一种不能泛化到保留测试集的方式。但是，这种考虑很少是实际问题。
+    -   <ins>Imbalanced datasets</ins>
+        -   对于不平衡的数据集，在罕见类别的样本上的性能通常会有噪声。
+        -   对于类标签中样本数量较少的数据集，记录正确预测的样本数量，以更深入地了解精度的提高(0.05的灵敏度提高听起来令人兴奋，但这仅仅是又一个正确的样本吗?)
+
+</details>
+
+<h3 id="保存检查点并回顾选择最好的检查点"><a href="#保存检查点并回顾选择最好的检查点" class="headerlink" title="保存检查点并回顾选择最好的检查点"></a>保存检查点并回顾选择最好的检查点</h3><p><strong><em>总结:</em></strong> <em>进行固定步数的训练，并从运行中回顾性地选择最佳检查点。</em></p>
+<ul>
+<li>大多数深度学习框架都支持<a target="_blank" rel="noopener" href="https://flax.readthedocs.io/en/latest/api_reference/flax.training.html">模型检查点</a>。也就是说，模型的当前状态定期保存在磁盘上。这使得训练工作可以恢复计算实例中断。</li>
+<li>最好的检查点通常不是最后一个检查点，特别是当验证集的性能不是随着时间的推移而持续增加，而是在某个特定值上下波动时。</li>
+<li>设置管道来跟踪到目前为止在训练中看到的N个最好的检查点。在训练结束时，模型选择就是选择训练过程中看到的最佳检查点。我们称之为<strong>回顾式最佳检查点选择</strong>。</li>
+<li>支持预期的提前停止通常是不必要的，因为我们预先指定了一个试验预算，并保留了到目前为止看到的N个最好的检查点。</li>
+</ul>
+<h3 id="设置实验跟踪"><a href="#设置实验跟踪" class="headerlink" title="设置实验跟踪"></a>设置实验跟踪</h3><p><strong><em>总结:</em></strong> <em>在跟踪不同的实验时，一定要注意一些要点，比如研究中检查点的最佳表现，以及研究的简短描述。</em></p>
+<ul>
+<li>我们发现，在电子表格中跟踪实验结果对我们正在处理的这类建模问题很有帮助。它通常有以下列:<ul>
+<li>Study name</li>
+<li>指向存储研究配置的位置的链接。</li>
+<li>研究的笔记或简短描述。</li>
+<li>试运行次数</li>
+<li>在本研究最佳检查点的验证集上的性能。</li>
+<li>具体的复制命令或说明哪些未提交的更改是开展培训所必需的。</li>
+</ul>
+</li>
+<li>找到一个跟踪系统，至少捕获上面列出的信息，并方便人们这样做。未跟踪的实验还不如不存在。</li>
+</ul>
+<h3 id="Batchnorm实现细节"><a href="#Batchnorm实现细节" class="headerlink" title="Batchnorm实现细节"></a>Batchnorm实现细节</h3><p><strong><em>总结:</em></strong> <em>现在批处理规范通常可以用LayerNorm代替，但在不能这样做的情况下，在更改批处理大小或主机数量时存在棘手的细节</em></p>
+<ul>
+<li>Batch norm使用当前批的平均值和方差对激活进行规范化，但在多设备设置中，这些统计数据在每个设备上是不同的，除非显式同步。</li>
+<li>有些报告(主要是在ImageNet上)说，在实践中，只使用~64个例子来计算这些规范化统计数据实际上效果更好(参见本文中的<a target="_blank" rel="noopener" href="https://arxiv.org/abs/1705.08741">Ghost Batch Norm</a>)。</li>
+<li>将总批大小和用于计算batch norm统计的示例数量解耦对于批大小比较特别有用。</li>
+<li>Ghost batch norm实现并不总是正确处理per-device batch size&gt;virtual batch size的情况。在这种情况下，我们实际上需要在每个设备上对批进行子采样，以便获得batch norm 统计示例的适当数量。</li>
+<li>测试模式batch norm中使用的指数移动平均线只是训练统计数据的线性组合，因此这些ema只需要在将它们保存在检查点之前进行同步。然而，batch norm的一些常见实现并不同步这些EMA，而只是保存来自第一个设备的EMA。</li>
+</ul>
+<h3 id="多主机管道的注意事项"><a href="#多主机管道的注意事项" class="headerlink" title="多主机管道的注意事项"></a>多主机管道的注意事项</h3><p><strong><em>总结:</em></strong> <em>对于日志记录，评估，RNG seeds，检查点和数据分片，多主机训练可以使其非常容易引入bug !</em></p>
+<p>RNG种子（RNG seeds）是在计算机科学中用于伪随机数生成器（RNG）的起始输入。伪随机数生成器是一种算法，可以生成看似随机但实际上是确定性的数字序列。这些序列在计算机编程和模拟中被广泛应用，用于生成随机性，例如在游戏中的随机事件、密码学中的密钥生成，以及在实验和模拟中的随机化等。</p>
+<p>RNG种子是一个起始值，它作为输入提供给伪随机数生成器。通过使用相同的种子，可以在每次运行时生成相同的随机数序列，这对于实验的可重现性和调试代码非常有用。换句话说，如果你在相同的环境中使用相同的种子进行随机数生成，你将会得到相同的随机数序列。但是，如果你使用不同的种子，你将得到不同的随机数序列。</p>
+<p>在深度学习中，RNG种子通常用于设置随机初始化的权重和偏差，以及在每个训练轮次中生成随机批次的顺序。通过固定种子，可以使模型的初始化和数据的处理过程在不同运行之间保持一致，以便进行可重复的实验和比较。</p>
+<ul>
+<li>确保整个流程只在一台主机上进行日志记录和检查点。</li>
+<li>确保在运行评估或检查点之前，跨主机同步批规范统计信息。</li>
+<li>对于不同主机(用于模型初始化)具有相同的RNG种子和不同主机(用于数据洗牌/预处理)具有不同的RNG种子是至关重要的，因此请确保对它们进行适当标记。</li>
+<li>为了提高性能，通常建议跨主机对数据文件进行分片。</li>
+</ul>
+<h2 id="FAQs"><a href="#FAQs" class="headerlink" title="FAQs"></a>FAQs</h2><h3 id="最佳学习率衰减时间表是什么"><a href="#最佳学习率衰减时间表是什么" class="headerlink" title="最佳学习率衰减时间表是什么?"></a>最佳学习率衰减时间表是什么?</h3><details><summary><em>[Click to expand]</em></summary>
+<br>
+
+-   这是一个开放问题。目前还不清楚如何构建一套严格的实验来自信地回答“最佳”LR衰变时间表是什么。
+-   虽然我们不知道最好的时间表，但我们相信有一些(不固定的)时间表是很重要的，并且调优它很重要。
+-   在优化过程中，不同的学习率在不同的时间发挥最佳作用。制定某种时间表使模型更有可能达到一个良好的学习率。
+
+</details>
+
+<h3 id="我应该使用哪种学习率衰减作为默认值"><a href="#我应该使用哪种学习率衰减作为默认值" class="headerlink" title="我应该使用哪种学习率衰减作为默认值?"></a>我应该使用哪种学习率衰减作为默认值?</h3><details><summary><em>[Click to expand]</em></summary>
+<br>
+
+-   我们倾向于线性衰减或余弦衰减，还有一些其他的变换可能也不错。
+
+</details>
+
+<h3 id="为什么有些论文有复杂的学习率时间表"><a href="#为什么有些论文有复杂的学习率时间表" class="headerlink" title="为什么有些论文有复杂的学习率时间表?"></a>为什么有些论文有复杂的学习率时间表?</h3><details><summary><em>[Click to expand]</em></summary>
+<br>
+
+-   使用复杂的分段学习率(LR)衰减时间表的论文并不少见。
+-   读者常常想知道作者是如何得出如此复杂的研究结果的。
+-   许多复杂的LR衰减调度是将验证集的性能作为一个函数，以一种临时的方式调优调度的结果:
+    1.  用一些简单的LR衰减(或恒定的学习率)开始一次训练运行。
+    2.  继续训练，直到表现停滞。如果发生这种情况，暂停训练。从这一点开始，用可能更陡峭的LR衰减时间表(或更小的恒定学习率)恢复它。重复这个过程直到会议/发布截止日期。
+-   盲目地复制结果**时间表**通常不是一个好主意，因为最佳的特定调度对许多其他超参数的选择都很敏感。
+    -   最好复制生成时间表的**算法**，尽管遇到任意的人为判断生成时间表时，这几乎是不可能的。
+-   如果可以完全自动化，这种类型的验证错误敏感的时间表是可以使用的，但由于验证错误的影响，human-in-the-loop schedules很脆弱，不容易重现，所以我们建议避免使用它们。
+    -   在发布使用这种时间表的结果之前，请尝试使其完全可重现。
+
+</details>
+
+<h3 id="如何调优Adam的超参数"><a href="#如何调优Adam的超参数" class="headerlink" title="如何调优Adam的超参数?"></a>如何调优Adam的超参数?</h3><details><summary><em>[Click to expand]</em></summary>
+<br>
+
+- 如上所述，对搜索空间以及应该从搜索空间中采样多少个点是非常困难进行一般性的描述的。请注意，并非Adam中的所有超参数都同等重要。以下经验法则对应于一项研究中试验次数的不同“预算”。
+
+  -   如果在一项研究中少于10次试验，只调整(基本)学习率。
+  -   如果10-25次试验，调整学习率和$\beta_1$。
+  -   如果25次以上的试验，调整学习率，$\beta_1$和$\epsilon$。
+  -   如果可以运行超过25次试验，则需要进行额外的调优$\beta_2$.
+
+  一个"trial"（实验）代表了一次完整的训练过程，也就是当你可尝试调参的次数有限时尝试调整的超参数顺序应为学习率>$\beta_1$>$\epsilon$>$\beta_2$。
+
+</details>
+
+<h3 id="为什么在调优的探索阶段使用准随机搜索而不是更复杂的黑盒优化算法"><a href="#为什么在调优的探索阶段使用准随机搜索而不是更复杂的黑盒优化算法" class="headerlink" title="为什么在调优的探索阶段使用准随机搜索而不是更复杂的黑盒优化算法?"></a>为什么在调优的探索阶段使用准随机搜索而不是更复杂的黑盒优化算法?</h3><details><summary><em>[Click to expand]</em></summary>
+
+-   当用作迭代调优过程的一部分时，目的是最大化地了解调优问题(我们称之为“探索阶段”)，准随机搜索(基于[低差异序列](https://en.wikipedia.org/wiki/Low-discrepancy_sequence))是我们的首选，而不是花哨的黑盒优化工具。贝叶斯优化和类似的工具更适合于开发阶段。
+-   基于随机移动的低差异序列的准随机搜索可以被认为是"抖动的、打乱的网格搜索"，因为它均匀而随机地探索给定的搜索空间，并且比随机搜索更分散的搜索点。
+-   相对于更复杂的黑盒优化工具(如贝叶斯优化、进化算法)，准随机搜索的优势包括:
+    1.  对搜索空间进行非自适应采样，可以在事后分析中改变调优目标，而无需重新运行实验。
+        -   例如，我们通常希望找到在训练中任何点上的验证误差方面的最佳试验。但准随机搜索的非自适应性质使其有可能根据最终验证误差、训练误差或某些替代评估指标找到最佳试验，而无需重新运行任何实验。
+    2.  准随机搜索具有一致性和统计可重复性。
+        -   即使搜索算法的实现发生了变化，只要保持相同的均匀性，也应该有可能重现六个月前的研究。如果使用复杂的贝叶斯优化软件，版本之间的实现可能会发生重要变化，使得重现旧的搜索变得更加困难。不可能总是回滚到旧的实现(例如，如果优化工具作为服务运行)。
+    3.  它对搜索空间的统一探索使推理结果及其对搜索空间的建议变得更容易。
+        -   例如，如果准随机搜索遍历的最佳点位于搜索空间的边界，这是一个很好的(但不是完全可靠的)信号，表明应该改变搜索空间的边界。[本节](#识别错误的搜索空间边界)将深入探讨。然而，由于一些不幸的早期试验，自适应黑盒优化算法可能会忽略搜索空间的中间部分，即使它碰巧包含同样好的点，因为一个好的优化算法需要采用这种精确的非均匀性来加速搜索。
+    4.  与自适应算法不同，使用准随机搜索(或其他非自适应搜索算法)时，并行和顺序运行不同数量的试验不会产生统计上的不同结果。
+    5.  更复杂的搜索算法可能并不总是正确处理不可达点，特别是在设计它们时没有考虑神经网络超参数调整。
+    6.  准随机搜索很简单，当许多调优试验并行运行时，效果特别好。
+        -   有趣的是[^3]，一个自适应算法很难击败2X-budget准随机搜索，特别是当许多试验需要并行运行时(因此在启动新试验时很少有机会使用以前的试验结果)。
+        -   如果没有贝叶斯优化和其他高级黑盒优化方法的专业知识，我们可能无法实现它们原则上能够提供的好处。在现实的深度学习调优条件下，很难对高级黑盒优化算法进行基准测试。它们是当前研究的一个非常活跃的领域，对于经验不足的用户来说，更复杂的算法也有其固有的缺陷。这些方法的专家能够得到很好的结果，但在高度并行的情况下，搜索空间和预算往往更重要。
+-   也就是说，如果我们的计算资源只允许少量的试验并行运行，并且我们可以负担得起顺序运行许多试验，那么贝叶斯优化将变得更具吸引力，尽管这会使我们的调优结果更难解释。
+
+[^3]: Ben Recht and Kevin Jamieson
+
+[指出](http://www.argmin.net/2016/06/20/hypertuning/) 2X-budget随机搜索的强大程度是一个基准([Hyperband论文](https://jmlr.org/papers/volume18/16-558/16-558.pdf)提出了类似的观点)，但肯定有可能找到最先进的贝叶斯优化技术碾压2X-budget随机搜索的搜索空间和问题。然而，根据我们的经验，在高度并行的情况下，击败2X-budget随机搜索会变得更加困难，因为贝叶斯优化没有机会观察之前试验的结果。
+
+</details>
+
+<h3 id="我在哪里可以找到准随机搜索的实现"><a href="#我在哪里可以找到准随机搜索的实现" class="headerlink" title="我在哪里可以找到准随机搜索的实现?"></a>我在哪里可以找到准随机搜索的实现?</h3><details><summary><em>[Click to expand]</em></summary>
+<br>
+
+-   我们使用[此实现](https://github.com/mlcommons/algorithmic-efficiency/blob/main/algorithmic_efficiency/halton.py)为给定的搜索空间生成霍尔顿序列(旨在实现一个移位的，打乱的霍尔顿序列，如https://arxiv.org/abs/1706.03200中推荐的)。
+-   如果基于低差异序列的准随机搜索算法不可用，则可以用伪随机均匀搜索替代，尽管这可能会稍微低效一些。
+    -   在1-2维空间中，网格搜索也是可以接受的，但在更高的维度中则不行(参见[Bergstra & Bengio, 2012](https://www.jmlr.org/papers/v13/bergstra12a.html))。
+
+</details>
+
+<h3 id="准随机搜索需要多少次试验才能得到好的结果"><a href="#准随机搜索需要多少次试验才能得到好的结果" class="headerlink" title="准随机搜索需要多少次试验才能得到好的结果?"></a>准随机搜索需要多少次试验才能得到好的结果?</h3><details><summary><em>[Click to expand]</em></summary>
+<br>
+<p align="center">
+<img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/have_we_sampled_enough.png" width="49%" alt="A box plot showing the importance of sampling enough">
+</p>
+
+<p align="center"><b>Figure 3:</b> 在ImageNet上调整ResNet-50为100试用通过bootstrapping方法，模拟不同数量的调优预算。上面绘制了每个试验预算的最佳性能的箱线图.
+
+
+
+
+-   一般来说没有办法回答这个问题，但我们可以看一些具体的例子。
+-   如图3所示，研究中的试验次数会对结果产生重大影响。
+    -   请注意，当采样6个试验时，四分位数范围的大小与采样20个试验时的四分位数范围的大小。
+    -   即使有20次试验，特别幸运的研究和特别不幸运的研究之间的差异很可能会比在固定超参数的情况下，在验证错误率为\~23%的情况下，在不同的随机种子上重新训练该模型之间的典型差异更大。
+
+</details>
+
+<h3 id="如何调试和缓解优化失败"><a href="#如何调试和缓解优化失败" class="headerlink" title="如何调试和缓解优化失败"></a>如何调试和缓解优化失败</h3><details><summary><em>[Click to expand]</em></summary>
+<br>
+**总结:** *如果模型遇到优化困难，在尝试其他方法之前解决它们是很重要的。诊断和纠正训练失败是一个活跃的研究领域*
+
+<p align="center">
+<img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/stride_instability.png" width="80%" alt="Changing the strides in a single residual block in a WideResnet results in training instability.">
+</p>
+
+
+
+<p align="center"><b>Figure 4:</b> 改变WideResnet中单个残差块(2x2 -> 1x1)的步幅会导致训练不稳定。这不会降低低学习率时的性能，但由于不稳定，高学习率不再训练良好。应用1000步的学习率热身解决了这种特殊的不稳定情况，允许在最大学习率为.1的情况下进行稳定的训练。</p>
+
+#### 识别不稳定的workloads工作负载
+
+-   如果学习率太大，任何工作负载都会变得不稳定。只有当它迫使我们使用太小的学习率时，不稳定性才是一个问题。
+-   至少有两种类型的训练不稳定性值得区分:
+    1.  初始化/训练早期不稳定。
+    2.  训练中途突然不稳定。
+-   我们可以采用系统的方法来识别工作负载中的稳定性问题。
+    1.  执行学习率扫描并找到最佳学习率lr*。
+    2.  绘制学习率略高于lr*的训练损失曲线。
+    3.  如果学习率> lr*显示损失不稳定(损失在训练期间上升而不是下降)，那么修复不稳定可能会导致更好的训练。
+-   对整个损失梯度的L2范数进行Log处理，在训练过程中，异常值会导致虚假的不稳定。这可以告诉我们如何选择渐变/更新裁剪。
+
+**NOTE:**一些模型表现出非常早期的不稳定性，然后恢复，导致缓慢但稳定的训练。**通常的评估计划可能会因为评估不够频繁而错过这些问题!**
+
+为了检查这一点，我们可以使用`lr = 2 * current best`来训练\~500步的简短运行，但对每一步都进行评估。
+
+<p align="center">
+<img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/more_frequent_evals.png" width="80%" alt="Illustration of the value of more frequent evaluations at the start of
+training.">
+</p>
+
+<p align="center"><b>Figure 5:</b> 说明在训练开始时更频繁的评估的价值。如果怀疑模型存在早期训练不稳定的问题，则是有用的。</p>
+
+#### 对常见的不稳定模式的潜在修复
+
+-   使用 learning rate warmup
+    -   最适合早期训练不稳定。
+-   使用 gradient clipping
+    -   对早期和中期训练的不稳定性都有好处，可以解决一些warmup不能解决的问题。
+-   尝试一个新的优化器
+    -   有时候Adam能处理好Momentum处理不了的不稳定。这是一个活跃的研究领域。
+-   我们可以确保我们为我们的模型架构使用最佳实践/初始化(下面的示例)。
+    -   如果模型不包含残差连接，则添加残差连接并进行规范化。
+-   归一化应该是残差之前的最后一个操作。 E.g. x + Norm(f(x)).
+-   Norm(x + f(x))已知会引起问题。
+-   尝试将residual分支初始化为0(e.g. [ReZero init](https://arxiv.org/abs/2003.04887)).
+-   降低学习率
+    -   这是最后的办法。
+
+#### Learning rate warmup
+
+<p align="center">
+<img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/instability_during_warmup.png" width="80%" alt="An example of instability during a warmup period (note the horizontal axis log
+scale).">
+</p>
+
+<p align="center"><b>Figure 6:</b> 热身期间不稳定的例子(注意水平轴对数尺度)。在这种情况下，成功的训练需要40k步的热身。</p>
+
+##### When to apply learning rate warmup
+
+<p align="center">
+<img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/axis_model_with_instability.png" width="49%" alt="Axis plot for model with instability">
+</p>
+
+<p align="center"><b>Figure 7a:</b> 展示训练不稳定的模型的超参数轴图示例。最佳学习率是在可行范围的边缘。“不可行”试验被定义为产生nan或异常高的损失值的试验。</p>
+
+<p align="center">
+<img src="assets/loss_model_with_instability.png" width="49%" alt="Loss curve for model with instability">
+</p>
+<p align="center"><b>Figure 7b:</b> 使用学习率训练的模型的训练损失，我们看到不稳定.</p>
+
+-   图7a显示了一个超参数轴图，表明一个模型正经历优化不稳定，因为最佳学习率正好位于不稳定的边缘。
+-   图7b展示了如何通过检查以比峰值大5倍或10倍的学习率训练的模型的训练损失来进行双重检查。如果该图显示了损失在稳步下降之后突然上升(例如上图中的步长\~10k)，那么模型可能会遭遇优化不稳定。
+
+##### How to apply learning rate warmup
+
+<p align="center">
+<img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/beneficial_effect_warmup.png" width="80%" alt="Beneficial effect of warmup on training instabilities">
+</p>
+
+<p align="center"><b>Figure 8:</b> learning rate warmup 对解决训练不稳定性的有益作用</p>
+
+-   使用上面的部分，我们假设从业者已经确定了模型变得不稳定的学习率。这就是`unstable_base_learning_rate`。
+-   热身包括预先设定学习率，将学习率从0提升到某个稳定的`base_learning_rate`，比`unstable_base_learning_rate`至少大一个数量级。默认值是10倍于`unstable_base_learning_rate`的`base_learning_rate`。不过请注意，对于类似100x的`unstable_base_learning_rate`，可以再次运行整个过程。具体过程如下:
+    -   通过`warmup_steps`从0上升到`base_learning_rate`。
+    -   以恒定的速率训练`post_warmup_steps`。
+-   我们的目标是找到最短数量的`warmup_steps`，使我们能够获得远高于`unstable_base_learning_rate`的峰值学习率。
+-   所以对于每个`base_learning_rate`，我们需要调整`warmup_steps`和`post_warmup_steps`。通常可以将`post_warmup_steps`设置为`2*warmup_steps`。
+-   Warmup 可以独立于现有的衰减计划进行调整。`warmup_steps`应该以几个不同的数量级进行清理。例如，一个示例研究可以尝试[10,10 <sup>3</sup>， 10<sup>4</sup>， 10<sup>5</sup>]。最大可行点不应该超过`max_train_steps`的10%。
+-   一旦建立了不会破坏`base_learning_rate`训练的`warmup_steps`，就应该将其应用于基线模型。本质上，我们将此调度添加到现有的调度中，并使用上面讨论的最佳检查点选择来将此实验与基线进行比较。例如，如果我们最初有10 000个`max_train_steps`，并对1000个步骤执行了`warmup_steps`，那么新的训练过程总共应该运行11 000个步骤。
+-   如果稳定训练需要较长的`warmup_steps` (`max_train_steps`的>5%)，则可能需要增加`max_train_steps`来说明这一点。
+-   在整个工作负载范围内，并没有一个真正的“典型”值。有些模型只需要100步，而其他模型(特别是transformer)可能需要40k以上。
+
+#### Gradient clipping
+
+<p align="center">
+<img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/gradient_clipping.png" width="80%" alt="Gradient clipping on early training instabilities">
+</p>
+
+
+<p align="center"><b>Figure 9:</b> Illustration of gradient clipping correcting early training instability.</p>
+
+-   Gradient clipping在发生较大或异常梯度问题时最有用。
+-   Clipping 可以解决早期训练的不稳定性(早期的大梯度范数)，或中期训练的不稳定性(训练中期的突然梯度峰值)。
+-   有时更长的预热时间可以纠正裁剪无法纠正的不稳定性:请参阅[上面的这部分](#How-to-apply-learning-rate-warmup).
+    -   🤖 What about clipping during warmup?
+-   理想的clip阈值刚好高于“典型的”梯度范数。
+-   下面是一个渐变裁剪的例子:
+    -   如果梯度的范数$\left | g \right |$大于梯度裁剪阈值$\lambda$，那么执行${g}'= \lambda \times \frac{g}{\left | g \right |}$，其中${g}'$是新的梯度。
+-   在训练过程中记录未裁剪的梯度范数。默认情况下，生成:
+    -   梯度范数与步长的图
+    -   在所有步骤中聚合的梯度范数直方图
+-   基于梯度范数的90百分位数选择梯度裁剪阈值。
+    -   阈值取决于工作负载，但90%是一个很好的起点。如果它不起作用，可以调整这个阈值。
+    -   🤖 What about some sort of adaptive strategy?
+-   如果我们尝试梯度裁剪，但不稳定的问题仍然存在，我们可以更努力地尝试(即使阈值更小)。
+-   极端激进的梯度裁剪本质上是一种降低学习率的奇怪方法。如果我们发现自己使用了非常激进的裁剪，我们可能应该降低学习率。
+-   我们通常会考虑将>50%的更新以某种方式剪辑为“极端激进”。
+-   如果我们需要进行非常激进的梯度裁剪来处理不稳定问题，那么我们可能还需要降低学习率。
+
+</details>
+
+<h3 id="为什么把学习率和其他优化参数称为超参数-它们不是任何先验分布的参数"><a href="#为什么把学习率和其他优化参数称为超参数-它们不是任何先验分布的参数" class="headerlink" title="为什么把学习率和其他优化参数称为超参数?它们不是任何先验分布的参数"></a>为什么把学习率和其他优化参数称为超参数?它们不是任何先验分布的参数</h3><details><summary><em>[Click to expand]</em></summary>
+<br>
+
+-   的确，术语“超参数”在贝叶斯机器学习中有一个精确的[含义](https://en.wikipedia.org/wiki/Hyperparameter)，将学习率和我们在深度学习中调优的大多数其他参数称为“超参数”是一种术语滥用。
+-   我们更倾向于使用术语“元参数”来表示学习率、架构参数和我们在深度学习中调整的所有其他东西，因为它避免了误用“超参数”这个词带来的潜在混淆(在讨论贝叶斯优化时，概率响应面模型有自己的真正超参数，这种混淆尤其可能发生)。
+-   不幸的是，尽管可能令人困惑，但术语超参数在深度学习社区中已经变得非常普遍。
+-   因此，对于一份文件，比如这份文件，它的目的是为广泛的受众，其中包括许多不太可能意识到这种技术细节的人，我们选择在该领域造成一个困惑的来源，希望避免另一个。
+-   也就是说，在发表研究论文时，我们可能会做出不同的选择，我们会鼓励其他人在大多数情况下使用“元参数”。
+
+</details>
+
+<h3 id="为什么不调整批大小以直接提高验证集性能"><a href="#为什么不调整批大小以直接提高验证集性能" class="headerlink" title="为什么不调整批大小以直接提高验证集性能?"></a>为什么不调整批大小以直接提高验证集性能?</h3><details><summary><em>[Click to expand]</em></summary>
+<br>
+
+-   在不改变训练管道的任何其他细节的情况下改变批大小通常会影响验证集的性能。
+-   然而，如果训练管道针对每个批量大小进行独立优化，则两个批量大小之间验证集性能的差异通常会消失。
+-   与批处理大小相互作用最强烈的超参数是优化器超参数(例如学习率，动量)和正则化超参数，因此对每个批处理大小分别进行调优是最重要的。
+    - 由于样本方差，较小的批量大小会在训练算法中引入更多的噪声，并且这种噪声可以具有正则化效果。因此，较大的批大小更容易出现过拟合，可能需要更强的正则化和/或额外的正则化技术。
+-   另外，在更改批处理大小时，[训练步数可能需要调整](# 选择批的大小以减少训练时间)。
+-   一旦考虑到所有这些影响，目前没有令人信服的证据表明批量大小会影响可达到的最大验证性能(见[Shallue et al. 2018](https://arxiv.org/abs/1811.03600))。
+
+</details>
+
+<h3 id="所有流行的优化算法的更新规则是什么"><a href="#所有流行的优化算法的更新规则是什么" class="headerlink" title="所有流行的优化算法的更新规则是什么?"></a>所有流行的优化算法的更新规则是什么?</h3><details><summary><em>[Click to expand]</em></summary>
+
+<br>
+
+#### Stochastic gradient descent (SGD)
+
+$$\theta_{t+1} = \theta_{t} - \eta_t \nabla \mathcal{l}(\theta_t)$$
+
+#### Momentum
+
+$$v_0 = 0$$
+
+$$v_{t+1} = \gamma v_{t} + \nabla \mathcal{l}(\theta_t)$$
+
+$$\theta_{t+1} = \theta_{t} - \eta_t v_{t+1}$$
+
+#### Nesterov
+
+$$v_0 = 0$$
+
+$$v_{t+1} = \gamma v_{t} + \nabla \mathcal{l}(\theta_t)$$
+
+$$\theta_{t+1} = \theta_{t} - \eta_t( \gamma v_{t+1} + \nabla \mathcal{l}(\theta_{t})$$
+
+#### RMSProp
+
+$$v_0 = 1 \text{,} m_0 = 0$$
+
+$$v_{t+1} = \rho v_{t} + (1 - \rho) \nabla \mathcal{l}(\theta_t)^2$$
+
+$$m_{t+1} = \gamma m_{t} + \frac{\eta_t}{\sqrt{v_{t+1} + \epsilon}}\nabla \mathcal{l}(\theta_t)$$
+
+$$\theta_{t+1} = \theta_{t} - m_{t+1}$$
+
+#### ADAM
+
+$$m_0 = 0 \text{,} v_0 = 0$$
+
+$$m_{t+1} = \beta_1 m_{t} + (1 - \beta_1) \nabla \mathcal{l} (\theta_t)$$
+
+$$v_{t+1} = \beta_2 v_{t} + (1 - \beta_2) \nabla \mathcal{l}(\theta_t)^2$$
+
+$$b_{t+1} = \frac{\sqrt{1 - \beta_2^{t+1}}}{1 - \beta_1^{t+1}}$$
+
+$$\theta_{t+1} = \theta_{t} - \alpha_t \frac{m_{t+1}}{\sqrt{v_{t+1}} + \epsilon} b_{t+1}$$
+
+#### NADAM
+
+$$m_0 = 0 \text{,} v_0 = 0$$
+
+$$m_{t+1} = \beta_1 m_{t} + (1 - \beta_1) \nabla \mathcal{l} (\theta_t)$$
+
+$$v_{t+1} = \beta_2 v_{t} + (1 - \beta_2) \nabla \mathcal{l} (\theta_t)^2$$
+
+$$b_{t+1} = \frac{\sqrt{1 - \beta_2^{t+1}}}{1 - \beta_1^{t+1}}$$
+
+$$\theta_{t+1} = \theta_{t} - \alpha_t \frac{\beta_1 m_{t+1} + (1 - \beta_1) \nabla \mathcal{l} (\theta_t)}{\sqrt{v_{t+1}} + \epsilon} b_{t+1}$$
+
+</details>
+
+<h2 id="Acknowledgments"><a href="#Acknowledgments" class="headerlink" title="Acknowledgments"></a>Acknowledgments</h2><ul>
+<li>We owe a debt of gratitude to Max Bileschi, Roy Frostig, Zelda Mariet, Stan<br>Bileschi, Mohammad Norouzi, Chris DuBois and Charles Sutton for reading the<br>manuscript and providing valuable feedback.</li>
+<li>We reused some experimental data for several plots that were originally<br>produced by Naman Agarwal for other joint research.</li>
+<li>We would like to thank Will Chen for invaluable advice on the presentation of the document.</li>
+<li>We would also like to thank Rohan Anil for useful discussions.</li>
+</ul>
+<h2 id="Citing"><a href="#Citing" class="headerlink" title="Citing"></a>Citing</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">@misc&#123;tuningplaybookgithub,</span><br><span class="line">  author = &#123;Varun Godbole and George E. Dahl and Justin Gilmer and Christopher J. Shallue and Zachary Nado&#125;,</span><br><span class="line">  title = &#123;Deep Learning Tuning Playbook&#125;,</span><br><span class="line">  url = &#123;http://github.com/google/tuning_playbook&#125;,</span><br><span class="line">  year = &#123;2023&#125;,</span><br><span class="line">  note = &#123;Version 1.0&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Contributing"><a href="#Contributing" class="headerlink" title="Contributing"></a>Contributing</h2><ul>
+<li><p>This is not an officially supported Google product.</p>
+</li>
+<li><p>We’d love to hear your feedback!</p>
+<ul>
+<li>If you like the playbook, please <a target="_blank" rel="noopener" href="https://docs.github.com/en/get-started/exploring-projects-on-github/saving-repositories-with-stars#starring-a-repository">leave a star</a>! Or email deep-learning-tuning-playbook [at] googlegroups.com. Testimonials help us justify creating more resources like this.</li>
+<li>If anything seems incorrect, please file an issue to start a discussion. For questions or other messages where an issue isn’t appropriate, please open a new discussion topic on GitHub.</li>
+</ul>
+</li>
+<li><p>As discussed in the preamble, this is a living document. We anticipate making periodic improvements, both small and large. If you’d like to be notified, please watch our repository (see <a target="_blank" rel="noopener" href="https://docs.github.com/en/account-and-profile/managing-subscriptions-and-notifications-on-github/setting-up-notifications/configuring-notifications#configuring-your-watch-settings-for-an-individual-repository">instructions</a>).</p>
+</li>
+<li><p>Please don’t file a pull request without first coordinating with the authors via the issue tracking system.</p>
+</li>
+</ul>
+<h3 id="Contributor-License-Agreement"><a href="#Contributor-License-Agreement" class="headerlink" title="Contributor License Agreement"></a>Contributor License Agreement</h3><p>Contributions to this project must be accompanied by a Contributor License Agreement (CLA). You (or your employer) retain the copyright to your contribution; this simply gives us permission to use and redistribute your contributions as part of the project. Head over to <a target="_blank" rel="noopener" href="https://cla.developers.google.com/">https://cla.developers.google.com/</a> to see your current agreements on file or to sign a new one.</p>
+<p>You generally only need to submit a CLA once, so if you’ve already submitted one (even if it was for a different project), you probably don’t need to do it again.</p>
+<h3 id="Code-Reviews"><a href="#Code-Reviews" class="headerlink" title="Code Reviews"></a>Code Reviews</h3><p>All submissions, including submissions by project members, require review. We use GitHub pull requests for this purpose. Consult<br><a target="_blank" rel="noopener" href="https://help.github.com/articles/about-pull-requests/">GitHub Help</a> for more information on using pull requests.</p>
+<h3 id="Community-Guidelines"><a href="#Community-Guidelines" class="headerlink" title="Community Guidelines"></a>Community Guidelines</h3><p>This project follows <a target="_blank" rel="noopener" href="https://opensource.google/conduct/">Google’s Open Source Community Guidelines</a>.</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://liumeng.top">独孤白</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://liumeng.top/link/7b0c9bac.html">http://liumeng.top/link/7b0c9bac.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://liumeng.top" target="_blank">记录收获，重拾旧遗</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%B0%83%E5%8F%82/">调参</a></div><div class="post_share"><div class="social-share" data-image="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306191021819.jpeg" data-sites="wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/link/suixiangluday16.html" title="代码随想录(day16)"><img class="cover" src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png" onerror="onerror=null;src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">代码随想录(day16)</div></div></a></div><div class="next-post pull-right"><a href="/link/suixiangluday15.html" title="代码随想录(day15)"><img class="cover" src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png" onerror="onerror=null;src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">代码随想录(day15)</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/link/e89475e6.html" title="训练网络笔记"><img class="cover" src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306191021819.jpeg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-06-30</div><div class="title">训练网络笔记</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/avatar.jpg" onerror="this.onerror=null;this.src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">独孤白</div><div class="author-info__description">天行健 君子以自强不息</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">56</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">18</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">15</div></a></div><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/liumeng-hub" target="_blank" title="https://github.com/liumeng-hub"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:915738464@qq.com" target="_blank" title="915738464@qq.com"><i class="fas fa-envelope"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Deep-Learning-Tuning-Playbook"><span class="toc-number">1.</span> <span class="toc-text">Deep Learning Tuning Playbook</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Table-of-Contents"><span class="toc-number">1.1.</span> <span class="toc-text">Table of Contents</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Who-is-this-document-for"><span class="toc-number">1.2.</span> <span class="toc-text">Who is this document for?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Why-a-tuning-playbook"><span class="toc-number">1.3.</span> <span class="toc-text">Why a tuning playbook?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%87%E5%AF%BC%E5%BC%80%E5%A7%8B%E4%B8%80%E4%B8%AA%E6%96%B0%E9%A1%B9%E7%9B%AE"><span class="toc-number">1.4.</span> <span class="toc-text">指导开始一个新项目</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%89%E6%8B%A9%E6%A8%A1%E5%9E%8B%E7%BB%93%E6%9E%84"><span class="toc-number">1.4.1.</span> <span class="toc-text">选择模型结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%89%E6%8B%A9%E4%BC%98%E5%8C%96%E5%99%A8"><span class="toc-number">1.4.2.</span> <span class="toc-text">选择优化器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%89%E6%8B%A9%E6%89%B9%E6%AC%A1%E5%A4%A7%E5%B0%8F"><span class="toc-number">1.4.3.</span> <span class="toc-text">选择批次大小</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A1%AE%E5%AE%9A%E5%8F%AF%E8%A1%8C%E7%9A%84%E6%89%B9%E5%A4%A7%E5%B0%8F%E5%92%8C%E4%BC%B0%E8%AE%A1%E8%AE%AD%E7%BB%83%E5%90%9E%E5%90%90%E9%87%8F"><span class="toc-number">1.4.3.1.</span> <span class="toc-text">确定可行的批大小和估计训练吞吐量</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%89%E6%8B%A9%E6%89%B9%E7%9A%84%E5%A4%A7%E5%B0%8F%E4%BB%A5%E5%87%8F%E5%B0%91%E8%AE%AD%E7%BB%83%E6%97%B6%E9%97%B4"><span class="toc-number">1.4.3.2.</span> <span class="toc-text">选择批的大小以减少训练时间</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%89%E6%8B%A9%E6%89%B9%E5%A4%84%E7%90%86%E5%A4%A7%E5%B0%8F%E4%BB%A5%E6%9C%80%E5%B0%8F%E5%8C%96%E8%B5%84%E6%BA%90%E6%B6%88%E8%80%97"><span class="toc-number">1.4.3.3.</span> <span class="toc-text">选择批处理大小以最小化资源消耗</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9B%B4%E6%94%B9%E6%89%B9%E5%A4%84%E7%90%86%E5%A4%A7%E5%B0%8F%E9%9C%80%E8%A6%81%E9%87%8D%E6%96%B0%E8%B0%83%E4%BC%98%E5%A4%A7%E5%A4%9A%E6%95%B0%E8%B6%85%E5%8F%82%E6%95%B0"><span class="toc-number">1.4.3.4.</span> <span class="toc-text">更改批处理大小需要重新调优大多数超参数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Batchnorm%E4%B8%8E%E6%89%B9%E9%87%8F%E5%A4%A7%E5%B0%8F%E5%A6%82%E4%BD%95%E7%9B%B8%E4%BA%92%E4%BD%9C%E7%94%A8"><span class="toc-number">1.4.3.5.</span> <span class="toc-text">Batchnorm与批量大小如何相互作用</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%89%E6%8B%A9%E5%88%9D%E5%A7%8B%E9%85%8D%E7%BD%AE"><span class="toc-number">1.4.4.</span> <span class="toc-text">选择初始配置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%90%E9%AB%98%E6%A8%A1%E5%9E%8B%E6%80%A7%E8%83%BD%E7%9A%84%E7%A7%91%E5%AD%A6%E6%96%B9%E6%B3%95"><span class="toc-number">1.5.</span> <span class="toc-text">提高模型性能的科学方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A2%9E%E9%87%8F%E8%B0%83%E4%BC%98%E7%AD%96%E7%95%A5"><span class="toc-number">1.5.1.</span> <span class="toc-text">增量调优策略</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%A2%E7%B4%A2vs%E5%BC%80%E5%8F%91"><span class="toc-number">1.5.2.</span> <span class="toc-text">探索vs开发</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%89%E6%8B%A9%E4%B8%8B%E4%B8%80%E8%BD%AE%E5%AE%9E%E9%AA%8C%E7%9A%84%E7%9B%AE%E6%A0%87"><span class="toc-number">1.5.3.</span> <span class="toc-text">选择下一轮实验的目标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E8%AE%A1%E4%B8%8B%E4%B8%80%E8%BD%AE%E5%AE%9E%E9%AA%8C"><span class="toc-number">1.5.4.</span> <span class="toc-text">设计下一轮实验</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AF%86%E5%88%AB%E7%A7%91%E5%AD%A6%E7%9A%84%E3%80%81%E5%86%97%E4%BD%99%E7%9A%84%E5%92%8C%E5%9B%BA%E5%AE%9A%E7%9A%84%E8%B6%85%E5%8F%82%E6%95%B0"><span class="toc-number">1.5.4.1.</span> <span class="toc-text">识别科学的、冗余的和固定的超参数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E4%B8%80%E7%B3%BB%E5%88%97%E7%9A%84%E7%A0%94%E7%A9%B6"><span class="toc-number">1.5.4.2.</span> <span class="toc-text">创建一系列的研究</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9C%A8%E6%9B%B4%E5%A4%9A%E5%AE%9E%E9%AA%8C%E5%92%8C%E6%9C%89%E9%99%90%E8%B5%84%E6%BA%90%E4%B9%8B%E9%97%B4%E5%8F%96%E5%BE%97%E5%B9%B3%E8%A1%A1"><span class="toc-number">1.5.4.3.</span> <span class="toc-text">在更多实验和有限资源之间取得平衡</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8E%E5%AE%9E%E9%AA%8C%E7%BB%93%E6%9E%9C%E4%B8%AD%E6%8F%90%E5%8F%96%E8%A7%81%E8%A7%A3"><span class="toc-number">1.5.5.</span> <span class="toc-text">从实验结果中提取见解</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AF%86%E5%88%AB%E9%94%99%E8%AF%AF%E7%9A%84%E6%90%9C%E7%B4%A2%E7%A9%BA%E9%97%B4%E8%BE%B9%E7%95%8C"><span class="toc-number">1.5.5.1.</span> <span class="toc-text">识别错误的搜索空间边界</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9C%A8%E6%90%9C%E7%B4%A2%E7%A9%BA%E9%97%B4%E4%B8%AD%E6%B2%A1%E6%9C%89%E9%87%87%E6%A0%B7%E8%B6%B3%E5%A4%9F%E5%A4%9A%E7%9A%84%E7%82%B9"><span class="toc-number">1.5.5.2.</span> <span class="toc-text">在搜索空间中没有采样足够多的点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A3%80%E6%9F%A5%E8%AE%AD%E7%BB%83%E6%9B%B2%E7%BA%BF"><span class="toc-number">1.5.5.3.</span> <span class="toc-text">检查训练曲线</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A3%80%E6%B5%8B%E6%9C%89%E9%9A%94%E7%A6%BB%E7%9A%84%E5%8F%98%E5%8C%96%E5%9B%BE%E6%98%AF%E5%90%A6%E6%9C%89%E7%94%A8"><span class="toc-number">1.5.5.4.</span> <span class="toc-text">检测有隔离的变化图是否有用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%87%AA%E5%8A%A8%E5%8C%96%E7%94%9F%E6%88%90%E5%B8%B8%E7%94%A8%E7%9A%84%E5%9B%BE"><span class="toc-number">1.5.5.5.</span> <span class="toc-text">自动化生成常用的图</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%B3%E5%AE%9A%E6%98%AF%E9%87%87%E7%94%A8%E6%94%B9%E5%8F%98%E8%AE%AD%E7%BB%83%E6%B5%81%E7%A8%8B%E8%BF%98%E6%98%AF%E8%B6%85%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE"><span class="toc-number">1.5.6.</span> <span class="toc-text">决定是采用改变训练流程还是超参数配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%A2%E7%B4%A2%E5%90%8E%E6%80%BB%E7%BB%93"><span class="toc-number">1.5.7.</span> <span class="toc-text">探索后总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A1%AE%E5%AE%9A%E6%AF%8F%E6%AC%A1%E8%AE%AD%E7%BB%83%E7%9A%84%E6%AD%A5%E6%95%B0"><span class="toc-number">1.6.</span> <span class="toc-text">确定每次训练的步数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BD%93%E8%AE%AD%E7%BB%83%E4%B8%8D-%E5%8F%97%E8%AE%A1%E7%AE%97%E9%99%90%E5%88%B6%E6%97%B6%EF%BC%8C%E5%86%B3%E5%AE%9A%E8%AE%AD%E7%BB%83%E5%A4%9A%E9%95%BF%E6%97%B6%E9%97%B4"><span class="toc-number">1.6.1.</span> <span class="toc-text">当训练不 受计算限制时，决定训练多长时间</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%AD%A6%E4%B9%A0%E7%8E%87%E6%89%AB%E6%8F%8F%E4%B8%BAmax-train-steps%E9%80%89%E6%8B%A9%E5%88%9D%E5%A7%8B%E5%80%99%E9%80%89%E7%9A%84%E7%AE%97%E6%B3%95"><span class="toc-number">1.6.1.1.</span> <span class="toc-text">使用学习率扫描为max_train_steps选择初始候选的算法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BD%93%E8%AE%AD%E7%BB%83%E5%8F%97%E8%AE%A1%E7%AE%97%E9%99%90%E5%88%B6%E6%97%B6%EF%BC%8C%E5%86%B3%E5%AE%9A%E8%AE%AD%E7%BB%83%E5%A4%9A%E9%95%BF%E6%97%B6%E9%97%B4"><span class="toc-number">1.6.2.</span> <span class="toc-text">当训练受计算限制时，决定训练多长时间</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC1%E8%BD%AE"><span class="toc-number">1.6.2.1.</span> <span class="toc-text">第1轮</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC2%E8%BD%AE"><span class="toc-number">1.6.2.2.</span> <span class="toc-text">第2轮</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%AD%E7%BB%83%E6%B5%81%E7%A8%8B%E5%A4%96%E7%9A%84%E5%86%85%E5%AE%B9"><span class="toc-number">1.7.</span> <span class="toc-text">训练流程外的内容</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%98%E5%8C%96%E8%BE%93%E5%85%A5%E6%B5%81%E7%A8%8B"><span class="toc-number">1.7.1.</span> <span class="toc-text">优化输入流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%84%E4%BC%B0%E6%A8%A1%E5%9E%8B%E6%80%A7%E8%83%BD"><span class="toc-number">1.7.2.</span> <span class="toc-text">评估模型性能</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AF%84%E4%BC%B0%E8%AE%BE%E7%BD%AE"><span class="toc-number">1.7.2.1.</span> <span class="toc-text">评估设置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BB%BA%E7%AB%8B%E5%AE%9A%E6%9C%9F%E8%AF%84%E4%BC%B0"><span class="toc-number">1.7.2.2.</span> <span class="toc-text">建立定期评估</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%89%E6%8B%A9%E6%A0%B7%E6%9C%AC%E8%BF%9B%E8%A1%8C%E5%91%A8%E6%9C%9F%E6%80%A7%E8%AF%84%E4%BC%B0"><span class="toc-number">1.7.2.3.</span> <span class="toc-text">选择样本进行周期性评估</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%9D%E5%AD%98%E6%A3%80%E6%9F%A5%E7%82%B9%E5%B9%B6%E5%9B%9E%E9%A1%BE%E9%80%89%E6%8B%A9%E6%9C%80%E5%A5%BD%E7%9A%84%E6%A3%80%E6%9F%A5%E7%82%B9"><span class="toc-number">1.7.3.</span> <span class="toc-text">保存检查点并回顾选择最好的检查点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE%E5%AE%9E%E9%AA%8C%E8%B7%9F%E8%B8%AA"><span class="toc-number">1.7.4.</span> <span class="toc-text">设置实验跟踪</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Batchnorm%E5%AE%9E%E7%8E%B0%E7%BB%86%E8%8A%82"><span class="toc-number">1.7.5.</span> <span class="toc-text">Batchnorm实现细节</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E4%B8%BB%E6%9C%BA%E7%AE%A1%E9%81%93%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">1.7.6.</span> <span class="toc-text">多主机管道的注意事项</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#FAQs"><span class="toc-number">1.8.</span> <span class="toc-text">FAQs</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%80%E4%BD%B3%E5%AD%A6%E4%B9%A0%E7%8E%87%E8%A1%B0%E5%87%8F%E6%97%B6%E9%97%B4%E8%A1%A8%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-number">1.8.1.</span> <span class="toc-text">最佳学习率衰减时间表是什么?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%88%91%E5%BA%94%E8%AF%A5%E4%BD%BF%E7%94%A8%E5%93%AA%E7%A7%8D%E5%AD%A6%E4%B9%A0%E7%8E%87%E8%A1%B0%E5%87%8F%E4%BD%9C%E4%B8%BA%E9%BB%98%E8%AE%A4%E5%80%BC"><span class="toc-number">1.8.2.</span> <span class="toc-text">我应该使用哪种学习率衰减作为默认值?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%9C%89%E4%BA%9B%E8%AE%BA%E6%96%87%E6%9C%89%E5%A4%8D%E6%9D%82%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%8E%87%E6%97%B6%E9%97%B4%E8%A1%A8"><span class="toc-number">1.8.3.</span> <span class="toc-text">为什么有些论文有复杂的学习率时间表?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E8%B0%83%E4%BC%98Adam%E7%9A%84%E8%B6%85%E5%8F%82%E6%95%B0"><span class="toc-number">1.8.4.</span> <span class="toc-text">如何调优Adam的超参数?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%9C%A8%E8%B0%83%E4%BC%98%E7%9A%84%E6%8E%A2%E7%B4%A2%E9%98%B6%E6%AE%B5%E4%BD%BF%E7%94%A8%E5%87%86%E9%9A%8F%E6%9C%BA%E6%90%9C%E7%B4%A2%E8%80%8C%E4%B8%8D%E6%98%AF%E6%9B%B4%E5%A4%8D%E6%9D%82%E7%9A%84%E9%BB%91%E7%9B%92%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95"><span class="toc-number">1.8.5.</span> <span class="toc-text">为什么在调优的探索阶段使用准随机搜索而不是更复杂的黑盒优化算法?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%88%91%E5%9C%A8%E5%93%AA%E9%87%8C%E5%8F%AF%E4%BB%A5%E6%89%BE%E5%88%B0%E5%87%86%E9%9A%8F%E6%9C%BA%E6%90%9C%E7%B4%A2%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.8.6.</span> <span class="toc-text">我在哪里可以找到准随机搜索的实现?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%86%E9%9A%8F%E6%9C%BA%E6%90%9C%E7%B4%A2%E9%9C%80%E8%A6%81%E5%A4%9A%E5%B0%91%E6%AC%A1%E8%AF%95%E9%AA%8C%E6%89%8D%E8%83%BD%E5%BE%97%E5%88%B0%E5%A5%BD%E7%9A%84%E7%BB%93%E6%9E%9C"><span class="toc-number">1.8.7.</span> <span class="toc-text">准随机搜索需要多少次试验才能得到好的结果?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E8%B0%83%E8%AF%95%E5%92%8C%E7%BC%93%E8%A7%A3%E4%BC%98%E5%8C%96%E5%A4%B1%E8%B4%A5"><span class="toc-number">1.8.8.</span> <span class="toc-text">如何调试和缓解优化失败</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%8A%8A%E5%AD%A6%E4%B9%A0%E7%8E%87%E5%92%8C%E5%85%B6%E4%BB%96%E4%BC%98%E5%8C%96%E5%8F%82%E6%95%B0%E7%A7%B0%E4%B8%BA%E8%B6%85%E5%8F%82%E6%95%B0-%E5%AE%83%E4%BB%AC%E4%B8%8D%E6%98%AF%E4%BB%BB%E4%BD%95%E5%85%88%E9%AA%8C%E5%88%86%E5%B8%83%E7%9A%84%E5%8F%82%E6%95%B0"><span class="toc-number">1.8.9.</span> <span class="toc-text">为什么把学习率和其他优化参数称为超参数?它们不是任何先验分布的参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E8%B0%83%E6%95%B4%E6%89%B9%E5%A4%A7%E5%B0%8F%E4%BB%A5%E7%9B%B4%E6%8E%A5%E6%8F%90%E9%AB%98%E9%AA%8C%E8%AF%81%E9%9B%86%E6%80%A7%E8%83%BD"><span class="toc-number">1.8.10.</span> <span class="toc-text">为什么不调整批大小以直接提高验证集性能?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%80%E6%9C%89%E6%B5%81%E8%A1%8C%E7%9A%84%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95%E7%9A%84%E6%9B%B4%E6%96%B0%E8%A7%84%E5%88%99%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-number">1.8.11.</span> <span class="toc-text">所有流行的优化算法的更新规则是什么?</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Acknowledgments"><span class="toc-number">1.9.</span> <span class="toc-text">Acknowledgments</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Citing"><span class="toc-number">1.10.</span> <span class="toc-text">Citing</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Contributing"><span class="toc-number">1.11.</span> <span class="toc-text">Contributing</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Contributor-License-Agreement"><span class="toc-number">1.11.1.</span> <span class="toc-text">Contributor License Agreement</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Code-Reviews"><span class="toc-number">1.11.2.</span> <span class="toc-text">Code Reviews</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Community-Guidelines"><span class="toc-number">1.11.3.</span> <span class="toc-text">Community Guidelines</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/link/pdfaddpicture.html" title="PDF添加图片与文字"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202312162235168.png" onerror="this.onerror=null;this.src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="PDF添加图片与文字"/></a><div class="content"><a class="title" href="/link/pdfaddpicture.html" title="PDF添加图片与文字">PDF添加图片与文字</a><time datetime="2023-12-26T00:00:00.000Z" title="发表于 2023-12-26 00:00:00">2023-12-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/link/topset.html" title="堆与优先队列"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png" onerror="this.onerror=null;this.src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="堆与优先队列"/></a><div class="content"><a class="title" href="/link/topset.html" title="堆与优先队列">堆与优先队列</a><time datetime="2023-09-02T00:00:00.000Z" title="发表于 2023-09-02 00:00:00">2023-09-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/link/suixiangluday20.html" title="代码随想录(day20)"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png" onerror="this.onerror=null;this.src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="代码随想录(day20)"/></a><div class="content"><a class="title" href="/link/suixiangluday20.html" title="代码随想录(day20)">代码随想录(day20)</a><time datetime="2023-09-01T00:00:00.000Z" title="发表于 2023-09-01 00:00:00">2023-09-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/link/paixun2.html" title="排序算法n方"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png" onerror="this.onerror=null;this.src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="排序算法n方"/></a><div class="content"><a class="title" href="/link/paixun2.html" title="排序算法n方">排序算法n方</a><time datetime="2023-09-01T00:00:00.000Z" title="发表于 2023-09-01 00:00:00">2023-09-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/link/paixunlogn.html" title="排序算法nlogn"><img src="https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/markdown/202306101159682.png" onerror="this.onerror=null;this.src='https://liumeng-blog.oss-cn-hangzhou.aliyuncs.com/img/404.jpg'" alt="排序算法nlogn"/></a><div class="content"><a class="title" href="/link/paixunlogn.html" title="排序算法nlogn">排序算法nlogn</a><time datetime="2023-09-01T00:00:00.000Z" title="发表于 2023-09-01 00:00:00">2023-09-01</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2023 By liumeng</div><div class="framework-info"><span>小破站正在安全运行 </span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"><use id="modeicon" xlink:href="#icon-moon"></use></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container').forEach(node => {
+            if (node.hasAttribute('display')) {
+              btf.wrap(node, 'div', { class: 'mathjax-overflow' })
+            } else {
+              btf.wrap(node, 'span', { class: 'mathjax-overflow' })
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script>(() => {
+  const $mermaidWrap = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaidWrap.length) {
+    window.runMermaid = () => {
+      window.loadMermaid = true
+      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+      Array.from($mermaidWrap).forEach((item, index) => {
+        const mermaidSrc = item.firstElementChild
+        const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+        const mermaidID = 'mermaid-' + index
+        const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+        mermaid.mermaidAPI.render(mermaidID, mermaidDefinition, (svgCode) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svgCode)
+        })
+      })
+    }
+
+    const loadMermaid = () => {
+      window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+    }
+
+    window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+  }
+})()</script><script>function loadValine () {
+  function initValine () {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: 'nemsAMaYAJs1jMlB2Gqa1lCI-MdYXbMMI',
+      appKey: '96YIeaSpipct4pRmJ7Kt8r5O',
+      avatar: 'monsterid',
+      serverURLs: 'https://server.liumeng.top',
+      emojiMaps: "",
+      path: window.location.pathname,
+      master: 'bc41b72793c99baf4f681cf457f64ec1',
+      tagMeta: ["博主","小伙伴","访客"],
+      friends: [],
+      visitor: false
+    }, null))
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('/js/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><script src="/js/jquery.js" async></script><script src="/js/foot.js" async></script><script src="http://cdn.bootcss.com/pace/1.0.2/pace.min.js" async></script><script src="/js/sun_moon.js" async></script><script src="/js/nav.js" async></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
